@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Interaktif Kaidah Pencacahan (30 Soal)</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- KaTeX for LaTeX Math Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(229, 231, 235, 0.8);
+        }
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.9);
+            border: 1px solid rgba(51, 65, 85, 0.8);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+        @keyframes pulse-subtle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.92; transform: scale(0.99); }
+        }
+        .animate-pulse-subtle {
+            animation: pulse-subtle 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans min-h-screen flex flex-col transition-colors duration-300">
+
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-40 glass-card border-b border-slate-200 dark:border-slate-800 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo & Brand -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center text-white font-bold text-xl shadow-md">
+                        <i class="fa-solid fa-calculator"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-extrabold text-base sm:text-lg text-slate-900 dark:text-white leading-tight">MathLab Quiz</h1>
+                        <p class="text-xs text-brand-600 dark:text-brand-400 font-semibold">Kaidah Pencacahan (30 Soal)</p>
+                    </div>
+                </div>
+
+                <!-- Right Action Buttons -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <!-- Storage / Cloud Sync Status -->
+                    <div id="syncBadge" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span id="syncText">Tersimpan</span>
+                    </div>
+
+                    <!-- Sound Toggle -->
+                    <button id="soundToggleBtn" onclick="toggleSound()" title="Aktif/Matikan Suara" class="p-2.5 rounded-xl bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:scale-105 transition">
+                        <i id="soundIcon" class="fa-solid fa-volume-high"></i>
+                    </button>
+
+                    <!-- Dark Mode Toggle -->
+                    <button id="themeToggle" class="p-2.5 rounded-xl bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:scale-105 transition">
+                        <i class="fa-solid fa-moon dark:hidden"></i>
+                        <i class="fa-solid fa-sun hidden dark:block"></i>
+                    </button>
+
+                    <!-- Reset Quiz Modal Trigger -->
+                    <button onclick="openResetModal()" class="px-3 py-2 rounded-xl bg-rose-100 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-900/60 font-bold text-xs transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-rotate-right"></i>
+                        <span class="hidden sm:inline">Reset Jawaban</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 flex-grow">
+
+        <!-- Quiz Progress & Score Header Card -->
+        <div class="glass-card rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center gap-2 text-xs font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wider mb-1">
+                        <i class="fa-solid fa-graduation-cap"></i> Modul Evaluasi Interaktif
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">
+                        Kuis Penguasaan Kaidah Pencacahan
+                    </h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                        Aturan Penjumlahan, Aturan Perkalian, & Metode Pengisian Tempat (Filling Slots)
+                    </p>
+                </div>
+
+                <!-- Stats Badges -->
+                <div class="grid grid-cols-4 gap-2 text-center">
+                    <div class="bg-slate-100 dark:bg-slate-800/80 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700">
+                        <span class="block text-[10px] font-semibold text-slate-500 uppercase">Terjawab</span>
+                        <span id="statAnswered" class="text-base sm:text-lg font-extrabold text-slate-800 dark:text-slate-100">0 / 30</span>
+                    </div>
+                    <div class="bg-emerald-50 dark:bg-emerald-950/30 p-2.5 rounded-xl border border-emerald-200 dark:border-emerald-800/50">
+                        <span class="block text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase">Benar</span>
+                        <span id="statCorrect" class="text-base sm:text-lg font-extrabold text-emerald-600 dark:text-emerald-400">0</span>
+                    </div>
+                    <div class="bg-rose-50 dark:bg-rose-950/30 p-2.5 rounded-xl border border-rose-200 dark:border-rose-800/50">
+                        <span class="block text-[10px] font-semibold text-rose-600 dark:text-rose-400 uppercase">Salah</span>
+                        <span id="statIncorrect" class="text-base sm:text-lg font-extrabold text-rose-600 dark:text-rose-400">0</span>
+                    </div>
+                    <div class="bg-brand-50 dark:bg-brand-950/40 p-2.5 rounded-xl border border-brand-200 dark:border-brand-800/50">
+                        <span class="block text-[10px] font-semibold text-brand-600 dark:text-brand-400 uppercase">Skor</span>
+                        <span id="statScore" class="text-base sm:text-lg font-extrabold text-brand-600 dark:text-brand-400">0.0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div>
+                <div class="flex justify-between items-center text-xs text-slate-500 mb-1.5 font-medium">
+                    <span>Kemajuan Pengerjaan</span>
+                    <span id="progressPercentText" class="font-bold text-brand-600 dark:text-brand-400">0% Selesai</span>
+                </div>
+                <div class="w-full h-3 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden p-0.5">
+                    <div id="progressBar" class="h-full bg-gradient-to-r from-brand-600 via-indigo-500 to-emerald-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Interactive Workspace -->
+        <div class="grid lg:grid-cols-12 gap-6 items-start">
+
+            <!-- Left Sidebar: Question Grid Navigation (4 Cols on Large) -->
+            <div class="lg:col-span-4 glass-card rounded-2xl p-4 sm:p-5 border border-slate-200 dark:border-slate-800 space-y-4 sticky top-20">
+                <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                    <h3 class="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-list-ol text-brand-600"></i> Navigasi Soal (1 - 30)
+                    </h3>
+                    <span id="unansweredBadge" class="text-[11px] px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 font-bold">
+                        30 Sisa
+                    </span>
+                </div>
+
+                <!-- Filter Buttons -->
+                <div class="grid grid-cols-4 gap-1 text-[11px] font-semibold bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl">
+                    <button onclick="filterGrid('all')" id="btnFilterAll" class="py-1 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white shadow-xs text-center transition">Semua</button>
+                    <button onclick="filterGrid('unanswered')" id="btnFilterUnanswered" class="py-1 rounded-lg text-slate-500 hover:text-slate-800 dark:hover:text-white text-center transition">Belum</button>
+                    <button onclick="filterGrid('correct')" id="btnFilterCorrect" class="py-1 rounded-lg text-slate-500 hover:text-slate-800 dark:hover:text-white text-center transition">Benar</button>
+                    <button onclick="filterGrid('incorrect')" id="btnFilterIncorrect" class="py-1 rounded-lg text-slate-500 hover:text-slate-800 dark:hover:text-white text-center transition">Salah</button>
+                </div>
+
+                <!-- 30 Questions Grid -->
+                <div id="questionGrid" class="grid grid-cols-6 gap-2 max-h-[340px] overflow-y-auto custom-scrollbar pr-1 pt-1">
+                    <!-- Dynamic Grid Buttons Generated by JS -->
+                </div>
+
+                <!-- Legend -->
+                <div class="pt-2 border-t border-slate-200 dark:border-slate-800 grid grid-cols-3 gap-1 text-[10px] text-slate-500 font-medium">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-md bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 inline-block"></span>
+                        <span>Belum</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-md bg-emerald-500 inline-block"></span>
+                        <span>Benar</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-md bg-rose-500 inline-block"></span>
+                        <span>Salah</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Workspace: Active Question Card (8 Cols on Large) -->
+            <div class="lg:col-span-8 space-y-4">
+                <div class="glass-card rounded-2xl p-5 sm:p-8 border border-slate-200 dark:border-slate-800 space-y-6 shadow-sm">
+                    
+                    <!-- Question Header Info -->
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-4">
+                        <div class="flex items-center gap-2">
+                            <span id="currentQuestionNumBadge" class="px-3 py-1 rounded-xl bg-brand-600 text-white font-extrabold text-sm shadow-sm">
+                                Soal 1
+                            </span>
+                            <span id="currentCategoryBadge" class="px-3 py-1 rounded-xl bg-brand-100 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 font-bold text-xs border border-brand-200 dark:border-brand-800">
+                                Aturan Penjumlahan
+                            </span>
+                        </div>
+                        <span id="questionStatusPill" class="text-xs font-bold px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                            Belum Dijawab
+                        </span>
+                    </div>
+
+                    <!-- Question Prompt / Statement -->
+                    <div id="questionText" class="text-slate-900 dark:text-slate-100 text-base sm:text-lg font-medium leading-relaxed">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <!-- Options Container (A, B, C, D, E) -->
+                    <div id="optionsContainer" class="space-y-3 pt-2">
+                        <!-- Options Rendered dynamically by JS -->
+                    </div>
+
+                    <!-- Instant Explanation Box (Hidden until answered) -->
+                    <div id="explanationBox" class="hidden transition-all duration-300 rounded-2xl p-5 border space-y-3">
+                        <div class="flex items-center gap-2 font-bold text-sm">
+                            <i id="explanationIcon" class="fa-solid fa-circle-check text-base"></i>
+                            <span id="explanationTitle">Pembahasan Matematika</span>
+                        </div>
+                        <div id="explanationText" class="text-xs sm:text-sm leading-relaxed space-y-2 font-sans">
+                            <!-- Explanation content -->
+                        </div>
+                    </div>
+
+                    <!-- Action Navigation Buttons -->
+                    <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
+                        <button id="btnPrev" onclick="navigateQuestion(-1)" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs sm:text-sm transition flex items-center gap-2">
+                            <i class="fa-solid fa-arrow-left"></i> Sebelumnya
+                        </button>
+
+                        <button id="btnNextUnanswered" onclick="jumpNextUnanswered()" class="hidden sm:flex px-3 py-2.5 rounded-xl bg-amber-100 dark:bg-amber-950/50 hover:bg-amber-200 text-amber-800 dark:text-amber-300 font-bold text-xs transition items-center gap-1.5">
+                            <i class="fa-solid fa-forward-step"></i> Sisa Belum Dijawab
+                        </button>
+
+                        <button id="btnNext" onclick="navigateQuestion(1)" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs sm:text-sm shadow-md transition flex items-center gap-2">
+                            Berikutnya <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Quiz Completion Summary Section (Appears when all 30 questions are answered) -->
+        <div id="summarySection" class="hidden glass-card rounded-2xl p-6 sm:p-8 border border-emerald-300 dark:border-emerald-800 space-y-6">
+            <div class="text-center space-y-3">
+                <div class="w-16 h-16 rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-3xl mx-auto shadow-md">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Selamat! Kuis Telah Selesai</h3>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-lg mx-auto">
+                    Anda telah menjawab seluruh 30 soal Kaidah Pencacahan. Berikut adalah rangkuman performa evaluasi Anda:
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-4 text-center">
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <span class="text-xs text-slate-500 font-semibold block uppercase">Total Nilai Akhir</span>
+                    <span id="finalScoreText" class="text-3xl font-black text-brand-600 dark:text-brand-400">0.0</span>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <span class="text-xs text-slate-500 font-semibold block uppercase">Jawaban Benar</span>
+                    <span id="finalCorrectText" class="text-3xl font-black text-emerald-600 dark:text-emerald-400">0 / 30</span>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <span class="text-xs text-slate-500 font-semibold block uppercase">Predikat Kinerja</span>
+                    <span id="finalGradeText" class="text-lg font-bold text-purple-600 dark:text-purple-400">Sangat Baik</span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap justify-center gap-4 pt-2">
+                <button onclick="openResetModal()" class="px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm shadow-md transition">
+                    <i class="fa-solid fa-rotate-right mr-2"></i> Ulangi Kuis Dari Awal
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Custom Confirmation Modal (No alert/confirm used) -->
+    <div id="resetModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="glass-card bg-white dark:bg-slate-900 rounded-2xl p-6 max-w-md w-full border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4">
+            <div class="flex items-center gap-3 text-rose-600 dark:text-rose-400">
+                <div class="p-3 bg-rose-100 dark:bg-rose-950/60 rounded-xl">
+                    <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg text-slate-900 dark:text-white">Reset Seluruh Jawaban?</h4>
+                    <p class="text-xs text-slate-500">Tindakan ini tidak dapat dibatalkan.</p>
+                </div>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                Apakah Anda yakin ingin menghapus semua jawaban yang tersimpan dan memulai kuis kembali dari Soal Nomor 1?
+            </p>
+            <div class="flex justify-end gap-3 pt-2">
+                <button onclick="closeResetModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs hover:bg-slate-200 transition">
+                    Batal
+                </button>
+                <button onclick="confirmResetQuiz()" class="px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-md transition">
+                    Ya, Reset Sekarang
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Imports for Persistence -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global Firebase Configuration & Variables
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'kaidah-pencacahan-quiz-v1';
+        let db = null;
+        let auth = null;
+        let currentUser = null;
+
+        if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+            try {
+                const firebaseConfig = JSON.parse(__firebase_config);
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                const initAuth = async () => {
+                    try {
+                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                            await signInWithCustomToken(auth, __initial_auth_token);
+                        } else {
+                            await signInAnonymously(auth);
+                        }
+                    } catch (err) {
+                        console.log("Auth fallback to anonymous:", err);
+                        await signInAnonymously(auth);
+                    }
+                };
+
+                initAuth();
+
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        currentUser = user;
+                        window.firebaseUser = user;
+                        window.firebaseDb = db;
+                        window.firebaseAppId = appId;
+                        // Load remote progress if exists
+                        await window.loadQuizProgressFromCloud();
+                    }
+                });
+            } catch (e) {
+                console.log("Firebase setup warning:", e);
+            }
+        }
+    </script>
+
+    <script>
+        // Exactly 30 Questions with perfectly balanced options: 6 A's, 6 B's, 6 C's, 6 D's, 6 E's.
+        const QUESTIONS = [
+            // Q1: Aturan Penjumlahan - Key: B
+            {
+                id: 1,
+                category: "Aturan Penjumlahan",
+                text: "Dani memiliki 4 unit buku cerita komik, 3 unit novel misteri, dan 2 unit majalah sains. Jika ia hanya ingin memilih <strong>SATU</strong> bahan bacaan untuk dibaca malam ini, berapa banyak pilihan bahan bacaan yang dimilikinya?",
+                options: [
+                    "A. 24 cara",
+                    "B. 9 cara",
+                    "C. 14 cara",
+                    "D. 18 cara",
+                    "E. 27 cara"
+                ],
+                correctIndex: 1, // B
+                explanation: "<strong>Pembahasan Aturan Penjumlahan:</strong><br>Karena Dani hanya memilih <em>satu</em> bacaan di antara pilihan terpisah (kejadian saling lepas/tidak dilakukan bersamaan), kita gunakan Aturan Penjumlahan:<br>$$\\text{Total Pilihan} = 4 + 3 + 2 = 9\\text{ cara}$$"
+            },
+            // Q2: Aturan Perkalian - Key: C
+            {
+                id: 2,
+                category: "Aturan Perkalian",
+                text: "Sebuah warung makan menyediakan paket hemat yang terdiri dari 1 makanan utama, 1 minuman, dan 1 pencuci mulut. Jika terdapat 5 pilihan makanan utama, 4 pilihan minuman, dan 3 pilihan pencuci mulut, berapa banyak variasi kombinasi paket hemat yang dapat dipesan?",
+                options: [
+                    "A. 12 kombinasi",
+                    "B. 36 kombinasi",
+                    "C. 60 kombinasi",
+                    "D. 120 kombinasi",
+                    "E. 45 kombinasi"
+                ],
+                correctIndex: 2, // C
+                explanation: "<strong>Pembahasan Aturan Perkalian:</strong><br>Karena ketiga komponen makanan, minuman, dan pencuci mulut dipilih secara bersamaan/berurutan dalam 1 paket, kita gunakan Aturan Perkalian:<br>$$\\text{Total Variasi} = 5 \\times 4 \\times 3 = 60\\text{ kombinasi}$$"
+            },
+            // Q3: Aturan Penjumlahan - Key: E
+            {
+                id: 3,
+                category: "Aturan Penjumlahan",
+                text: "Pengurus OSIS SMA Taruna Nusa terdiri dari 5 siswa kelas X, 6 siswa kelas XI, dan 4 siswa kelas XII. Jika seorang guru ingin memilih <strong>SATU</strong> orang perwakilan OSIS untuk menghadiri upacara tingkat kota, berapa banyak cara memilih perwakilan tersebut?",
+                options: [
+                    "A. 120 cara",
+                    "B. 30 cara",
+                    "C. 45 cara",
+                    "D. 150 cara",
+                    "E. 15 cara"
+                ],
+                correctIndex: 4, // E
+                explanation: "<strong>Pembahasan Aturan Penjumlahan:</strong><br>Pemilihan 1 orang wakil dari anggota kelas X, XI, atau XII merupakan kejadian saling lepas (pilihan alternatif terpisah):<br>$$\\text{Total Cara} = 5 + 6 + 4 = 15\\text{ cara}$$"
+            },
+            // Q4: Aturan Perkalian - Key: A
+            {
+                id: 4,
+                category: "Aturan Perkalian",
+                text: "Pengurus inti klub robotik terdiri dari Ketua, Sekretaris, dan Bendahara. Calon yang memenuhi syarat adalah: 4 calon Ketua, 3 calon Sekretaris, dan 5 calon Bendahara. Jika tidak ada orang yang merangkap jabatan, berapa banyak susunan pengurus inti yang dapat dibentuk?",
+                options: [
+                    "A. 60 susunan",
+                    "B. 12 susunan",
+                    "C. 36 susunan",
+                    "D. 120 susunan",
+                    "E. 15 susunan"
+                ],
+                correctIndex: 0, // A
+                explanation: "<strong>Pembahasan Aturan Perkalian:</strong><br>Jabatan Ketua, Sekretaris, dan Bendahara diisi secara berurutan/bersamaan:<br>$$\\text{Total Susunan} = n_{\\text{Ketua}} \\times n_{\\text{Sekretaris}} \\times n_{\\text{Bendahara}} = 4 \\times 3 \\times 5 = 60\\text{ susunan}$$"
+            },
+            // Q5: Rute Perjalanan - Key: D
+            {
+                id: 5,
+                category: "Aturan Perkalian",
+                text: "Kota P dan Q dihubungkan oleh 3 jalur bus. Kota Q dan R dihubungkan oleh 4 jalur bus. Kota R dan S dihubungkan oleh 2 jalur bus. Berapa banyak rute perjalanan berbeda dari Kota P menuju Kota S melalui Kota Q dan Kota R?",
+                options: [
+                    "A. 9 rute",
+                    "B. 14 rute",
+                    "C. 18 rute",
+                    "D. 24 rute",
+                    "E. 48 rute"
+                ],
+                correctIndex: 3, // D
+                explanation: "<strong>Pembahasan Rute Perjalanan Berurutan:</strong><br>Perjalanan dilakukan secara bertahap dari P $\\rightarrow$ Q $\\rightarrow$ R $\\rightarrow$ S:<br>$$\\text{Total Rute} = 3 \\times 4 \\times 2 = 24\\text{ rute}$$"
+            },
+            // Q6: Pulang Pergi Beda Rute - Key: C
+            {
+                id: 6,
+                category: "Aturan Perkalian",
+                text: "Terdapat 5 rute kapal penyeberangan yang menghubungkan Pelabuhan Merak dan Bakauheni. Seseorang hendak menyeberang dari Merak ke Bakauheni lalu kembali lagi ke Merak. Jika ia <strong>TIDAK BOLEH</strong> menggunakan kapal/rute yang sama saat kembali, berapa banyak variasi rute kapal yang dapat digunakan?",
+                options: [
+                    "A. 25 rute",
+                    "B. 10 rute",
+                    "C. 20 rute",
+                    "D. 15 rute",
+                    "E. 30 rute"
+                ],
+                correctIndex: 2, // C
+                explanation: "<strong>Pembahasan Perjalanan Pulang-Pergi:</strong><br>• Berangkat (Merak $\\rightarrow$ Bakauheni) = 5 rute.<br>• Pulang (Bakauheni $\\rightarrow$ Merak) = 4 rute (karena 1 rute sudah dipakai).<br>$$\\text{Total Rute} = 5 \\times 4 = 20\\text{ variasi rute}$$"
+            },
+            // Q7: Filling Slots (Bebas 3 Digit Beda) - Key: A
+            {
+                id: 7,
+                category: "Filling Slots - Bebas",
+                text: "Dari himpunan angka $S = \\{1, 2, 3, 5, 7, 8, 9\\}$, akan dibuat bilangan ratusan (3 digit) dengan digit-digit yang <strong>BERBEDA</strong>. Berapa banyak bilangan yang dapat dibentuk?",
+                options: [
+                    "A. 210 bilangan",
+                    "B. 343 bilangan",
+                    "C. 140 bilangan",
+                    "D. 252 bilangan",
+                    "E. 105 bilangan"
+                ],
+                correctIndex: 0, // A
+                explanation: "<strong>Pembahasan Filling Slots:</strong><br>Himpunan terdiri dari 7 angka. Membuat bilangan 3 digit berbeda:<br>• Kotak Ratusan: 7 pilihan angka.<br>• Kotak Puluhan: 6 pilihan angka (tersisa).<br>• Kotak Satuan: 5 pilihan angka (tersisa).<br>$$\\text{Banyak Bilangan} = 7 \\times 6 \\times 5 = 210\\text{ bilangan}$$"
+            },
+            // Q8: Filling Slots (Boleh Berulang) - Key: D
+            {
+                id: 8,
+                category: "Filling Slots - Pengulangan",
+                text: "Dari himpunan angka $\\{2, 4, 6, 8\\}$, berapa banyak kode PIN 4 digit yang dapat dibuat jika angka-angkanya <strong>BOLEH BERULANG</strong>?",
+                options: [
+                    "A. 24 kode",
+                    "B. 64 kode",
+                    "C. 128 kode",
+                    "D. 256 kode",
+                    "E. 512 kode"
+                ],
+                correctIndex: 3, // D
+                explanation: "<strong>Pembahasan Digit Boleh Berulang:</strong><br>Terdapat 4 pilihan angka untuk masing-masing dari 4 posisi kotak:<br>$$\\text{Banyak Kode} = 4 \\times 4 \\times 4 \\times 4 = 4^4 = 256\\text{ kode PIN}$$"
+            },
+            // Q9: Filling Slots (Genap 3 Digit Beda) - Key: B
+            {
+                id: 9,
+                category: "Filling Slots - Syarat Genap",
+                text: "Diketahui himpunan angka $\\{1, 2, 3, 4, 5, 6, 7\\}$. Akan disusun bilangan ratusan <strong>GENAP</strong> dengan digit-digit <strong>BERBEDA</strong>. Banyak bilangan yang dapat terbentuk adalah...",
+                options: [
+                    "A. 105 bilangan",
+                    "B. 90 bilangan",
+                    "C. 120 bilangan",
+                    "D. 147 bilangan",
+                    "E. 210 bilangan"
+                ],
+                correctIndex: 1, // B
+                explanation: "<strong>Pembahasan Syarat Genap:</strong><br>1. <strong>Prioritas Satuan:</strong> Harus genap $\\{2, 4, 6\\} \\rightarrow 3$ pilihan.<br>2. <strong>Ratusan:</strong> Dari 7 angka, berkurang 1 untuk satuan $\\rightarrow 6$ pilihan.<br>3. <strong>Puluhan:</strong> Berkurang 2 angka $\\rightarrow 5$ pilihan.<br>$$\\text{Total} = 6 \\times 5 \\times 3 = 90\\text{ bilangan}$$"
+            },
+            // Q10: Filling Slots (Ganjil 4 Digit Beda) - Key: E
+            {
+                id: 10,
+                category: "Filling Slots - Syarat Ganjil",
+                text: "Dari angka-angka $\\{1, 2, 3, 4, 5, 6\\}$, akan disusun bilangan ribuan (4 digit) <strong>GANJIL</strong> dengan digit tidak boleh berulang. Banyaknya bilangan yang dapat terbentuk adalah...",
+                options: [
+                    "A. 360 bilangan",
+                    "B. 120 bilangan",
+                    "C. 216 bilangan",
+                    "D. 90 bilangan",
+                    "E. 180 bilangan"
+                ],
+                correctIndex: 4, // E
+                explanation: "<strong>Pembahasan Syarat Ganjil 4 Digit:</strong><br>• Satuan (Ganjil): $\\{1, 3, 5\\} \\rightarrow 3$ pilihan.<br>• Ribuan: Dari 6 angka total tersisa 5 pilihan.<br>• Ratusan: Tersisa 4 pilihan.<br>• Puluhan: Tersisa 3 pilihan.<br>$$\\text{Total} = 5 \\times 4 \\times 3 \\times 3 = 180\\text{ bilangan}$$"
+            },
+            // Q11: Filling Slots (< 4000) - Key: A
+            {
+                id: 11,
+                category: "Filling Slots - Syarat Nilai",
+                text: "Dari angka-angka $\\{1, 2, 3, 4, 5, 6, 7\\}$, akan dibuat bilangan ribuan (4 digit) yang nilainya <strong>KURANG DARI 4.000</strong> dengan digit-digit BERBEDA. Berapa banyak bilangan yang dapat dibuat?",
+                options: [
+                    "A. 360 bilangan",
+                    "B. 420 bilangan",
+                    "C. 240 bilangan",
+                    "D. 504 bilangan",
+                    "E. 180 bilangan"
+                ],
+                correctIndex: 0, // A
+                explanation: "<strong>Pembahasan Syarat $< 4000$:</strong><br>1. <strong>Prioritas Ribuan:</strong> Harus $< 4$, yaitu $\\{1, 2, 3\\} \\rightarrow 3$ pilihan.<br>2. <strong>Ratusan:</strong> Tersisa 6 pilihan angka.<br>3. <strong>Puluhan:</strong> Tersisa 5 pilihan angka.<br>4. <strong>Satuan:</strong> Tersisa 4 pilihan angka.<br>$$\\text{Total} = 3 \\times 6 \\times 5 \\times 4 = 360\\text{ bilangan}$$"
+            },
+            // Q12: Filling Slots (> 5000) - Key: C
+            {
+                id: 12,
+                category: "Filling Slots - Syarat Nilai",
+                text: "Diketahui digit-digit $\\{2, 3, 4, 5, 6, 7, 8\\}$. Akan disusun bilangan ribuan (4 digit) yang nilainya <strong>LEBIH DARI 5.000</strong> dengan digit-digit BERBEDA. Banyak bilangan yang memenuhi syarat adalah...",
+                options: [
+                    "A. 360 bilangan",
+                    "B. 240 bilangan",
+                    "C. 480 bilangan",
+                    "D. 600 bilangan",
+                    "E. 120 bilangan"
+                ],
+                correctIndex: 2, // C
+                explanation: "<strong>Pembahasan Syarat $> 5000$:</strong><br>• Ribuan: Harus $\\ge 5$, yaitu $\\{5, 6, 7, 8\\} \\rightarrow 4$ pilihan.<br>• Ratusan: Dari 7 angka, tersisa 6 pilihan.<br>• Puluhan: Tersisa 5 pilihan.<br>• Satuan: Tersisa 4 pilihan.<br>$$\\text{Total} = 4 \\times 6 \\times 5 \\times 4 = 480\\text{ bilangan}$$"
+            },
+            // Q13: Filling Slots (Mengandung 0 Bebas) - Key: B
+            {
+                id: 13,
+                category: "Filling Slots - Mengandung Angka 0",
+                text: "Tersedia angka-angka $\\{0, 1, 2, 3, 4, 5, 6\\}$. Akan dibuat bilangan ratusan (3 digit) dengan digit BERBEDA. Ingat bahwa digit pertama (ratusan) <strong>TIDAK BOLEH angka 0</strong>. Berapa banyak bilangan ratusan yang terbentuk?",
+                options: [
+                    "A. 210 bilangan",
+                    "B. 180 bilangan",
+                    "C. 150 bilangan",
+                    "D. 120 bilangan",
+                    "E. 216 bilangan"
+                ],
+                correctIndex: 1, // B
+                explanation: "<strong>Pembahasan Angka 0 di Depan:</strong><br>• Ratusan (Bukan 0): $\\{1, 2, 3, 4, 5, 6\\} \\rightarrow 6$ pilihan.<br>• Puluhan (0 Boleh Masuk): Dari 7 angka total, terpakai 1 di ratusan $\\rightarrow 6$ pilihan.<br>• Satuan: Tersisa 5 pilihan.<br>$$\\text{Total} = 6 \\times 6 \\times 5 = 180\\text{ bilangan}$$"
+            },
+            // Q14: Filling Slots (Mengandung 0 & Genap) - Key: D
+            {
+                id: 14,
+                category: "Filling Slots - Irisan Syarat & 0",
+                text: "Dari angka-angka $\\{0, 1, 2, 3, 4, 5\\}$, akan disusun bilangan ratusan (3 digit) <strong>GENAP</strong> dengan digit BERBEDA. Berapa banyak bilangan yang dapat dibentuk?",
+                options: [
+                    "A. 40 bilangan",
+                    "B. 48 bilangan",
+                    "C. 60 bilangan",
+                    "D. 52 bilangan",
+                    "E. 72 bilangan"
+                ],
+                correctIndex: 3, // D
+                explanation: "<strong>Pembahasan Irisan Satuan Genap & Angka 0:</strong><br>Karena 0 ada di satuan sekaligus dilarang di ratusan, kita bagi menjadi 2 kasus:<br>• <strong>Kasus 1 (Satuan = 0):</strong> Satuan=1 cara (angka 0). Ratusan=5 cara (1,2,3,4,5). Puluhan=4 cara. $\\rightarrow 5 \\times 4 \\times 1 = 20$.<br>• <strong>Kasus 2 (Satuan = 2 atau 4):</strong> Satuan=2 cara. Ratusan=4 cara (tanpa 0 dan tanpa satuan). Puluhan=4 cara. $\\rightarrow 4 \\times 4 \\times 2 = 32$.<br>$$\\text{Total} = 20 + 32 = 52\\text{ bilangan}$$"
+            },
+            // Q15: Filling Slots (Kelipatan 5) - Key: A
+            {
+                id: 15,
+                category: "Filling Slots - Kelipatan 5",
+                text: "Dari angka-angka $\\{0, 1, 2, 3, 4, 5, 6\\}$, akan dibuat bilangan ratusan yang merupakan <strong>KELIPATAN 5</strong> dengan digit-digit BERBEDA. Banyaknya bilangan tersebut adalah...",
+                options: [
+                    "A. 55 bilangan",
+                    "B. 60 bilangan",
+                    "C. 45 bilangan",
+                    "D. 50 bilangan",
+                    "E. 70 bilangan"
+                ],
+                correctIndex: 0, // A
+                explanation: "<strong>Pembahasan Kelipatan 5 (Satuan 0 atau 5):</strong><br>• <strong>Kasus Satuan = 0:</strong> Satuan=1 (angka 0). Ratusan=6 cara $\\{1..6\\}$. Puluhan=5 cara. $\\rightarrow 6 \\times 5 \\times 1 = 30$.<br>• <strong>Kasus Satuan = 5:</strong> Satuan=1 (angka 5). Ratusan=5 cara (tanpa 0 & 5). Puluhan=5 cara. $\\rightarrow 5 \\times 5 \\times 1 = 25$.<br>$$\\text{Total} = 30 + 25 = 55\\text{ bilangan}$$"
+            },
+            // Q16: Plat Nomor Kendaraan - Key: E
+            {
+                id: 16,
+                category: "Plat Nomor",
+                text: "Sebuah wilayah menggunakan kode plat nomor kendaraan 4 digit angka yang diawali dengan angka 8. Angka kedua, ketiga, dan keempat dapat diisi angka $\\{0, 1, 2, 3, 4, 5, 6, 7, 8, 9\\}$ dan <strong>BOLEH BERULANG</strong>. Berapa banyak variasi susunan plat nomor yang dapat dibuat?",
+                options: [
+                    "A. 729 plat",
+                    "B. 900 plat",
+                    "C. 5.040 plat",
+                    "D. 10.000 plat",
+                    "E. 1.000 plat"
+                ],
+                correctIndex: 4, // E
+                explanation: "<strong>Pembahasan Plat Nomor:</strong><br>• Digit 1 (Harus angka 8) = 1 pilihan.<br>• Digit 2 = 10 pilihan.<br>• Digit 3 = 10 pilihan.<br>• Digit 4 = 10 pilihan.<br>$$\\text{Total Plat} = 1 \\times 10 \\times 10 \\times 10 = 1.000\\text{ variasi plat}$$"
+            },
+            // Q17: Kombinasi Menu Gabungan - Key: D
+            {
+                id: 17,
+                category: "Aturan Penjumlahan & Perkalian",
+                text: "Seorang tamu dapat memilih Restoran A atau Restoran B. Restoran A menawarkan 3 pilihan steak dan 2 pilihan jus. Restoran B menawarkan 4 pilihan pasta dan 3 pilihan teh. Tamu tersebut hanya makan di <strong>SATU restoran</strong> dengan memesan 1 makanan dan 1 minuman. Berapa total pilihan pasangan makanan-minuman?",
+                options: [
+                    "A. 12 pasangan",
+                    "B. 24 pasangan",
+                    "C. 72 pasangan",
+                    "D. 18 pasangan",
+                    "E. 36 pasangan"
+                ],
+                correctIndex: 3, // D
+                explanation: "<strong>Pembahasan Kombinasi Gabungan:</strong><br>• Opsi di Restoran A (Perkalian): $3 \\times 2 = 6$ pasangan.<br>• Opsi di Restoran B (Perkalian): $4 \\times 3 = 12$ pasangan.<br>• Memilih antara Restoran A atau B (Penjumlahan): $6 + 12 = 18$ pilihan total."
+            },
+            // Q18: Filling Slots (2000 < N < 6000) - Key: B
+            {
+                id: 18,
+                category: "Filling Slots - Rentang Nilai",
+                text: "Diketahui angka-angka $\\{1, 2, 3, 4, 5, 6, 7\\}$. Akan dibuat bilangan ribuan dengan digit BERBEDA yang nilainya <strong>TERLETAK DI ANTARA 2.000 dan 6.000</strong>. Banyak bilangan yang dapat dibentuk adalah...",
+                options: [
+                    "A. 360 bilangan",
+                    "B. 480 bilangan",
+                    "C. 240 bilangan",
+                    "D. 600 bilangan",
+                    "E. 504 bilangan"
+                ],
+                correctIndex: 1, // B
+                explanation: "<strong>Pembahasan Rentang $2000 < N < 6000$:</strong><br>• Digit Ribuan: Harus $\\{2, 3, 4, 5\\} \\rightarrow 4$ pilihan.<br>• Ratusan: Dari 7 angka total tersisa 6 pilihan.<br>• Puluhan: Tersisa 5 pilihan.<br>• Satuan: Tersisa 4 pilihan.<br>$$\\text{Total} = 4 \\times 6 \\times 5 \\times 4 = 480\\text{ bilangan}$$"
+            },
+            // Q19: Urutan Leksikografis Kata - Key: C
+            {
+                id: 19,
+                category: "Leksikografis (Urutan Kata)",
+                text: "Empat huruf A, B, C, D disusun membentuk kata 4 huruf tanpa pengulangan dan diurutkan secara alfabetis (abjad dari A ke Z). Kata <strong>\"CADB\"</strong> berada pada urutan keberapa?",
+                options: [
+                    "A. Urutan ke-12",
+                    "B. Urutan ke-13",
+                    "C. Urutan ke-14",
+                    "D. Urutan ke-15",
+                    "E. Urutan ke-16"
+                ],
+                correctIndex: 2, // C
+                explanation: "<strong>Pembahasan Urutan Leksikografis Huruf:</strong><br>• Awalan 'A' (_ _ _): $3! = 6$ kata.<br>• Awalan 'B' (_ _ _): $3! = 6$ kata.<br>• Awalan 'C':<br>&nbsp;&nbsp;- Awalan 'CA' (_ _): Kata ke-1 'CABD' (urutan ke-13), Kata ke-2 'CADB' (urutan ke-14).<br>$$\\text{Urutan} = 6 + 6 + 2 = 14$$"
+            },
+            // Q20: Urutan Leksikografis Bilangan - Key: E
+            {
+                id: 20,
+                category: "Leksikografis (Urutan Bilangan)",
+                text: "Digit $\\{1, 2, 3, 4\\}$ disusun menjadi bilangan 4 digit berbeda dari yang terkecil hingga terbesar. Bilangan <strong>3142</strong> berada pada urutan keberapa?",
+                options: [
+                    "A. Urutan ke-11",
+                    "B. Urutan ke-12",
+                    "C. Urutan ke-13",
+                    "D. Urutan ke-15",
+                    "E. Urutan ke-14"
+                ],
+                correctIndex: 4, // E
+                explanation: "<strong>Pembahasan Urutan Leksikografis Bilangan:</strong><br>• Awalan 1 _ _ _: $3! = 6$ bilangan.<br>• Awalan 2 _ _ _: $3! = 6$ bilangan.<br>• Awalan 3:<br>&nbsp;&nbsp;- 3124 $\\rightarrow$ Urutan ke-13.<br>&nbsp;&nbsp;- 3142 $\\rightarrow$ Urutan ke-14.<br>$$\\text{Total Urutan} = 6 + 6 + 2 = 14$$"
+            },
+            // Q21: Jajaran Duduk (Faktorial) - Key: D
+            {
+                id: 21,
+                category: "Pengisian Posisi / Barisan",
+                text: "Lima orang siswa (A, B, C, D, E) akan duduk berdampingan pada satu baris kursi yang berisi 5 tempat duduk. Berapa banyak susunan posisi duduk yang mungkin terjadi?",
+                options: [
+                    "A. 25 susunan",
+                    "B. 60 susunan",
+                    "C. 100 susunan",
+                    "D. 120 susunan",
+                    "E. 720 susunan"
+                ],
+                correctIndex: 3, // D
+                explanation: "<strong>Pembahasan Susunan Barisan:</strong><br>Kotak 1=5 pilihan, Kotak 2=4, Kotak 3=3, Kotak 4=2, Kotak 5=1 pilihan:<br>$$\\text{Total Susunan} = 5! = 5 \\times 4 \\times 3 \\times 2 \\times 1 = 120\\text{ susunan}$$"
+            },
+            // Q22: Positions with Fixed Slot - Key: A
+            {
+                id: 22,
+                category: "Filling Slots - Posisi Tetap",
+                text: "Terdapat 6 orang pejabat yang akan duduk di 6 kursi berjajar. Jika pejabat tertua <strong>HARUS duduk di kursi paling ujung kiri (kursi nomor 1)</strong>, berapa banyak susunan posisi duduk yang mungkin terbentuk?",
+                options: [
+                    "A. 120 susunan",
+                    "B. 720 susunan",
+                    "C. 360 susunan",
+                    "D. 240 susunan",
+                    "E. 60 susunan"
+                ],
+                correctIndex: 0, // A
+                explanation: "<strong>Pembahasan Posisi Kunci Tertentu:</strong><br>• Kursi 1 (Ujung Kiri) = 1 pilihan (Pejabat tertua).<br>• Kursi 2 s.d 6 = Sisa 5 orang diatur bebas ($5! = 120$ cara).<br>$$\\text{Total} = 1 \\times 120 = 120\\text{ susunan}$$"
+            },
+            // Q23: Filling Slots (Ratusan Ganjil dengan 0) - Key: B
+            {
+                id: 23,
+                category: "Filling Slots - Ganjil & Angka 0",
+                text: "Banyaknya bilangan ratusan (3 digit) <strong>GANJIL</strong> dengan digit-digit BERBEDA yang dapat dibentuk dari angka-angka $\\{0, 1, 2, 3, 4, 5, 6\\}$ adalah...",
+                options: [
+                    "A. 90 bilangan",
+                    "B. 75 bilangan",
+                    "C. 105 bilangan",
+                    "D. 60 bilangan",
+                    "E. 120 bilangan"
+                ],
+                correctIndex: 1, // B
+                explanation: "<strong>Pembahasan Ratusan Ganjil Memuat 0:</strong><br>1. <strong>Satuan (Ganjil):</strong> $\\{1, 3, 5\\} \\rightarrow 3$ pilihan.<br>2. <strong>Ratusan:</strong> Tidak boleh 0 dan tidak boleh digit satuan $\\rightarrow 5$ pilihan.<br>3. <strong>Puluhan:</strong> Boleh angka 0, dari 7 angka tersisa 5 pilihan.<br>$$\\text{Total} = 5 \\times 5 \\times 3 = 75\\text{ bilangan}$$"
+            },
+            // Q24: Combinations of Switches - Key: C
+            {
+                id: 24,
+                category: "Aturan Perkalian - Status Biner",
+                text: "Sebuah papan kontrol memiliki 6 buah saklar listrik terpisah yang masing-masing dapat berada dalam 2 posisi: ON (Hidup) atau OFF (Mati). Berapa banyak kombinasi keadaan seluruh saklar pada papan kontrol tersebut?",
+                options: [
+                    "A. 12 kombinasi",
+                    "B. 36 kombinasi",
+                    "C. 64 kombinasi",
+                    "D. 128 kombinasi",
+                    "E. 32 kombinasi"
+                ],
+                correctIndex: 2, // C
+                explanation: "<strong>Pembahasan Status Saklar:</strong><br>Setiap saklar memiliki 2 pilihan keadaan (ON/OFF) untuk 6 saklar secara bersamaan:<br>$$\\text{Total Kombinasi} = 2^6 = 2 \\times 2 \\times 2 \\times 2 \\times 2 \\times 2 = 64\\text{ kombinasi}$$"
+            },
+            // Q25: Pilihan Mata Kuliah Mix - Key: B
+            {
+                id: 25,
+                category: "Aturan Penjumlahan & Perkalian",
+                text: "Seorang mahasiswa wajib mengambil 1 mata kuliah umum dan 1 mata kuliah minat. Pilihan umum tersedia 4 mata kuliah di kelas pagi dan 3 di kelas sore. Pilihan minat tersedia 5 mata kuliah. Mahasiswa hanya mengambil kelas pagi ATAU sore untuk kuliah umum. Berapa kombinasi pilihan yang dapat diambil?",
+                options: [
+                    "A. 60 kombinasi",
+                    "B. 35 kombinasi",
+                    "C. 20 kombinasi",
+                    "D. 27 kombinasi",
+                    "E. 70 kombinasi"
+                ],
+                correctIndex: 1, // B
+                explanation: "<strong>Pembahasan Gabungan Kelas:</strong><br>• Total Pilihan Kuliah Umum (Penjumlahan Pagi + Sore) = $4 + 3 = 7$ mata kuliah.<br>• Pilihan Kuliah Minat = 5 mata kuliah.<br>• Kombinasi Pasangan (Perkalian) = $7 \\times 5 = 35$ kombinasi."
+            },
+            // Q26: Urutan Leksikografis 5 Digit - Key: C
+            {
+                id: 26,
+                category: "Leksikografis 5 Digit",
+                text: "Angka $\\{1, 2, 3, 4, 5\\}$ disusun menjadi bilangan 5 digit berbeda dan diurutkan dari yang terkecil. Bilangan <strong>12543</strong> berada pada urutan keberapa?",
+                options: [
+                    "A. Urutan ke-4",
+                    "B. Urutan ke-5",
+                    "C. Urutan ke-6",
+                    "D. Urutan ke-7",
+                    "E. Urutan ke-8"
+                ],
+                correctIndex: 2, // C
+                explanation: "<strong>Pembahasan Urutan 5 Digit:</strong><br>Awalan '1 2 _ _ _':<br>• 123 _ _ $\\rightarrow 2! = 2$ bilangan (12345, 12354).<br>• 124 _ _ $\\rightarrow 2! = 2$ bilangan (12435, 12453).<br>• 125 _ _:<br>&nbsp;&nbsp;- 12534 (urutan ke-5)<br>&nbsp;&nbsp;- 12543 (urutan ke-6)<br>$$\\text{Total Urutan} = 2 + 2 + 2 = 6$$"
+            },
+            // Q27: Ruang Sampel Dadu & Koin - Key: D
+            {
+                id: 27,
+                category: "Aturan Perkalian - Ruang Sampel",
+                text: "Sebuah dadu bermata 6 dan 2 buah koin logam dilempar bersama-sama satu kali. Berapa banyak anggota ruang sampel (banyaknya titik sampel hasil yang mungkin terjadi)?",
+                options: [
+                    "A. 10 hasil",
+                    "B. 12 hasil",
+                    "C. 18 hasil",
+                    "D. 24 hasil",
+                    "E. 36 hasil"
+                ],
+                correctIndex: 3, // D
+                explanation: "<strong>Pembahasan Ruang Sampel:</strong><br>• Dadu = 6 permukaan.<br>• Koin 1 = 2 sisi.<br>• Koin 2 = 2 sisi.<br>$$\\text{Total Titik Sampel} = 6 \\times 2 \\times 2 = 24\\text{ hasil}$$"
+            },
+            // Q28: Filling Slots (> 4000 Boleh Berulang) - Key: E
+            {
+                id: 28,
+                category: "Filling Slots - Pengulangan & Nilai",
+                text: "Dari angka-angka $\\{1, 2, 3, 4, 5, 6\\}$, disusun bilangan ribuan (4 digit) yang nilainya <strong>LEBIH DARI 4.000</strong> dan angka-angkanya <strong>BOLEH BERULANG</strong>. Banyaknya bilangan yang terbentuk adalah...",
+                options: [
+                    "A. 360 bilangan",
+                    "B. 432 bilangan",
+                    "C. 512 bilangan",
+                    "D. 720 bilangan",
+                    "E. 648 bilangan"
+                ],
+                correctIndex: 4, // E
+                explanation: "<strong>Pembahasan Boleh Berulang $> 4000$:</strong><br>• Ribuan: Harus $\\ge 4$, yaitu $\\{4, 5, 6\\} \\rightarrow 3$ pilihan.<br>• Ratusan: Boleh semua angka $\\rightarrow 6$ pilihan.<br>• Puluhan: Boleh semua angka $\\rightarrow 6$ pilihan.<br>• Satuan: Boleh semua angka $\\rightarrow 6$ pilihan.<br>$$\\text{Total} = 3 \\times 6 \\times 6 \\times 6 = 648\\text{ bilangan}$$"
+            },
+            // Q29: Filling Slots (< 500 Ganjil Beda) - Key: A
+            {
+                id: 29,
+                category: "Filling Slots - Irisan Syarat Kompleks",
+                text: "Dari angka $\\{1, 2, 3, 4, 5, 6, 7\\}$, dibuat bilangan ratusan (3 digit) <strong>GANJIL</strong> yang nilainya <strong>KURANG DARI 500</strong> dengan digit-digit BERBEDA. Berapa banyak bilangan yang dapat dibentuk?",
+                options: [
+                    "A. 70 bilangan",
+                    "B. 60 bilangan",
+                    "C. 80 bilangan",
+                    "D. 90 bilangan",
+                    "E. 105 bilangan"
+                ],
+                correctIndex: 0, // A
+                explanation: "<strong>Pembahasan Syarat $< 500$ & Ganjil:</strong><br>Ratusan $< 500 \\rightarrow \\{1, 2, 3, 4\\}$. Satuan Ganjil $\\rightarrow \\{1, 3, 5, 7\\}$.<br>• <strong>Kasus 1 (Ratusan Ganjil $\\{1, 3\\}$):</strong> Ratusan=2 cara. Satuan=3 cara (sisa ganjil). Puluhan=5 cara. $\\rightarrow 2 \\times 5 \\times 3 = 30$.<br>• <strong>Kasus 2 (Ratusan Genap $\\{2, 4\\}$):</strong> Ratusan=2 cara. Satuan=4 cara. Puluhan=5 cara. $\\rightarrow 2 \\times 5 \\times 4 = 40$.<br>$$\\text{Total} = 30 + 40 = 70\\text{ bilangan}$$"
+            },
+            // Q30: Filling Slots (Ribuan Genap > 3000 Beda) - Key: E
+            {
+                id: 30,
+                category: "Filling Slots - Syarat Terketat",
+                text: "Dari angka $\\{1, 2, 3, 4, 5, 6\\}$, disusun bilangan ribuan (4 digit) <strong>GENAP</strong> yang nilainya <strong>LEBIH DARI 3.000</strong> dengan digit-digit BERBEDA. Banyak bilangan yang memenuhi adalah...",
+                options: [
+                    "A. 96 bilangan",
+                    "B. 108 bilangan",
+                    "C. 144 bilangan",
+                    "D. 160 bilangan",
+                    "E. 120 bilangan"
+                ],
+                correctIndex: 4, // E
+                explanation: "<strong>Pembahasan Kompleks Ribuan Genap $> 3000$:</strong><br>Ribuan $> 3000 \\rightarrow \\{3, 4, 5, 6\\}$. Satuan Genap $\\rightarrow \\{2, 4, 6\\}$.<br>• <strong>Kasus 1 (Ribuan Ganjil $\\{3, 5\\}$):</strong> Ribuan=2 cara. Satuan=3 cara $\\{2,4,6\\}$. Ratusan=4 cara. Puluhan=3 cara. $\\rightarrow 2 \\times 4 \\times 3 \\times 3 = 72$.<br>• <strong>Kasus 2 (Ribuan Genap $\\{4, 6\\}$):</strong> Ribuan=2 cara. Satuan=2 cara (sisa genap). Ratusan=4 cara. Puluhan=3 cara. $\\rightarrow 2 \\times 4 \\times 3 \\times 2 = 48$.<br>$$\\text{Total} = 72 + 48 = 120\\text{ bilangan}$$"
+            }
+        ];
+
+        let state = {
+            currentIndex: 0,
+            userAnswers: {}, // Format: { questionId: chosenOptionIndex }
+            isAudioMuted: false,
+            gridFilter: 'all' // 'all', 'unanswered', 'correct', 'incorrect'
+        };
+
+        const STORAGE_KEY = 'mathlab_counting_rules_quiz_state';
+
+        let audioCtx = null;
+        function playSound(type) {
+            if (state.isAudioMuted) return;
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+
+                if (type === 'correct') {
+                    // Upbeat pleasant two-tone chime
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                } else if (type === 'incorrect') {
+                    // Soft low buzz tone
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(220, now); // A3
+                    osc.frequency.setValueAtTime(174.61, now + 0.12); // F3
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+                    osc.start(now);
+                    osc.stop(now + 0.4);
+                } else if (type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, now);
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                }
+            } catch (e) {
+                console.log("Audio play notice:", e);
+            }
+        }
+
+        function toggleSound() {
+            state.isAudioMuted = !state.isAudioMuted;
+            const icon = document.getElementById('soundIcon');
+            if (state.isAudioMuted) {
+                icon.className = 'fa-solid fa-volume-xmark text-slate-400';
+            } else {
+                icon.className = 'fa-solid fa-volume-high text-slate-700 dark:text-slate-300';
+                playSound('click');
+            }
+        }
+
+        function saveProgressLocal() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state.userAnswers));
+            } catch (e) {
+                console.log("Local save error:", e);
+            }
+        }
+
+        function loadProgressLocal() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    state.userAnswers = JSON.parse(saved);
+                }
+            } catch (e) {
+                console.log("Local load error:", e);
+            }
+        }
+
+        // Cloud save implementation compliant with strict Firestore rules
+        async function saveQuizProgressToCloud() {
+            saveProgressLocal();
+            const user = window.firebaseUser;
+            const db = window.firebaseDb;
+            const appId = window.firebaseAppId;
+
+            if (!user || !db || !appId) return;
+
+            try {
+                const docRef = doc(db, 'artifacts', appId, 'users', user.uid, 'quizState', 'userAnswers');
+                await setDoc(docRef, {
+                    answers: state.userAnswers,
+                    updatedAt: new Date().toISOString()
+                });
+                document.getElementById('syncText').innerText = 'Tersimpan';
+            } catch (err) {
+                console.log("Cloud sync note:", err);
+            }
+        }
+
+        window.loadQuizProgressFromCloud = async function() {
+            loadProgressLocal(); // Load local first for fast rendering
+            const user = window.firebaseUser;
+            const db = window.firebaseDb;
+            const appId = window.firebaseAppId;
+
+            if (!user || !db || !appId) {
+                renderAllUI();
+                return;
+            }
+
+            try {
+                const docRef = doc(db, 'artifacts', appId, 'users', user.uid, 'quizState', 'userAnswers');
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists() && docSnap.data().answers) {
+                    state.userAnswers = { ...state.userAnswers, ...docSnap.data().answers };
+                    saveProgressLocal();
+                }
+            } catch (e) {
+                console.log("Cloud load note:", e);
+            }
+            renderAllUI();
+        };
+
+        function renderAllUI() {
+            renderQuestionGrid();
+            renderActiveQuestion();
+            updateStatsAndProgress();
+        }
+
+        function updateStatsAndProgress() {
+            const answeredCount = Object.keys(state.userAnswers).length;
+            let correctCount = 0;
+            let incorrectCount = 0;
+
+            QUESTIONS.forEach(q => {
+                const ans = state.userAnswers[q.id];
+                if (ans !== undefined) {
+                    if (ans === q.correctIndex) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                }
+            });
+
+            const scorePercent = ((correctCount / QUESTIONS.length) * 100).toFixed(1);
+
+            document.getElementById('statAnswered').innerText = `${answeredCount} / ${QUESTIONS.length}`;
+            document.getElementById('statCorrect').innerText = correctCount;
+            document.getElementById('statIncorrect').innerText = incorrectCount;
+            document.getElementById('statScore').innerText = `${scorePercent}%`;
+
+            const percent = Math.round((answeredCount / QUESTIONS.length) * 100);
+            document.getElementById('progressPercentText').innerText = `${percent}% Selesai`;
+            document.getElementById('progressBar').style.width = `${percent}%`;
+
+            document.getElementById('unansweredBadge').innerText = `${QUESTIONS.length - answeredCount} Sisa`;
+
+            // Check if all 30 completed
+            const summarySection = document.getElementById('summarySection');
+            if (answeredCount === QUESTIONS.length) {
+                summarySection.classList.remove('hidden');
+                document.getElementById('finalScoreText').innerText = scorePercent;
+                document.getElementById('finalCorrectText').innerText = `${correctCount} / 30`;
+                
+                let grade = "Cukup";
+                if (scorePercent >= 90) grade = "Sangat Sempurna (A+)";
+                else if (scorePercent >= 80) grade = "Sangat Baik (A)";
+                else if (scorePercent >= 70) grade = "Baik (B)";
+                else if (scorePercent >= 60) grade = "Cukup Baik (C)";
+                else grade = "Perlu Latihan Lagi";
+
+                document.getElementById('finalGradeText').innerText = grade;
+            } else {
+                summarySection.classList.add('hidden');
+            }
+        }
+
+        function filterGrid(type) {
+            state.gridFilter = type;
+            ['All', 'Unanswered', 'Correct', 'Incorrect'].forEach(f => {
+                const btn = document.getElementById(`btnFilter${f}`);
+                if (f.toLowerCase() === type) {
+                    btn.className = "py-1 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white shadow-xs text-center transition font-bold";
+                } else {
+                    btn.className = "py-1 rounded-lg text-slate-500 hover:text-slate-800 dark:hover:text-white text-center transition";
+                }
+            });
+            renderQuestionGrid();
+        }
+
+        function renderQuestionGrid() {
+            const gridContainer = document.getElementById('questionGrid');
+            gridContainer.innerHTML = '';
+
+            QUESTIONS.forEach((q, idx) => {
+                const ans = state.userAnswers[q.id];
+                const isCurrent = idx === state.currentIndex;
+                let btnClass = "h-10 rounded-xl font-bold text-xs flex items-center justify-center transition border relative ";
+
+                let isCorrect = false;
+                let isAnswered = ans !== undefined;
+
+                if (isAnswered) {
+                    isCorrect = ans === q.correctIndex;
+                }
+
+                // Filter check
+                if (state.gridFilter === 'unanswered' && isAnswered) return;
+                if (state.gridFilter === 'correct' && (!isAnswered || !isCorrect)) return;
+                if (state.gridFilter === 'incorrect' && (!isAnswered || isCorrect)) return;
+
+                if (isAnswered) {
+                    if (isCorrect) {
+                        btnClass += "bg-emerald-500 text-white border-emerald-600 shadow-xs";
+                    } else {
+                        btnClass += "bg-rose-500 text-white border-rose-600 shadow-xs";
+                    }
+                } else {
+                    btnClass += "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700";
+                }
+
+                if (isCurrent) {
+                    btnClass += " ring-2 ring-brand-500 ring-offset-2 dark:ring-offset-slate-900 scale-105 z-10 font-extrabold";
+                }
+
+                const btn = document.createElement('button');
+                btn.className = btnClass;
+                btn.innerHTML = `${q.id}`;
+                btn.onclick = () => {
+                    playSound('click');
+                    state.currentIndex = idx;
+                    renderAllUI();
+                };
+
+                gridContainer.appendChild(btn);
+            });
+        }
+
+        function renderActiveQuestion() {
+            const q = QUESTIONS[state.currentIndex];
+            const userAnswer = state.userAnswers[q.id];
+            const isAnswered = userAnswer !== undefined;
+
+            // Badges & Header
+            document.getElementById('currentQuestionNumBadge').innerText = `Soal ${q.id} dari 30`;
+            document.getElementById('currentCategoryBadge').innerText = q.category;
+
+            const statusPill = document.getElementById('questionStatusPill');
+            if (!isAnswered) {
+                statusPill.innerText = "Belum Dijawab";
+                statusPill.className = "text-xs font-bold px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400";
+            } else if (userAnswer === q.correctIndex) {
+                statusPill.innerText = "Jawaban Benar";
+                statusPill.className = "text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800";
+            } else {
+                statusPill.innerText = "Jawaban Salah";
+                statusPill.className = "text-xs font-bold px-3 py-1 rounded-full bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300 border border-rose-300 dark:border-rose-800";
+            }
+
+            // Question Text
+            const textEl = document.getElementById('questionText');
+            textEl.innerHTML = q.text;
+
+            // Options Rendering
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((optText, optIdx) => {
+                const optBtn = document.createElement('button');
+                let baseStyle = "w-full text-left p-4 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-start justify-between gap-3 ";
+
+                if (!isAnswered) {
+                    baseStyle += "bg-white dark:bg-slate-800/90 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 hover:bg-brand-50/50 dark:hover:bg-slate-700/60 hover:border-brand-300 dark:hover:border-slate-600 cursor-pointer";
+                } else {
+                    optBtn.disabled = true; // Lock answer choice once answered
+                    if (optIdx === q.correctIndex) {
+                        // Highlight correct answer in green
+                        baseStyle += "bg-emerald-50 dark:bg-emerald-950/60 border-emerald-500 text-emerald-900 dark:text-emerald-200 font-bold shadow-xs";
+                    } else if (optIdx === userAnswer) {
+                        // Highlight selected incorrect answer in red
+                        baseStyle += "bg-rose-50 dark:bg-rose-950/60 border-rose-500 text-rose-900 dark:text-rose-200 font-bold shadow-xs";
+                    } else {
+                        // Unselected neutral options
+                        baseStyle += "bg-slate-50/50 dark:bg-slate-900/40 border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500 opacity-60";
+                    }
+                }
+
+                optBtn.className = baseStyle;
+
+                // Option content layout
+                let iconHtml = '';
+                if (isAnswered) {
+                    if (optIdx === q.correctIndex) {
+                        iconHtml = `<span class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs flex-shrink-0"><i class="fa-solid fa-check"></i></span>`;
+                    } else if (optIdx === userAnswer) {
+                        iconHtml = `<span class="w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center text-xs flex-shrink-0"><i class="fa-solid fa-xmark"></i></span>`;
+                    }
+                }
+
+                optBtn.innerHTML = `
+                    <span class="flex-grow">${optText}</span>
+                    ${iconHtml}
+                `;
+
+                optBtn.onclick = () => selectOption(optIdx);
+                optionsContainer.appendChild(optBtn);
+            });
+
+            // Explanation Box Handling
+            const explanationBox = document.getElementById('explanationBox');
+            const explanationText = document.getElementById('explanationText');
+            const explanationTitle = document.getElementById('explanationTitle');
+            const explanationIcon = document.getElementById('explanationIcon');
+
+            if (isAnswered) {
+                explanationBox.classList.remove('hidden');
+                explanationText.innerHTML = q.explanation;
+
+                if (userAnswer === q.correctIndex) {
+                    explanationBox.className = "rounded-2xl p-5 border bg-emerald-50/80 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800/60 text-emerald-900 dark:text-emerald-300 space-y-2";
+                    explanationTitle.innerText = "Jawaban Tepat! Pembahasan Ringkas:";
+                    explanationIcon.className = "fa-solid fa-circle-check text-emerald-600 dark:text-emerald-400 text-lg";
+                } else {
+                    explanationBox.className = "rounded-2xl p-5 border bg-rose-50/80 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800/60 text-rose-950 dark:text-rose-200 space-y-2";
+                    explanationTitle.innerText = "Jawaban Belum Tepat. Pelajari Pembahasannya:";
+                    explanationIcon.className = "fa-solid fa-circle-xmark text-rose-600 dark:text-rose-400 text-lg";
+                }
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            // Prev/Next Navigation Buttons
+            document.getElementById('btnPrev').disabled = state.currentIndex === 0;
+            document.getElementById('btnPrev').style.opacity = state.currentIndex === 0 ? "0.5" : "1";
+
+            const btnNext = document.getElementById('btnNext');
+            if (state.currentIndex === QUESTIONS.length - 1) {
+                btnNext.innerHTML = `Selesai <i class="fa-solid fa-flag-checkered"></i>`;
+            } else {
+                btnNext.innerHTML = `Berikutnya <i class="fa-solid fa-arrow-right"></i>`;
+            }
+
+            // Render Math Equations with KaTeX
+            if (window.renderMathInElement) {
+                renderMathInElement(document.getElementById('questionText'), {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ]
+                });
+                if (isAnswered) {
+                    renderMathInElement(document.getElementById('explanationText'), {
+                        delimiters: [
+                            {left: '$$', right: '$$', display: true},
+                            {left: '$', right: '$', display: false}
+                        ]
+                    });
+                }
+            }
+        }
+
+        function selectOption(optionIndex) {
+            const q = QUESTIONS[state.currentIndex];
+            if (state.userAnswers[q.id] !== undefined) return; // Prevent changing locked answer
+
+            state.userAnswers[q.id] = optionIndex;
+
+            if (optionIndex === q.correctIndex) {
+                playSound('correct');
+            } else {
+                playSound('incorrect');
+            }
+
+            saveQuizProgressToCloud();
+            renderAllUI();
+        }
+
+        function navigateQuestion(step) {
+            playSound('click');
+            const targetIdx = state.currentIndex + step;
+            if (targetIdx >= 0 && targetIdx < QUESTIONS.length) {
+                state.currentIndex = targetIdx;
+                renderAllUI();
+            }
+        }
+
+        function jumpNextUnanswered() {
+            playSound('click');
+            const unansweredIdx = QUESTIONS.findIndex(q => state.userAnswers[q.id] === undefined);
+            if (unansweredIdx !== -1) {
+                state.currentIndex = unansweredIdx;
+                renderAllUI();
+            }
+        }
+
+        function openResetModal() {
+            playSound('click');
+            document.getElementById('resetModal').classList.remove('hidden');
+        }
+
+        function closeResetModal() {
+            playSound('click');
+            document.getElementById('resetModal').classList.add('hidden');
+        }
+
+        function confirmResetQuiz() {
+            playSound('click');
+            state.userAnswers = {};
+            state.currentIndex = 0;
+            saveQuizProgressToCloud();
+            closeResetModal();
+            renderAllUI();
+        }
+
+        // Theme Toggle Handler
+        const themeToggleBtn = document.getElementById('themeToggle');
+        themeToggleBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            playSound('click');
+        });
+
+        // Initialize App on Window Load
+        window.onload = function () {
+            loadProgressLocal();
+            renderAllUI();
+        };
+    </script>
+</body>
+</html>
