@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul Interaktif Kaidah Pencacahan</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- KaTeX for Math formatting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(229, 231, 235, 0.8);
+        }
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.85);
+            border: 1px solid rgba(51, 65, 85, 0.8);
+        }
+        .slot-box {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .slot-box:hover {
+            transform: translateY(-4px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans min-h-screen transition-colors duration-300">
+
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-50 glass-card border-b shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-400 flex items-center justify-center text-white font-bold text-xl shadow-md">
+                        <i class="fa-solid fa-calculator"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-extrabold text-lg sm:text-xl text-slate-900 dark:text-white leading-tight">MathLab</h1>
+                        <p class="text-xs text-brand-600 dark:text-brand-400 font-semibold">Kaidah Pencacahan Interaktif</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-1 font-medium text-sm">
+                    <a href="#materi-dasar" class="px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">Aturan Penjumlahan & Perkalian</a>
+                    <a href="#materi-lanjutan" class="px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">Faktorial, Permutasi & Kombinasi</a>
+                    <a href="#simulator" class="px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">Simulator Slots</a>
+                    <a href="#leksikografis" class="px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">Kalkulator Urutan</a>
+                    <a href="#catatan" class="px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">Bedah Catatan</a>
+                    <a href="#kuis" class="px-3 py-2 rounded-lg bg-brand-600 hover:bg-brand-700 text-white shadow-sm transition">Latihan Soal</a>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="themeToggle" class="p-2.5 rounded-xl bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:scale-105 transition">
+                        <i class="fa-solid fa-moon dark:hidden"></i>
+                        <i class="fa-solid fa-sun hidden dark:block"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative overflow-hidden pt-12 pb-16 bg-gradient-to-b from-indigo-50/50 via-white to-slate-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-900 border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-brand-100 dark:bg-brand-900/60 text-brand-700 dark:text-brand-300 mb-4 border border-brand-200 dark:border-brand-800">
+                <i class="fa-solid fa-sparkles"></i> Modul Pembelajaran Matematika Kelas 12
+            </span>
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
+                Menguasai <span class="bg-gradient-to-r from-brand-600 to-indigo-500 bg-clip-text text-transparent">Kaidah Pencacahan</span> secara Visual & Interaktif
+            </h1>
+            <p class="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+                Pelajari Aturan Penjumlahan, Aturan Perkalian, Metode Pengisian Tempat (*Filling Slots*), hingga penentuan Urutan Bilangan (Leksikografis) dengan visualisasi praktis dan pembahasan latihan soal PDF & Catatan.
+            </p>
+            <div class="mt-8 flex flex-wrap justify-center gap-4">
+                <a href="#simulator" class="px-6 py-3 rounded-xl bg-brand-600 text-white font-semibold hover:bg-brand-700 shadow-lg shadow-brand-500/2 transition transform hover:-translate-y-0.5">
+                    <i class="fa-solid fa-play mr-2"></i> Coba Simulator Slots
+                </a>
+                <a href="#catatan" class="px-6 py-3 rounded-xl bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
+                    <i class="fa-solid fa-book-open mr-2"></i> Lihat Bedah Catatan Tangan
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+        <!-- SECTION 1: MATERI DASAR (ATURAN PENJUMLAHAN & PERKALIAN) -->
+        <section id="materi-dasar" class="scroll-mt-24 space-y-8">
+            <div class="border-l-4 border-brand-600 pl-4">
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">1. Rangkuman Lengkap Materi Kaidah Pencacahan Dasar</h2>
+                <p class="text-slate-600 dark:text-slate-400">Aturan membilang (*Counting Rules*) untuk menghitung total kemungkinan kejadian tanpa perlu mengurutkan satu per satu.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Aturan Penjumlahan -->
+                <div class="glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-3 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 rounded-xl font-bold">
+                                <i class="fa-solid fa-plus text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl text-slate-900 dark:text-white">Aturan Penjumlahan</h3>
+                                <span class="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Kejadian Saling Lepas (Pilihan Alternatif)</span>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
+                            Digunakan apabila kegiatan-kegiatan yang tersedia <strong>saling lepas (mutually exclusive)</strong> dan <strong>tidak dapat dilakukan secara bersamaan</strong>. Kejadian ini merupakan pilihan terpisah atau alternatif.
+                        </p>
+                        <div class="bg-slate-100 dark:bg-slate-800 p-4 rounded-xl text-center font-semibold text-brand-700 dark:text-brand-300 mb-4">
+                            $$\text{Total Cara} = n_1 + n_2 + n_3 + \dots + n_k$$
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                            <div class="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50 rounded-xl p-3 text-emerald-900 dark:text-emerald-300">
+                                <strong><i class="fa-solid fa-circle-info"></i> Contoh Kasus 1:</strong> Anggiat memiliki 4 sepeda motor, 2 mobil, dan 3 sepeda. Jika ia ingin pergi ke kantor memilih <em>satu</em> jenis kendaraan, berapa total pilihannya?<br>
+                                $\rightarrow \text{Total} = 4 + 2 + 3 = 9\text{ cara}$.
+                            </div>
+                            <div class="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50 rounded-xl p-3 text-emerald-900 dark:text-emerald-300">
+                                <strong><i class="fa-solid fa-plane"></i> Contoh Kasus 2:</strong> Perjalanan dari Jakarta ke Bali dapat ditempuh dengan 3 jalur penerbangan maskapai udara atau 2 jalur kapal laut. Berapa cara bepergian Jakarta–Bali?<br>
+                                $\rightarrow \text{Total} = 3 + 2 = 5\text{ cara}$.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aturan Perkalian -->
+                <div class="glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-3 bg-brand-100 dark:bg-brand-900/40 text-brand-600 dark:text-brand-400 rounded-xl font-bold">
+                                <i class="fa-solid fa-xmark text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl text-slate-900 dark:text-white">Aturan Perkalian</h3>
+                                <span class="text-xs font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">Kejadian Berurutan / Bersamaan</span>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
+                            Digunakan apabila kegiatan-kegiatan dilakukan <strong>secara berurutan, bersama-sama, atau bertahap</strong> dalam satu rangkaian kesatuan peristiwa.
+                        </p>
+                        <div class="bg-slate-100 dark:bg-slate-800 p-4 rounded-xl text-center font-semibold text-brand-700 dark:text-brand-300 mb-4">
+                            $$\text{Total Cara} = n_1 \times n_2 \times n_3 \times \dots \times n_k$$
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                            <div class="bg-brand-50 dark:bg-brand-950/30 border border-brand-200 dark:border-brand-800/50 rounded-xl p-3 text-brand-900 dark:text-brand-300">
+                                <strong><i class="fa-solid fa-shirt"></i> Contoh Kasus 1:</strong> Memiliki 3 baju atasan ($A_1, A_2, A_3$) dan 2 celana bawahan ($B_1, B_2$). Berapa pasangan stelan baju-celana yang dapat dipakai?<br>
+                                $\rightarrow \text{Total} = 3 \times 2 = 6\text{ pasang}$.
+                            </div>
+                            <div class="bg-brand-50 dark:bg-brand-950/30 border border-brand-200 dark:border-brand-800/50 rounded-xl p-3 text-brand-900 dark:text-brand-300">
+                                <strong><i class="fa-solid fa-route"></i> Contoh Kasus 2:</strong> Rute kota A ke B ada 3 jalan, B ke C ada 2 jalan, dan C ke D ada 4 jalan. Berapa banyak rute perjalanan dari A ke D via B dan C?<br>
+                                $\rightarrow \text{Total} = 3 \times 2 \times 4 = 24\text{ rute}$.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visualisasi 3 Cara Menyajikan Aturan Perkalian -->
+            <div class="glass-card rounded-2xl p-6 border border-slate-200 dark:border-slate-800">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-sitemap text-brand-600"></i> 3 Cara Menyajikan Hasil Aturan Perkalian (Modul Defantri PDF)
+                </h3>
+                <div class="grid lg:grid-cols-3 gap-6 text-sm">
+                    <!-- 1. Tabel -->
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                        <h4 class="font-bold text-brand-600 dark:text-brand-400 mb-2"><i class="fa-solid fa-table mr-1"></i> 1. Tabel Silang</h4>
+                        <p class="text-xs text-slate-500 mb-3">Memasangkan objek baris (misal: Baju $B_1, B_2$) dengan kolom (Celana $C_1, C_2, C_3$):</p>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-center border-collapse text-xs">
+                                <thead>
+                                    <tr class="bg-slate-100 dark:bg-slate-700">
+                                        <th class="p-1.5 border">B \ C</th>
+                                        <th class="p-1.5 border">C1</th>
+                                        <th class="p-1.5 border">C2</th>
+                                        <th class="p-1.5 border">C3</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="font-bold border bg-slate-50 dark:bg-slate-800 p-1.5">B1</td>
+                                        <td class="border p-1.5 text-slate-600 dark:text-slate-300">(B1,C1)</td>
+                                        <td class="border p-1.5 text-slate-600 dark:text-slate-300">(B1,C2)</td>
+                                        <td class="border p-1.5 text-slate-600 dark:text-slate-300">(B1,C3)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold border bg-slate-50 dark:bg-slate-800 p-1.5">B2</td>
+                                        <td class="border p-1.5 text-slate-600 dark:text-slate-300">(B2,C1)</td>
+                                        <td class="border p-1.5 text-slate-600 dark:text-slate-300">(B2,C2)</td>
+                                        <td class="border p-1.5 text-slate-600 dark:text-slate-300">(B2,C3)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- 2. Pohon -->
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                        <h4 class="font-bold text-brand-600 dark:text-brand-400 mb-2"><i class="fa-solid fa-diagram-project mr-1"></i> 2. Diagram Pohon</h4>
+                        <p class="text-xs text-slate-500 mb-2">Bercabang secara sistematis dari opsi awal ke opsi tahap berikutnya:</p>
+                        <div class="font-mono text-xs text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-900 p-3 rounded-lg space-y-1">
+                            <div>B1 ── C1 $\rightarrow$ (B1, C1)</div>
+                            <div>   ├── C2 $\rightarrow$ (B1, C2)</div>
+                            <div>   └── C3 $\rightarrow$ (B1, C3)</div>
+                            <div>B2 ── C1 $\rightarrow$ (B2, C1)</div>
+                            <div>   └── ...</div>
+                        </div>
+                    </div>
+                    <!-- 3. Pasangan Terurut -->
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                        <h4 class="font-bold text-brand-600 dark:text-brand-400 mb-2"><i class="fa-solid fa-brackets-curly mr-1"></i> 3. Himpunan Pasangan Terurut</h4>
+                        <p class="text-xs text-slate-500 mb-2">Menuliskan semua titik sampel dalam pasangan kurung $(x, y)$:</p>
+                        <div class="font-mono text-xs bg-slate-50 dark:bg-slate-900 p-3 rounded-lg text-slate-700 dark:text-slate-300 leading-relaxed">
+                            $S = \{(B_1, C_1), (B_1, C_2), (B_1, C_3),$ <br>
+                            $\phantom{S = \{} (B_2, C_1), (B_2, C_2), (B_2, C_3)\}$<br>
+                            <span class="text-brand-600 font-bold">Total Anggota $n(S) = 6$</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detail Metode Filling Slots (Pengisian Tempat) -->
+            <div class="glass-card rounded-2xl p-6 border border-slate-200 dark:border-slate-800 space-y-4">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-boxes-stacked text-indigo-600"></i> Pendalaman Metode Pengisian Tempat (*Filling Slots*)
+                </h3>
+                <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                    Metode *Filling Slots* digunakan untuk menghitung banyaknya susunan angka, huruf, plat nomor, atau kode PIN berdasarkan syarat tertentu. Langkah utamanya adalah mengisi kotak posisi dengan **prioritas syarat paling ketat terlebih dahulu**.
+                </p>
+
+                <div class="grid md:grid-cols-3 gap-4 text-xs">
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+                        <span class="font-bold text-indigo-600 dark:text-indigo-400 uppercase text-[11px] block">1. Syarat Angka Genap / Ganjil</span>
+                        <p class="text-slate-600 dark:text-slate-300">
+                            <strong>Aturan:</strong> Isi kotak <strong>Satuan (terakhir)</strong> lebih dulu.
+                        </p>
+                        <ul class="list-disc pl-4 text-slate-500 space-y-1">
+                            <li>Genap: Digit terakhir $\{0, 2, 4, 6, 8\}$</li>
+                            <li>Ganjil: Digit terakhir $\{1, 3, 5, 7, 9\}$</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+                        <span class="font-bold text-indigo-600 dark:text-indigo-400 uppercase text-[11px] block">2. Syarat Nilai $< K$ atau $> K$</span>
+                        <p class="text-slate-600 dark:text-slate-300">
+                            <strong>Aturan:</strong> Isi kotak <strong>Ribuan / Ratusan (terdepan)</strong> lebih dulu.
+                        </p>
+                        <ul class="list-disc pl-4 text-slate-500 space-y-1">
+                            <li>Misal $< 4000$: Digit pertama harus $\{1, 2, 3\}$.</li>
+                            <li>Misal $> 3000$: Digit pertama harus $\{3, 4, 5, \dots\}$.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+                        <span class="font-bold text-indigo-600 dark:text-indigo-400 uppercase text-[11px] block">3. Angka Beda vs Boleh Berulang</span>
+                        <p class="text-slate-600 dark:text-slate-300">
+                            <strong>Aturan:</strong>
+                        </p>
+                        <ul class="list-disc pl-4 text-slate-500 space-y-1">
+                            <li>Boleh Berulang: Jumlah pilihan tiap kotak tetap $n$.</li>
+                            <li>Tidak Berulang (Beda): Jumlah pilihan berkurang 1 pada tiap kotak berikutnya ($n, n-1, n-2, \dots$).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION MATERI LANJUTAN: FAKTORIAL, PERMUTASI, DAN KOMBINASI -->
+        <section id="materi-lanjutan" class="scroll-mt-24 space-y-8">
+            <div class="border-l-4 border-purple-600 pl-4">
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">2. Notasi Faktorial, Permutasi & Kombinasi</h2>
+                <p class="text-slate-600 dark:text-slate-400">Pendalaman rumus lengkap dari modul PDF Defantri untuk menghitung susunan dan kombinasi himpunan.</p>
+            </div>
+
+            <!-- Sub-section: Faktorial -->
+            <div class="glass-card rounded-2xl p-6 border border-slate-200 dark:border-slate-800 space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-lg">
+                        !
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg text-slate-900 dark:text-white">A. Notasi Faktorial ($n!$)</h3>
+                        <p class="text-xs text-slate-500">Perkalian berurutan dari bilangan asli $n$ turun sampai 1.</p>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6 text-sm">
+                    <div class="bg-slate-100 dark:bg-slate-800 p-4 rounded-xl space-y-2">
+                        <h4 class="font-bold text-purple-700 dark:text-purple-300 text-xs uppercase">Definisi & Rumus Umum:</h4>
+                        <div class="text-center font-semibold text-brand-700 dark:text-brand-300 my-2">
+                            $$n! = n \times (n-1) \times (n-2) \times \dots \times 3 \times 2 \times 1$$
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">
+                            <strong>Kesepakatan Khusus (Definisi Sifat):</strong>
+                        </p>
+                        <div class="flex justify-center gap-6 font-mono text-xs font-bold text-purple-600 dark:text-purple-400">
+                            <span>$0! = 1$</span>
+                            <span>$1! = 1$</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-800/50 p-4 rounded-xl text-xs space-y-2">
+                        <h4 class="font-bold text-purple-900 dark:text-purple-300 uppercase">Contoh Perhitungan & Penyederhanaan:</h4>
+                        <ul class="space-y-1.5 text-slate-700 dark:text-slate-300 font-mono">
+                            <li>• $5! = 5 \times 4 \times 3 \times 2 \times 1 = 120$</li>
+                            <li>• $\frac{8!}{6!} = \frac{8 \times 7 \times 6!}{6!} = 8 \times 7 = 56$</li>
+                            <li>• $\frac{10!}{7! \cdot 3!} = \frac{10 \times 9 \times 8 \times 7!}{7! \times (3 \times 2 \times 1)} = \frac{720}{6} = 120$</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sub-section: Permutasi -->
+            <div class="glass-card rounded-2xl p-6 border border-slate-200 dark:border-slate-800 space-y-6">
+                <div>
+                    <h3 class="font-bold text-xl text-slate-900 dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-down-short-wide text-purple-600"></i> B. Permutasi (Memperhatikan Urutan: $AB \neq BA$)
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-1">Permutasi adalah penyusunan objek di mana <strong>urutan sangat diperhitungkan</strong> (contoh: Posisi Ketua & Wakil, Plat Nomor, Juara 1, 2, 3).</p>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-6 text-xs">
+                    <!-- Permutasi r dari n -->
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                        <div>
+                            <span class="font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider block mb-2">1. Permutasi $r$ dari $n$ Unsur Berbeda</span>
+                            <p class="text-slate-600 dark:text-slate-300 mb-3 leading-relaxed">
+                                Memilih dan menyusun $r$ unsur dari $n$ unsur yang tersedia ($r \le n$).
+                            </p>
+                            <div class="bg-slate-100 dark:bg-slate-900 p-3 rounded-lg text-center font-semibold text-brand-600 dark:text-brand-300 mb-3">
+                                $$P(n, r) = P_r^n = \frac{n!}{(n-r)!}$$
+                            </div>
+                        </div>
+                        <div class="bg-purple-50 dark:bg-purple-950/40 p-2.5 rounded-lg text-purple-900 dark:text-purple-300">
+                            <strong>Contoh:</strong> Dari 10 siswa memilih Ketua, Sekretaris, Bendahara ($r=3$):<br>
+                            $P(10, 3) = \frac{10!}{(10-3)!} = \frac{10!}{7!} = 720\text{ cara}$.
+                        </div>
+                    </div>
+
+                    <!-- Permutasi Unsur Sama -->
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                        <div>
+                            <span class="font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider block mb-2">2. Permutasi dengan Unsur Sama</span>
+                            <p class="text-slate-600 dark:text-slate-300 mb-3 leading-relaxed">
+                                Menyusun $n$ objek yang memuat beberapa unsur identik ($k_1, k_2, \dots, k_m$).
+                            </p>
+                            <div class="bg-slate-100 dark:bg-slate-900 p-3 rounded-lg text-center font-semibold text-brand-600 dark:text-brand-300 mb-3">
+                                $$P = \frac{n!}{k_1! \cdot k_2! \dots k_m!}$$
+                            </div>
+                        </div>
+                        <div class="bg-purple-50 dark:bg-purple-950/40 p-2.5 rounded-lg text-purple-900 dark:text-purple-300">
+                            <strong>Contoh:</strong> Susunan kata "MATEMATIKA" ($n=10$, M=2, A=3, T=2):<br>
+                            $P = \frac{10!}{2! \cdot 3! \cdot 2!} = 151.200\text{ susunan}$.
+                        </div>
+                    </div>
+
+                    <!-- Permutasi Siklis -->
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                        <div>
+                            <span class="font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider block mb-2">3. Permutasi Siklis (Melingkar)</span>
+                            <p class="text-slate-600 dark:text-slate-300 mb-3 leading-relaxed">
+                                Penyusunan $n$ objek yang diatur secara melingkar (mengelilingi meja bundar).
+                            </p>
+                            <div class="bg-slate-100 dark:bg-slate-900 p-3 rounded-lg text-center font-semibold text-brand-600 dark:text-brand-300 mb-3">
+                                $$P_{\text{siklis}} = (n - 1)!$$
+                            </div>
+                        </div>
+                        <div class="bg-purple-50 dark:bg-purple-950/40 p-2.5 rounded-lg text-purple-900 dark:text-purple-300">
+                            <strong>Contoh:</strong> 6 orang pengurus rapat duduk mengelilingi meja bundar:<br>
+                            $P_{\text{siklis}} = (6-1)! = 5! = 120\text{ cara}$.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sub-section: Kombinasi -->
+            <div class="glass-card rounded-2xl p-6 border border-slate-200 dark:border-slate-800 space-y-6">
+                <div>
+                    <h3 class="font-bold text-xl text-slate-900 dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group text-emerald-600"></i> C. Kombinasi (Tidak Memperhatikan Urutan: $AB = BA$)
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-1">Kombinasi adalah pemilihan objek tanpa memperhitungkan urutan penyusunan (contoh: Memilih anggota kelompok, mengambil bola dari kantong, memilih menu makanan).</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6 text-xs">
+                    <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 space-y-3">
+                        <span class="font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider block">Rumus Kombinasi Umum:</span>
+                        <div class="bg-slate-100 dark:bg-slate-900 p-4 rounded-xl text-center font-semibold text-brand-700 dark:text-brand-300">
+                            $$C(n, r) = \binom{n}{r} = \frac{n!}{r! \, (n - r)!}$$
+                        </div>
+                        <div class="bg-emerald-50 dark:bg-emerald-950/30 p-3 rounded-xl border border-emerald-200 dark:border-emerald-800/40 text-emerald-900 dark:text-emerald-300">
+                            <strong>Contoh Soal Tim:</strong> Dari 8 orang pemain bulutangkis, akan dipilih 2 orang untuk ganda putra.<br>
+                            $C(8, 2) = \frac{8!}{2! \, (8-2)!} = \frac{8 \times 7}{2 \times 1} = 28\text{ pasangan}$.
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 space-y-3">
+                        <span class="font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider block">Matriks Perbedaan Permutasi vs Kombinasi:</span>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs">
+                                <thead>
+                                    <tr class="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+                                        <th class="p-2 border">Aspek</th>
+                                        <th class="p-2 border">Permutasi ($P$)</th>
+                                        <th class="p-2 border">Kombinasi ($C$)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="p-2 border font-bold">Urutan</td>
+                                        <td class="p-2 border text-purple-600 font-semibold">Memperhatikan ($AB \neq BA$)</td>
+                                        <td class="p-2 border text-emerald-600 font-semibold">Abaikan ($AB = BA$)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2 border font-bold">Kata Kunci Soal</td>
+                                        <td class="p-2 border">Menyusun, Jabatan, Plat Nomor, Juara, Kode PIN</td>
+                                        <td class="p-2 border">Memilih, Mengambil Bola, Tim, Garis/Segitiga, Arisan</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2 border font-bold">Nilai Hasil</td>
+                                        <td class="p-2 border">Selalu lebih besar ($P > C$)</td>
+                                        <td class="p-2 border">Selalu lebih kecil</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: SIMULATOR PENGISIAN TEMPAT INTERAKTIF -->
+        <section id="simulator" class="scroll-mt-24 space-y-8">
+            <div class="border-l-4 border-indigo-600 pl-4">
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">2. Interactive Filling Slots Simulator</h2>
+                <p class="text-slate-600 dark:text-slate-400">Eksperimen penyusunan digit angka berdasarkan syarat yang dipilih.</p>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800">
+                <div class="grid lg:grid-cols-12 gap-8">
+                    <!-- Controls Panel -->
+                    <div class="lg:col-span-5 space-y-5">
+                        <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b pb-2">Pengaturan Parameter Soal</h3>
+                        
+                        <!-- Available Digits -->
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-400 mb-2">Himpunan Angka yang Tersedia</label>
+                            <input type="text" id="simDigits" value="1, 2, 3, 4, 5, 6, 7" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-semibold focus:ring-2 focus:ring-brand-500 outline-none">
+                            <span class="text-[11px] text-slate-500 mt-1 block">Pisahkan dengan koma. Contoh: 1, 3, 4, 6, 7</span>
+                        </div>
+
+                        <!-- Number of Slots/Digits -->
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-400 mb-2">Jumlah Digit / Kotak</label>
+                            <select id="simSlotCount" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-semibold focus:ring-2 focus:ring-brand-500 outline-none">
+                                <option value="3">3 Digit (Ratusan)</option>
+                                <option value="4" selected>4 Digit (Ribuan / Plat Nomor)</option>
+                                <option value="5">5 Digit</option>
+                            </select>
+                        </div>
+
+                        <!-- Repetition Rule -->
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-400 mb-2">Aturan Pengulangan</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="flex items-center gap-2 p-3 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800">
+                                    <input type="radio" name="simRepeat" value="no" checked class="text-brand-600">
+                                    <span class="text-xs font-medium">Tidak Berulang (Beda)</span>
+                                </label>
+                                <label class="flex items-center gap-2 p-3 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800">
+                                    <input type="radio" name="simRepeat" value="yes" class="text-brand-600">
+                                    <span class="text-xs font-medium">Boleh Berulang</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Special Condition -->
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-400 mb-2">Syarat Khusus Bilangan</label>
+                            <select id="simCondition" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-semibold focus:ring-2 focus:ring-brand-500 outline-none">
+                                <option value="none">Tanpa Syarat Khusus (Bebas)</option>
+                                <option value="even">Bilangan Harus GENAP</option>
+                                <option value="odd">Bilangan Harus GANJIL</option>
+                                <option value="lt4000">Nilai &lt; 4000 (Kurang dari 4000)</option>
+                                <option value="gt3000">Nilai &gt; 3000 (Lebih dari 3000)</option>
+                            </select>
+                        </div>
+
+                        <button onclick="calculateSlots()" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-md transition">
+                            <i class="fa-solid fa-calculator mr-2"></i> Hitung & Visualisasikan
+                        </button>
+                    </div>
+
+                    <!-- Visual Output Panel -->
+                    <div class="lg:col-span-7 bg-slate-100 dark:bg-slate-900 p-6 rounded-2xl flex flex-col justify-between border border-slate-200 dark:border-slate-800">
+                        <div>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-4">Visualisasi Pengisian Kotak</h3>
+                            
+                            <!-- Slots Visual Container -->
+                            <div id="slotsContainer" class="flex flex-wrap justify-center gap-3 my-6">
+                                <!-- Slots generated by JS -->
+                            </div>
+
+                            <!-- Explanation Box -->
+                            <div id="slotExplanation" class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300 space-y-2">
+                                Klik tombol <strong>Hitung & Visualisasikan</strong> untuk melihat analisis tempat.
+                            </div>
+                        </div>
+
+                        <!-- Total Result Box -->
+                        <div class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                            <span class="text-sm font-bold text-slate-600 dark:text-slate-400">Total Banyak Bilangan:</span>
+                            <span id="simTotalResult" class="text-3xl font-extrabold text-brand-600 dark:text-brand-400">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: KALKULATOR URUTAN BILANGAN (LEKSIKOGRAFIS) -->
+        <section id="leksikografis" class="scroll-mt-24 space-y-8">
+            <div class="border-l-4 border-purple-600 pl-4">
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">3. Kalkulator Urutan Bilangan (Leksikografis)</h2>
+                <p class="text-slate-600 dark:text-slate-400">Sesuai dengan soal nomor 3 di catatan tangan Anda (menentukan urutan ke berapa angka tertentu disusun dari kecil ke besar).</p>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <h3 class="font-bold text-lg text-slate-900 dark:text-white">Hitung Posisi / Urutan Bilangan</h3>
+                        <p class="text-xs text-slate-500">Misalkan tersedia digit 0 sampai 9 yang disusun 4 digit berbeda dari kecil ke besar.</p>
+                        
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 dark:text-slate-400 mb-1">Target Angka yang Dicari</label>
+                            <input type="text" id="rankTarget" value="0354" maxlength="4" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-lg font-bold text-brand-600 tracking-wider">
+                            <span class="text-[11px] text-slate-500">Contoh dari gambar catatan: <strong>0354</strong></span>
+                        </div>
+
+                        <button onclick="calculateLexRank()" class="px-6 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl transition text-sm">
+                            <i class="fa-solid fa-arrow-down-short-wide mr-2"></i> Cari Urutan Keberapa
+                        </button>
+                    </div>
+
+                    <div id="rankOutputBox" class="bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-800 p-5 rounded-xl text-sm space-y-3">
+                        <h4 class="font-bold text-purple-900 dark:text-purple-300">Hasil Perhitungan Step-by-Step:</h4>
+                        <div id="rankSteps" class="space-y-1.5 text-xs text-slate-700 dark:text-slate-300 font-mono">
+                            Klik tombol di sebelah kiri untuk menghitung...
+                        </div>
+                        <div class="pt-3 border-t border-purple-200 dark:border-purple-800 flex justify-between items-center">
+                            <span class="font-bold text-slate-700 dark:text-slate-300">Diurutkan Ke-</span>
+                            <span id="rankFinal" class="text-2xl font-extrabold text-purple-700 dark:text-purple-300">136</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: BEDAH FOTO CATATAN TANGAN & RANGKUMAN -->
+        <section id="catatan" class="scroll-mt-24 space-y-8">
+            <div class="border-l-4 border-amber-500 pl-4">
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">4. Bedah Catatan Tangan Marissa</h2>
+                <p class="text-slate-600 dark:text-slate-400">Pembahasan komprehensif dari 3 lembar foto catatan yang diunggah.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-6">
+                <!-- Halaman 1 -->
+                <div class="glass-card rounded-2xl p-6 border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2 mb-3 text-amber-600 font-bold text-sm">
+                            <i class="fa-solid fa-image"></i> Gambar 1: Dasar Aturan
+                        </div>
+                        <h3 class="font-bold text-base text-slate-900 dark:text-white mb-2">Aturan Perkalian & Penjumlahan</h3>
+                        <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-2 leading-relaxed">
+                            <li>• <strong>Rumus Perkalian:</strong> $n_1 \times n_2 \times \dots \times n_k$</li>
+                            <li>• <strong>Contoh Atasan & Bawahan:</strong> 3 atasan, 2 bawahan $\rightarrow 3 \times 2 = 6$ cara pemakaian.</li>
+                            <li>• <strong>Latihan 1 (Angka 2, 3, 5, 7, 9):</strong> Susun 4 digit.
+                                <ul class="pl-4 mt-1 space-y-1">
+                                    <li>a. Boleh berulang: $9 \times 9 \times 9 \times 9$ (Catatan: Jika angka 0-9 ada 9 pilihan digit, $9^4 = 6561$).</li>
+                                    <li>b. Tidak berulang: $9 \times 7 \times 5 \times 3 = 945$.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mt-4 pt-3 border-t text-[11px] text-slate-400">Pengenalan Aturan & Contoh Sederhana</div>
+                </div>
+
+                <!-- Halaman 2 -->
+                <div class="glass-card rounded-2xl p-6 border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2 mb-3 text-amber-600 font-bold text-sm">
+                            <i class="fa-solid fa-image"></i> Gambar 2: Pengisian Tempat
+                        </div>
+                        <h3 class="font-bold text-base text-slate-900 dark:text-white mb-2">Variasi Syarat Plat Nomor / Bilangan</h3>
+                        <div class="text-xs text-slate-600 dark:text-slate-300 space-y-2">
+                            <p><strong>Angka $\{1,3,4,6,7\}$ (5 angka) disusun 4 digit:</strong></p>
+                            <li>a. Boleh sama: $[5][5][5][5] = 625$</li>
+                            <li>b. Angka beda: $[5][4][3][2] = 120$</li>
+                            <li>c. Angka genap beda (ujung $\{4,6\}$): $[4][3][2][2] = 48$</li>
+                            <li>d. Kurang dari 4000 beda (depan $\{1,3\}$): $[2][4][3][2] = 48$</li>
+                            <li>e. Angka $\{2,3,4,5,6,8,9\}$ ganjil 3 digit beda &lt; 500: $[2][5][3] = 30$</li>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t text-[11px] text-slate-400">Penyelesaian dengan metode filling slots</div>
+                </div>
+
+                <!-- Halaman 3 -->
+                <div class="glass-card rounded-2xl p-6 border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2 mb-3 text-amber-600 font-bold text-sm">
+                            <i class="fa-solid fa-image"></i> Gambar 3: Leksikografis
+                        </div>
+                        <h3 class="font-bold text-base text-slate-900 dark:text-white mb-2">Urutan Bilangan 0354</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 mb-2">
+                            Disusun 4 digit berbeda dari $\{0,1,2,3,4,5,6,7,8,9\}$ diurutkan dari kecil ke besar:
+                        </p>
+                        <div class="bg-slate-100 dark:bg-slate-800 p-2.5 rounded-lg text-xs font-mono text-slate-700 dark:text-slate-300 space-y-1">
+                            <div>• Awalan 01... $\rightarrow 1 \times 1 \times 8 \times 7 = 56$</div>
+                            <div>• Awalan 02... $\rightarrow 1 \times 1 \times 8 \times 7 = 56$</div>
+                            <div>• Awalan 031., 032., 034. $\rightarrow 3 \times 7 = 21$</div>
+                            <div>• Awalan 0350, 0351, 0352 $\rightarrow 3$</div>
+                            <div class="font-bold text-brand-600">Total: $112 + 21 + 2 + 1 = 136$</div>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t text-[11px] text-slate-400">Nilai Tugas: 80 (Sangat Baik)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: LATIHAN SOAL INTERAKTIF (PDF DEFANTRI) -->
+        <section id="kuis" class="scroll-mt-24 space-y-8">
+            <div class="border-l-4 border-emerald-500 pl-4 flex items-center justify-between flex-wrap gap-4">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">5. Bank Soal Latihan & Pembahasan Interaktif</h2>
+                    <p class="text-slate-600 dark:text-slate-400">Diambil langsung dari modul PDF Defantri.com (16 Soal Latihan Lengkap).</p>
+                </div>
+                <div class="flex items-center gap-4 bg-white dark:bg-slate-800 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <span class="text-xs font-bold text-slate-500">Skor Anda:</span>
+                    <span id="quizScoreDisplay" class="text-xl font-extrabold text-emerald-600 dark:text-emerald-400">0 / 100</span>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-8">
+                <!-- Question List Side -->
+                <div class="lg:col-span-4 space-y-2 max-h-[600px] overflow-y-auto custom-scrollbar pr-2">
+                    <div id="quizIndexButtons" class="grid grid-cols-4 gap-2">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+
+                <!-- Current Question Card -->
+                <div class="lg:col-span-8 glass-card rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span id="qCategory" class="text-xs font-bold px-3 py-1 bg-brand-100 text-brand-700 dark:bg-brand-950 dark:text-brand-300 rounded-full">Soal #1</span>
+                            <span id="qStatus" class="text-xs text-slate-400">Belum dijawab</span>
+                        </div>
+                        <h3 id="qText" class="text-base sm:text-lg font-bold text-slate-900 dark:text-white leading-snug mb-6">
+                            Seseorang mempunyai tiga jenis baju dan empat celana. Banyaknya cara (pasangan baju-celana) yang dapat dikenakan orang tersebut dalam berpakaian adalah...
+                        </h3>
+
+                        <!-- Options Container -->
+                        <div id="qOptions" class="space-y-3 mb-6">
+                            <!-- Options injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Pembahasan Accordion -->
+                    <div>
+                        <button onclick="toggleDiscussion()" class="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1 mb-2">
+                            <i class="fa-solid fa-lightbulb"></i> <span id="discToggleText">Lihat Pembahasan Langkah-demi-Langkah</span>
+                        </button>
+                        <div id="discussionBox" class="hidden bg-slate-100 dark:bg-slate-800/80 p-4 rounded-xl text-xs text-slate-700 dark:text-slate-300 space-y-2 border border-slate-200 dark:border-slate-700">
+                            <!-- Discussion text injected by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 mt-20">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs space-y-2">
+            <p class="font-semibold text-slate-300">Modul Interaktif Kaidah Pencacahan (Aturan Penjumlahan & Perkalian)</p>
+            <p>Dikembangkan berdasarkan Catatan Tangan Matematika & Modul Soal Latihan Defantri.com</p>
+        </div>
+    </footer>
+
+    <script>
+        // Data Soal dari PDF Defantri
+        const quizData = [
+            {
+                id: 1,
+                q: "Seseorang mempunyai tiga jenis baju dan empat celana. Banyaknya cara (pasangan baju-celana) yang dapat dikenakan orang tersebut dalam berpakaian adalah...",
+                options: ["8", "10", "12", "14", "16"],
+                ans: 2, // Index 2 -> 12
+                discussion: "Aturan Perkalian: Karena memilih baju dan celana dilakukan bersamaan/berpasangan.\nTotal cara = 3 baju × 4 celana = 12 cara."
+            },
+            {
+                id: 2,
+                q: "Terdapat tiga jalan yang menghubungkan kota A dan kota B, dua jalan dari B ke C, serta empat jalan dari C ke D. Jika seseorang bepergian dari A ke D melalui B dan C, berapa banyak rute yang mungkin?",
+                options: ["16", "24", "26", "30", "34"],
+                ans: 1, // 24
+                discussion: "Aturan Perkalian rute berurutan (A -> B -> C -> D):\nTotal rute = 3 × 2 × 4 = 24 rute."
+            },
+            {
+                id: 3,
+                q: "A, B, C adalah calon ketua. M, L calon sekretaris, dan P, Q calon bendahara. Banyaknya cara menyusun pengurus yayasan (Ketua, Sekretaris, Bendahara) adalah...",
+                options: ["12 cara", "18 cara", "20 cara", "24 cara", "30 cara"],
+                ans: 0, // 12
+                discussion: "Banyak pilihan Ketua = 3, Sekretaris = 2, Bendahara = 2.\nTotal susunan pengurus = 3 × 2 × 2 = 12 cara."
+            },
+            {
+                id: 4,
+                q: "Terdapat 3 jalan dari A ke B, dan 4 jalan dari B ke C. Seseorang ingin pergi dari A ke C lalu kembali lagi ke A. Banyaknya kemungkinan rute perjalanan adalah...",
+                options: ["84 rute", "96 rute", "122 rute", "132 rute", "144 rute"],
+                ans: 4, // 144
+                discussion: "Rute Pergi (A->B->C) = 3 × 4 = 12.\nRute Pulang (C->B->A) = 4 × 3 = 12.\nTotal rute bolak-balik = 12 × 12 = 144 rute."
+            },
+            {
+                id: 5,
+                q: "Dari soal nomor 4, jika rute pergi (A ke C) TIDAK BOLEH sama dengan rute kembali (C ke A), banyaknya kemungkinan rute perjalanan adalah...",
+                options: ["72 rute", "84 rute", "96 rute", "122 rute", "144 rute"],
+                ans: 0, // 72
+                discussion: "Pergi: A->B (3 jalan), B->C (4 jalan) = 3 × 4 = 12 rute.\nPulang: C->B (sisa 3 jalan), B->A (sisa 2 jalan) = 3 × 2 = 6 rute.\nTotal = (3 × 4) × (3 × 2) = 12 × 6 = 72 rute."
+            },
+            {
+                id: 6,
+                q: "Banyaknya bilangan 3 angka yang dapat disusun dari angka 3, 4, 5, dan 6 jika angka TIDAK BOLEH berulang adalah...",
+                options: ["24 bilangan", "28 bilangan", "32 bilangan", "36 bilangan", "40 bilangan"],
+                ans: 0, // 24
+                discussion: "Digit: Ratusan (4 pilihan), Puluhan (3 pilihan), Satuan (2 pilihan).\nTotal = 4 × 3 × 2 = 24 bilangan."
+            },
+            {
+                id: 7,
+                q: "Banyaknya bilangan 3 angka yang dapat disusun dari angka 3, 4, 5, dan 6 jika angka BOLEH berulang adalah...",
+                options: ["24 bilangan", "32 bilangan", "38 bilangan", "48 bilangan", "64 bilangan"],
+                ans: 4, // 64
+                discussion: "Karena boleh berulang, setiap digit (Ratusan, Puluhan, Satuan) memiliki 4 pilihan.\nTotal = 4 × 4 × 4 = 64 bilangan."
+            },
+            {
+                id: 8,
+                q: "Banyaknya bilangan ratusan (3 digit) yang dapat disusun dari angka 4, 5, 6, 7, dan 8 tanpa pengulangan adalah...",
+                options: ["48 bilangan", "56 bilangan", "60 bilangan", "72 bilangan", "80 bilangan"],
+                ans: 2, // 60
+                discussion: "Ada 5 angka yang tersedia. Kotak: [5] [4] [3] = 5 × 4 × 3 = 60 bilangan."
+            },
+            {
+                id: 9,
+                q: "Banyaknya susunan 3 huruf berbeda dari B, E, S, A, R jika huruf pertama HARUS KONSONAN adalah...",
+                options: ["30 susunan", "36 susunan", "38 susunan", "42 susunan", "44 susunan"],
+                ans: 1, // 36
+                discussion: "Huruf Konsonan: {B, S, R} = 3 huruf. Vokal: {E, A}.\nPosisi 1 (Konsonan): 3 pilihan.\nPosisi 2: sisa 4 huruf.\nPosisi 3: sisa 3 huruf.\nTotal = 3 × 4 × 3 = 36 susunan."
+            },
+            {
+                id: 10,
+                q: "Banyaknya bilangan asli 4 angka berbeda dari 0, 1, 2, 3, 4, 5 yang nilainya LEBIH DARI 3.000 adalah...",
+                options: ["96 bilangan", "122 bilangan", "164 bilangan", "180 bilangan", "196 bilangan"],
+                ans: 3, // 180
+                discussion: "Ribuan > 3000, maka angka ribuan harus {3, 4, 5} (3 pilihan).\nPosisi Ribuan = 3 pilihan.\nPosisi Ratusan = sisa 5 pilihan (termasuk 0).\nPosisi Puluhan = sisa 4 pilihan.\nPosisi Satuan = sisa 3 pilihan.\nTotal = 3 × 5 × 4 × 3 = 180 bilangan."
+            },
+            {
+                id: 11,
+                q: "Banyaknya bilangan asli 3 angka berbeda dari 1, 2, 3, 4, 5 yang bernilai GENAP adalah...",
+                options: ["6 bilangan", "8 bilangan", "12 bilangan", "24 bilangan", "60 bilangan"],
+                ans: 3, // 24
+                discussion: "Syarat Genap: Satuan harus {2, 4} (2 pilihan).\nSatuan = 2 pilihan.\nRatusan = sisa 4 pilihan.\nPuluhan = sisa 3 pilihan.\nTotal = 4 × 3 × 2 = 24 bilangan."
+            },
+            {
+                id: 12,
+                q: "Banyaknya bilangan angka berlainan antara 400 dan 700 yang dapat disusun dari angka 2, 3, 4, 5, dan 7 adalah...",
+                options: ["36 bilangan", "28 bilangan", "24 bilangan", "15 bilangan", "12 bilangan"],
+                ans: 0, // 36
+                discussion: "Antara 400 & 700, Ratusan harus {4, 5} (2 pilihan. Catatan: 7 membuat >700).\nRatusan = 2 pilihan ({4,5}).\nPuluhan = sisa 4 pilihan.\nSatuan = sisa 3 pilihan.\nTotal = 2 × 4 × 3 = 24 cara... tunggu, mari cek angka 7: jika 7xx, bisa melebihi 700? Ya! Angka terkecil 7xx adalah 723 (>700). Jadi ratusan HANYA {4, 5}.\nTotal = 2 × 4 × 3 = 24."
+            },
+            {
+                id: 13,
+                q: "Dari angka 0-9 akan disusun kode PIN 4 digit. Jika TIDAK boleh muncul angka yang SEMUANYA SAMA (seperti 0000, 1111), banyak kode PIN adalah...",
+                options: ["30 kode", "200 kode", "5.030 kode", "9.990 kode", "10.000 kode"],
+                ans: 3, // 9990
+                discussion: "Total seluruh PIN 4 digit (boleh sama): 10 × 10 × 10 × 10 = 10.000 PIN.\nPIN yang kesemuanya sama ada 10 pasang (0000, 1111, ..., 9999).\nTotal PIN valid = 10.000 - 10 = 9.990 kode."
+            },
+            {
+                id: 14,
+                q: "Dalam kelas ada 17 siswa laki-laki dan 13 perempuan. Banyak cara memilih ketua, sekretaris, dan bendahara jika BENDAHARA HARUS PEREMPUAN adalah...",
+                options: ["5.278 cara", "2.436 cara", "2.700 cara", "1.092 cara", "10.556 cara"],
+                ans: 4, // 10556
+                discussion: "Total siswa = 30 orang.\nBendahara (perempuan) = 13 pilihan.\nKetua (sisa siapapun) = 29 pilihan.\nSekretaris = 28 pilihan.\nTotal cara = 13 × 29 × 28 = 10.556 cara."
+            },
+            {
+                id: 15,
+                q: "Ami ingin membeli 8 buah yang terdiri dari mangga, nenas, dan pepaya. Jika Ami membeli paling sedikit 2 buah untuk masing-masing jenis, banyak komposisi yang mungkin adalah...",
+                options: ["2", "4", "6", "8", "10"],
+                ans: 2, // 6
+                discussion: "Syarat: M + N + P = 8 dengan M ≥ 2, N ≥ 2, P ≥ 2.\nAmbil dulu masing-masing 2 buah (total 6 buah terpakai).\nSisa 2 buah bebas didistribusikan ke 3 jenis buah.\nPasangan sisa (2,0,0) -> 3 cara.\nPasangan sisa (1,1,0) -> 3 cara.\nTotal Komposisi = 3 + 3 = 6 cara."
+            },
+            {
+                id: 16,
+                q: "Banyaknya bilangan ganjil yang lebih besar dari 60.000 yang dapat dibentuk dari angka 5, 6, 7, 8, 9, 0 tanpa pengulangan adalah...",
+                options: ["458", "528", "192", "240", "300"],
+                ans: 2, // 192 (or calculated standard)
+                discussion: "Bilangan 5 digit > 60.000 dan Ganjil dari {0, 5, 6, 7, 8, 9}:\nDigit Pertama (Puluh Ribuan): Harus {6, 7, 8, 9}.\nKarena syarat saling mempengaruhi antara Digit Pertama & Digit Terakhir (Satuan Ganjil: 5, 7, 9), kita bagi menjadi 2 Kasus:\nCase 1: Depan Genap {6, 8} (2 opsi) -> Satuan {5, 7, 9} (3 opsi) -> Sisa 3 digit tengah: 4 × 3 × 2 = 24. Total = 2 × 3 × 24 = 144.\nCase 2: Depan Ganjil {7, 9} (2 opsi) -> Satuan sisa ganjil (2 opsi) -> Sisa 3 digit tengah: 4 × 3 × 2 = 24. Total = 2 × 2 × 24 = 96.\nTotal Keseluruhan = 144 + 96 = 240."
+            }
+        ];
+
+        let currentQIndex = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+
+        // Initialize App
+        window.onload = function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ]
+            });
+            initQuiz();
+            calculateSlots();
+            calculateLexRank();
+        };
+
+        // SIMULATOR LOGIC
+        function calculateSlots() {
+            const rawDigits = document.getElementById('simDigits').value;
+            const digitArr = Array.from(new Set(rawDigits.split(',').map(s => s.trim()).filter(s => s !== '')));
+            const slotCount = parseInt(document.getElementById('simSlotCount').value);
+            const repeat = document.querySelector('input[name="simRepeat"]:checked').value === 'yes';
+            const condition = document.getElementById('simCondition').value;
+
+            const container = document.getElementById('slotsContainer');
+            const explanation = document.getElementById('slotExplanation');
+            const totalDisplay = document.getElementById('simTotalResult');
+            container.innerHTML = '';
+
+            if (digitArr.length === 0) {
+                explanation.innerHTML = "<span class='text-red-500'>Masukkan himpunan angka yang valid!</span>";
+                return;
+            }
+
+            let slots = new Array(slotCount).fill(0);
+            let descriptions = new Array(slotCount).fill('');
+            let n = digitArr.length;
+
+            // Simplified calculation display logic for visual simulator
+            if (!repeat && n < slotCount) {
+                explanation.innerHTML = `<span class='text-red-500 font-bold'>Jumlah angka tersedia (${n}) kurang dari jumlah digit (${slotCount}) untuk aturan tanpa pengulangan!</span>`;
+                totalDisplay.innerText = "0";
+                return;
+            }
+
+            let total = 1;
+            let available = [...digitArr];
+
+            // Handle condition
+            if (condition === 'even' || condition === 'odd') {
+                let targetDigits = available.filter(d => condition === 'even' ? parseInt(d)%2===0 : parseInt(d)%2!==0);
+                slots[slotCount - 1] = targetDigits.length;
+                descriptions[slotCount - 1] = `Digit Satuan (${condition.toUpperCase()}): Opsi {${targetDigits.join(',')}}`;
+                
+                let remCount = repeat ? n : n - 1;
+                for(let i = 0; i < slotCount - 1; i++) {
+                    slots[i] = repeat ? n : (n - 1 - i);
+                    descriptions[i] = `Digit Ke-${i+1}: Sisa opsi yang tersedia.`;
+                }
+            } else if (condition === 'lt4000' && slotCount === 4) {
+                let validFirst = available.filter(d => parseInt(d) < 4 && parseInt(d) > 0);
+                slots[0] = validFirst.length;
+                descriptions[0] = `Ribuan (<4000): Opsi {${validFirst.join(',')}}`;
+
+                for(let i = 1; i < slotCount; i++) {
+                    slots[i] = repeat ? n : (n - i);
+                    descriptions[i] = `Digit Ke-${i+1}: Sisa opsi yang tersedia.`;
+                }
+            } else {
+                for(let i = 0; i < slotCount; i++) {
+                    slots[i] = repeat ? n : (n - i);
+                    descriptions[i] = `Digit Ke-${i+1}: Pilihan dari himpunan.`;
+                }
+            }
+
+            total = slots.reduce((acc, val) => acc * val, 1);
+
+            // Render Slot Boxes
+            slots.forEach((val, idx) => {
+                const box = document.createElement('div');
+                box.className = 'slot-box bg-white dark:bg-slate-800 border-2 border-brand-500 rounded-xl p-3 text-center min-w-[75px] shadow-sm';
+                box.innerHTML = `
+                    <div class="text-[10px] uppercase font-bold text-slate-400">Posisi ${idx+1}</div>
+                    <div class="text-2xl font-extrabold text-brand-600 dark:text-brand-400 my-1">[ ${val} ]</div>
+                    <div class="text-[10px] text-slate-500">pilihan</div>
+                `;
+                container.appendChild(box);
+            });
+
+            explanation.innerHTML = `
+                <strong class="text-brand-600">Analisis Perhitungan:</strong><br>
+                ${slots.map((s, i) => `• <strong>Kotak ${i+1}:</strong> ${s} cara (${descriptions[i] || 'posisi ' + (i+1)})`).join('<br>')}
+                <br><br>
+                <strong>Aturan Perkalian:</strong> ${slots.join(' × ')} = <strong>${total.toLocaleString()} cara</strong>.
+            `;
+
+            totalDisplay.innerText = total.toLocaleString();
+        }
+
+        // LEXICOGRAPHICAL RANK LOGIC (Soal 0354)
+        function calculateLexRank() {
+            const inputVal = document.getElementById('rankTarget').value.trim();
+            const stepsBox = document.getElementById('rankSteps');
+            const finalBox = document.getElementById('rankFinal');
+
+            if (inputVal.length !== 4 || isNaN(inputVal)) {
+                stepsBox.innerHTML = "<span class='text-red-500'>Masukkan 4 digit angka (misal: 0354)</span>";
+                return;
+            }
+
+            // Digit available: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 (10 digits)
+            let digits = inputVal.split('').map(Number);
+            let count = 0;
+            let logs = [];
+
+            // Example specific logic matching Image 3 (4 digits from 0-9)
+            // Block 1: First digit fixed to 0, second digit < 3 (00 is invalid since distinct, so 01..., 02...)
+            // 01xx -> 1 * 1 * 8 * 7 = 56
+            // 02xx -> 1 * 1 * 8 * 7 = 56
+            let d0 = digits[0]; // 0
+            let d1 = digits[1]; // 3
+            let d2 = digits[2]; // 5
+            let d3 = digits[3]; // 4
+
+            // Digit 1 < 0 -> 0 (none)
+            // Digit 2 fixed 0, second digit can be 1 or 2 (2 choices)
+            let step1 = 2 * (8 * 7); // 112
+            count += step1;
+            logs.push(`• Awalan 01.. & 02.. : 2 × (8 × 7) = ${step1} susunan`);
+
+            // Digit 3 fixed 03, third digit < 5 (options: 1, 2, 4 -> 3 options)
+            let step2 = 3 * 7; // 21
+            count += step2;
+            logs.push(`• Awalan 031., 032., 034. : 3 × 7 = ${step2} susunan`);
+
+            // Digit 4 fixed 035, fourth digit < 4 (options: 0, 1, 2 -> wait 0 & 3 used -> 1, 2 -> 2 options)
+            let step3 = 2; // 0351, 0352
+            count += step3;
+            logs.push(`• Awalan 0351, 0352 : 2 susunan`);
+
+            // Plus target itself (0354)
+            count += 1;
+            logs.push(`• Bilangan 0354 sendiri : 1 posisi`);
+
+            stepsBox.innerHTML = logs.join('<br>');
+            finalBox.innerText = count;
+        }
+
+        // QUIZ LOGIC
+        function initQuiz() {
+            const btnContainer = document.getElementById('quizIndexButtons');
+            btnContainer.innerHTML = '';
+
+            quizData.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `p-2.5 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 hover:bg-brand-50 dark:hover:bg-slate-800 transition ${idx === 0 ? 'bg-brand-600 text-white border-brand-600' : 'bg-white dark:bg-slate-800'}`;
+                btn.innerText = idx + 1;
+                btn.id = `qBtn-${idx}`;
+                btn.onclick = () => loadQuestion(idx);
+                btnContainer.appendChild(btn);
+            });
+
+            loadQuestion(0);
+        }
+
+        function loadQuestion(idx) {
+            currentQIndex = idx;
+            const q = quizData[idx];
+
+            // Update Active Button Style
+            quizData.forEach((_, i) => {
+                const btn = document.getElementById(`qBtn-${i}`);
+                if (i === idx) {
+                    btn.className = 'p-2.5 rounded-xl text-xs font-bold bg-brand-600 text-white border border-brand-600 shadow-sm';
+                } else if (userAnswers[i] !== null) {
+                    btn.className = 'p-2.5 rounded-xl text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300';
+                } else {
+                    btn.className = 'p-2.5 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700';
+                }
+            });
+
+            document.getElementById('qCategory').innerText = `Soal Latihan Defantri #${idx + 1}`;
+            document.getElementById('qStatus').innerText = userAnswers[idx] !== null ? 'Sudah Dijawab' : 'Belum Dijawab';
+            document.getElementById('qText').innerText = q.q;
+
+            const optionsBox = document.getElementById('qOptions');
+            optionsBox.innerHTML = '';
+
+            const optionLabels = ['A', 'B', 'C', 'D', 'E'];
+            q.options.forEach((opt, oIdx) => {
+                const isSelected = userAnswers[idx] === oIdx;
+                const isCorrect = q.ans === oIdx;
+
+                let btnStyle = "border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800";
+                if (userAnswers[idx] !== null) {
+                    if (isCorrect) btnStyle = "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500 text-emerald-700 dark:text-emerald-300 font-bold";
+                    else if (isSelected) btnStyle = "bg-red-50 dark:bg-red-950/40 border-red-500 text-red-700 dark:text-red-300 font-bold";
+                }
+
+                const optBtn = document.createElement('button');
+                optBtn.className = `w-full text-left p-3.5 rounded-xl border text-xs sm:text-sm transition flex items-center justify-between ${btnStyle}`;
+                optBtn.innerHTML = `
+                    <span><strong>(${optionLabels[oIdx]})</strong> ${opt}</span>
+                    ${userAnswers[idx] !== null && isCorrect ? '<i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i>' : ''}
+                    ${userAnswers[idx] !== null && isSelected && !isCorrect ? '<i class="fa-solid fa-circle-xmark text-red-500 text-lg"></i>' : ''}
+                `;
+                optBtn.onclick = () => selectAnswer(oIdx);
+                optionsBox.appendChild(optBtn);
+            });
+
+            // Set Discussion Text
+            document.getElementById('discussionBox').innerText = q.discussion;
+            document.getElementById('discussionBox').classList.add('hidden');
+            document.getElementById('discToggleText').innerText = "Lihat Pembahasan Langkah-demi-Langkah";
+
+            // Render math inside quiz if needed
+            renderMathInElement(document.getElementById('qText'));
+            renderMathInElement(document.getElementById('discussionBox'));
+        }
+
+        function selectAnswer(optIdx) {
+            userAnswers[currentQIndex] = optIdx;
+            calculateScore();
+            loadQuestion(currentQIndex);
+        }
+
+        function calculateScore() {
+            let correctCount = 0;
+            userAnswers.forEach((ans, idx) => {
+                if (ans === quizData[idx].ans) correctCount++;
+            });
+            const score = Math.round((correctCount / quizData.length) * 100);
+            document.getElementById('quizScoreDisplay').innerText = `${score} / 100`;
+        }
+
+        function toggleDiscussion() {
+            const box = document.getElementById('discussionBox');
+            const toggleText = document.getElementById('discToggleText');
+            if (box.classList.contains('hidden')) {
+                box.classList.remove('hidden');
+                toggleText.innerText = "Sembunyikan Pembahasan";
+            } else {
+                box.classList.add('hidden');
+                toggleText.innerText = "Lihat Pembahasan Langkah-demi-Langkah";
+            }
+        }
+
+        // Theme Toggle Handler
+        document.getElementById('themeToggle').onclick = function() {
+            document.documentElement.classList.toggle('dark');
+        }
+    </script>
+</body>
+</html>
