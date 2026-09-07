@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaidah Pencacahan: Aturan Pengisian Tempat (Filling Slots)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+    <!-- MathJax for rich math equations -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .tab-active { border-bottom: 3px solid #2563eb; color: #2563eb; font-weight: 600; }
+        .slot-card { transition: all 0.2s ease-in-out; }
+        .slot-card:hover { transform: translateY(-3px); }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-600 p-2.5 rounded-xl shadow-inner flex items-center justify-center">
+                    <i class="fa-solid fa-boxes-stacked text-2xl text-amber-300"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold tracking-tight">Kaidah Pencacahan Interaktif</h1>
+                    <p class="text-xs text-blue-200">Aturan Pengisian Tempat (Filling Slots) — Modul Pembelajaran & Video</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="bg-slate-800 text-slate-300 text-xs px-3 py-1.5 rounded-full font-medium border border-slate-700">
+                    <i class="fa-brands fa-youtube text-red-500 mr-1.5"></i>m4th-lab
+                </span>
+                <span class="bg-blue-900 text-blue-200 text-xs px-3 py-1.5 rounded-full font-medium border border-blue-700">
+                    Matematika Wajib Kelas 12
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- Navigation Tabs -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-1.5 mb-8 flex overflow-x-auto gap-1">
+            <button onclick="switchTab('video')" id="tab-video" class="tab-btn flex-1 min-w-[130px] py-3 px-4 rounded-xl text-sm font-medium transition-all text-blue-600 bg-blue-50 shadow-sm">
+                <i class="fa-solid fa-circle-play mr-2 text-red-500"></i>Video & Ringkasan
+            </button>
+            <button onclick="switchTab('materi')" id="tab-materi" class="tab-btn flex-1 min-w-[130px] py-3 px-4 rounded-xl text-sm font-medium text-slate-600 hover:text-blue-600 hover:bg-slate-50 transition-all">
+                <i class="fa-solid fa-book-open mr-2 text-blue-500"></i>Rangkuman Konsep
+            </button>
+            <button onclick="switchTab('soal')" id="tab-soal" class="tab-btn flex-1 min-w-[130px] py-3 px-4 rounded-xl text-sm font-medium text-slate-600 hover:text-blue-600 hover:bg-slate-50 transition-all">
+                <i class="fa-solid fa-pen-to-square mr-2 text-amber-500"></i>Contoh & Pembahasan
+            </button>
+            <button onclick="switchTab('visualisasi')" id="tab-visualisasi" class="tab-btn flex-1 min-w-[130px] py-3 px-4 rounded-xl text-sm font-medium text-slate-600 hover:text-blue-600 hover:bg-slate-50 transition-all">
+                <i class="fa-solid fa-cubes-stacked mr-2 text-emerald-500"></i>Lab & Visualisasi
+            </button>
+            <button onclick="switchTab('kalkulator')" id="tab-kalkulator" class="tab-btn flex-1 min-w-[130px] py-3 px-4 rounded-xl text-sm font-medium text-slate-600 hover:text-blue-600 hover:bg-slate-50 transition-all">
+                <i class="fa-solid fa-calculator mr-2 text-purple-500"></i>Kalkulator Slot
+            </button>
+            <button onclick="switchTab('latihan')" id="tab-latihan" class="tab-btn flex-1 min-w-[130px] py-3 px-4 rounded-xl text-sm font-medium text-slate-600 hover:text-blue-600 hover:bg-slate-50 transition-all">
+                <i class="fa-solid fa-square-check mr-2 text-indigo-500"></i>Latihan Mandiri
+            </button>
+        </div>
+
+        <!-- TAB 1: VIDEO & OVERVIEW -->
+        <div id="content-video" class="space-y-8">
+            <div class="bg-slate-900 rounded-3xl p-4 sm:p-6 text-white shadow-xl overflow-hidden border border-slate-800">
+                <div class="flex flex-col lg:flex-row gap-6 items-stretch">
+                    <!-- Embedded YouTube Player -->
+                    <div class="lg:w-2/3 w-full">
+                        <div class="video-container rounded-2xl overflow-hidden shadow-2xl border border-slate-800 bg-black">
+                            <iframe 
+                                src="https://www.youtube.com/embed/7LQxxuIQLlo?rel=0" 
+                                title="Kaidah Pencacahan 2 - Aturan Pengisian Tempat (Filling Slots) Matematika Wajib Kelas 12" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+
+                    <!-- Video Details & Key Notes -->
+                    <div class="lg:w-1/3 w-full flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-500/20 text-red-300 border border-red-500/30 mb-3">
+                                <i class="fa-brands fa-youtube mr-1.5"></i> Video Youtube Official
+                            </div>
+                            <h2 class="text-xl sm:text-2xl font-bold leading-tight text-white mb-2">
+                                Kaidah Pencacahan 2 — Aturan Pengisian Tempat (Filling Slots)
+                            </h2>
+                            <p class="text-xs text-slate-400 mb-4">
+                                Sumber: <strong class="text-slate-200">m4th-lab</strong> (Matematika Wajib Kelas XII)
+                            </p>
+                            <p class="text-sm text-slate-300 leading-relaxed mb-4">
+                                Pelajari konsep mendasar *Filling Slots* mulai dari prinsip susunan jabatan, penyusunan kata, pembentukan bilangan genap/ganjil, hingga trik membagi kasus angka nol (0).
+                            </p>
+                        </div>
+
+                        <!-- Highlights list -->
+                        <div class="bg-slate-800/90 rounded-2xl p-4 border border-slate-700/80 space-y-2 text-xs">
+                            <p class="font-bold text-amber-400 uppercase tracking-wider text-[11px]">💡 Poin Penting Video:</p>
+                            <ul class="space-y-1.5 text-slate-300 list-disc list-inside">
+                                <li><strong>Kotak / Slot:</strong> Menggambarkan jumlah posisi.</li>
+                                <li><strong>Syarat Khusus:</strong> Selalu isi kotak bersyarat terlebih dahulu (misal: digit terakhir untuk ganjil/genap).</li>
+                                <li><strong>Kasus Angka 0:</strong> Jika angka 0 menjadi syarat di belakang dan tak boleh di depan, pecah menjadi 2 kasus!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: RANGKUMAN KONSEP MATERI -->
+        <div id="content-materi" class="hidden space-y-8">
+            
+            <!-- Hero Banner -->
+            <div class="bg-gradient-to-r from-blue-700 via-indigo-700 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-md relative overflow-hidden">
+                <div class="relative z-10 max-w-3xl">
+                    <span class="bg-blue-500/30 text-blue-200 text-xs px-3 py-1 rounded-full font-semibold border border-blue-400/30">
+                        Prinsip Dasar Pencacahan
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold mt-2 mb-3">Apa Itu Aturan Pengisian Tempat?</h2>
+                    <p class="text-blue-100 text-sm sm:text-base leading-relaxed">
+                        Aturan Pengisian Tempat (<em>Filling Slots</em>) adalah metode menghitung banyaknya kemungkinan susunan objek dengan cara menyediakan slot/kotak sesuai posisi yang dibutuhkan, lalu mengalikan jumlah pilihan tiap slot.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Formal Formula & Concept Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Definisi Card -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl font-bold mb-4">
+                        <i class="fa-solid fa-boxes-packing"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">1. Prinsip Utama</h3>
+                    <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+                        Jika terdapat \(n\) tempat tersedia dengan pilihan masing-masing slot bernilai \(k_1, k_2, k_3, \dots, k_n\).
+                    </p>
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 text-blue-900 text-sm font-mono text-center">
+                        $$\mathbf{\text{Total} = k_1 \times k_2 \times k_3 \times \dots \times k_n}$$
+                    </div>
+                </div>
+
+                <!-- Prioritas Syarat Card -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center text-xl font-bold mb-4">
+                        <i class="fa-solid fa-filter"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">2. Isi Syarat Dahulu</h3>
+                    <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+                        Apabila terdapat batasan khusus (seperti bilangan ganjil, genap, lebih besar dari \(N\)), dahulukan slot tersebut.
+                    </p>
+                    <div class="bg-amber-50 p-3 rounded-xl border border-amber-200 text-amber-900 text-xs leading-relaxed">
+                        <strong>Contoh:</strong> Untuk bilangan ganjil, tentukan dulu pilihan di slot <em>satuan</em> sebelum mengisi slot ratusan/puluhan.
+                    </div>
+                </div>
+
+                <!-- Tanpa Pengulangan vs Berulang Card -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-xl font-bold mb-4">
+                        <i class="fa-solid fa-repeat"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">3. Ketentuan Pengulangan</h3>
+                    <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+                        Perhatikan instruksi soal apakah unsur <strong>boleh berulang</strong> atau <strong>harus berbeda</strong>.
+                    </p>
+                    <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200 text-emerald-900 text-xs leading-relaxed space-y-1">
+                        <p>• <strong>Boleh berulang:</strong> Jumlah opsi tiap slot tetap.</p>
+                        <p>• <strong>Tidak berulang:</strong> Jumlah opsi berkurang 1 pada slot berikutnya.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Steps Summary -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-blue-600"></i> 3 Trik Emas Menyelesaikan Soal Filling Slots
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                        <span class="text-xs font-extrabold text-blue-600 uppercase">Langkah 1</span>
+                        <h4 class="font-bold text-slate-800 text-sm">Gambar Slot / Kotak</h4>
+                        <p class="text-xs text-slate-600">Sediakan kotak sejumlah digit/jabatan yang diminta oleh soal.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                        <span class="text-xs font-extrabold text-amber-600 uppercase">Langkah 2</span>
+                        <h4 class="font-bold text-slate-800 text-sm">Isi Slot Kunci</h4>
+                        <p class="text-xs text-slate-600">Isi slot yang memiliki batasan paling ketat terlebih dahulu.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                        <span class="text-xs font-extrabold text-emerald-600 uppercase">Langkah 3</span>
+                        <h4 class="font-bold text-slate-800 text-sm">Kalikan Nilai Slot</h4>
+                        <p class="text-xs text-slate-600">Kalikan seluruh nilai pada slot untuk mendapatkan total jawaban akhir.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: CONTOH SOAL & PEMBAHASAN -->
+        <div id="content-soal" class="hidden space-y-6">
+            <div class="flex justify-between items-center mb-2">
+                <h2 class="text-2xl font-bold text-slate-800">Contoh Soal & Pembahasan Lengkap</h2>
+                <span class="text-xs font-medium text-slate-500">Sesuai Modul Pembelajaran Video</span>
+            </div>
+
+            <!-- Example 1 -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <span class="px-3 py-1 bg-blue-100 text-blue-800 font-semibold text-xs rounded-full">Contoh 1 — Pemilihan Jabatan</span>
+                    <span class="text-xs text-slate-500">Kategori: Pengurus Organisasi</span>
+                </div>
+                <div class="p-6 space-y-4">
+                    <h3 class="font-bold text-base text-slate-800">
+                        Dari 8 anggota OSIS akan dipilih 4 orang sebagai tim pengurus untuk menduduki jabatan Ketua, Wakil Ketua, Sekretaris, dan Bendahara. Berapakah banyak susunan tim pengurus yang mungkin terbentuk?
+                    </h3>
+                    
+                    <button onclick="toggleSolution('sol-1')" class="text-xs font-bold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1.5 bg-blue-50 px-3 py-2 rounded-lg border border-blue-200">
+                        <i class="fa-solid fa-eye"></i> Tampilkan / Sembunyikan Pembahasan
+                    </button>
+
+                    <div id="sol-1" class="space-y-3 text-sm pt-2">
+                        <p class="text-slate-600">Sediakan 4 slot posisi jabatan:</p>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                            <div class="bg-blue-50/70 border border-blue-200 p-3 rounded-xl">
+                                <span class="block text-xs font-bold text-slate-500">Ketua</span>
+                                <span class="text-2xl font-black text-blue-700">8</span>
+                                <span class="block text-[11px] text-slate-500 mt-1">pilihan</span>
+                            </div>
+                            <div class="bg-blue-50/70 border border-blue-200 p-3 rounded-xl">
+                                <span class="block text-xs font-bold text-slate-500">Wakil Ketua</span>
+                                <span class="text-2xl font-black text-blue-700">7</span>
+                                <span class="block text-[11px] text-slate-500 mt-1">pilihan</span>
+                            </div>
+                            <div class="bg-blue-50/70 border border-blue-200 p-3 rounded-xl">
+                                <span class="block text-xs font-bold text-slate-500">Sekretaris</span>
+                                <span class="text-2xl font-black text-blue-700">6</span>
+                                <span class="block text-[11px] text-slate-500 mt-1">pilihan</span>
+                            </div>
+                            <div class="bg-blue-50/70 border border-blue-200 p-3 rounded-xl">
+                                <span class="block text-xs font-bold text-slate-500">Bendahara</span>
+                                <span class="text-2xl font-black text-blue-700">5</span>
+                                <span class="block text-[11px] text-slate-500 mt-1">pilihan</span>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-emerald-50 text-emerald-900 rounded-xl border border-emerald-200 font-bold text-sm">
+                            Total Susunan = \(8 \times 7 \times 6 \times 5 = 1.680\) susunan
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 2 -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <span class="px-3 py-1 bg-purple-100 text-purple-800 font-semibold text-xs rounded-full">Contoh 2 — Susunan Huruf</span>
+                    <span class="text-xs text-slate-500">Kata "PINTAR"</span>
+                </div>
+                <div class="p-6 space-y-4">
+                    <h3 class="font-bold text-base text-slate-800">
+                        Berapakah banyaknya kata yang dapat dibentuk dari huruf-huruf pembentuk kata "PINTAR" jika:
+                    </h3>
+                    <ul class="list-disc list-inside text-sm text-slate-700 space-y-1">
+                        <li>a) Huruf pertama merupakan huruf vokal.</li>
+                        <li>b) Huruf pertama merupakan huruf konsonan.</li>
+                    </ul>
+
+                    <button onclick="toggleSolution('sol-2')" class="text-xs font-bold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1.5 bg-blue-50 px-3 py-2 rounded-lg border border-blue-200">
+                        <i class="fa-solid fa-eye"></i> Tampilkan / Sembunyikan Pembahasan
+                    </button>
+
+                    <div id="sol-2" class="space-y-4 text-sm pt-2">
+                        <p class="text-xs text-slate-600 bg-slate-100 p-3 rounded-xl">
+                            Kata "PINTAR" terdiri dari 6 huruf berbeda.<br>
+                            Vokal = {I, A} (2 huruf) &nbsp;|&nbsp; Konsonan = {P, N, T, R} (4 huruf)
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="border border-slate-200 p-4 rounded-xl bg-slate-50">
+                                <h4 class="font-bold text-blue-900 text-xs mb-2">a) Huruf Pertama Vokal</h4>
+                                <div class="grid grid-cols-6 gap-1 text-center font-bold text-xs mb-2">
+                                    <div class="bg-blue-100 p-1.5 rounded">2</div>
+                                    <div class="bg-white p-1.5 border rounded">5</div>
+                                    <div class="bg-white p-1.5 border rounded">4</div>
+                                    <div class="bg-white p-1.5 border rounded">3</div>
+                                    <div class="bg-white p-1.5 border rounded">2</div>
+                                    <div class="bg-white p-1.5 border rounded">1</div>
+                                </div>
+                                <p class="text-xs text-emerald-700 font-bold">Hasil = \(2 \times 5 \times 4 \times 3 \times 2 \times 1 = 240\) kata</p>
+                            </div>
+
+                            <div class="border border-slate-200 p-4 rounded-xl bg-slate-50">
+                                <h4 class="font-bold text-purple-900 text-xs mb-2">b) Huruf Pertama Konsonan</h4>
+                                <div class="grid grid-cols-6 gap-1 text-center font-bold text-xs mb-2">
+                                    <div class="bg-purple-100 p-1.5 rounded">4</div>
+                                    <div class="bg-white p-1.5 border rounded">5</div>
+                                    <div class="bg-white p-1.5 border rounded">4</div>
+                                    <div class="bg-white p-1.5 border rounded">3</div>
+                                    <div class="bg-white p-1.5 border rounded">2</div>
+                                    <div class="bg-white p-1.5 border rounded">1</div>
+                                </div>
+                                <p class="text-xs text-emerald-700 font-bold">Hasil = \(4 \times 5 \times 4 \times 3 \times 2 \times 1 = 480\) kata</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 3 -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <span class="px-3 py-1 bg-amber-100 text-amber-800 font-semibold text-xs rounded-full">Contoh 3 — Pembentukan Bilangan 3-Digit</span>
+                    <span class="text-xs text-slate-500">Angka {1, 2, 3, 4, 5, 6}</span>
+                </div>
+                <div class="p-6 space-y-4">
+                    <h3 class="font-bold text-base text-slate-800">
+                        Dari angka-angka {1, 2, 3, 4, 5, 6} akan dibentuk bilangan 3 digit. Berapakah banyak bilangan yang dapat dibentuk jika:
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700 font-medium">
+                        <div>a. Angka boleh berulang</div>
+                        <div>b. Angka tidak boleh berulang</div>
+                        <div>c. Bilangan ganjil (tidak berulang)</div>
+                        <div>d. Lebih dari 300 (tidak berulang)</div>
+                        <div>e. Kurang dari 600 (tidak berulang)</div>
+                    </div>
+
+                    <button onclick="toggleSolution('sol-3')" class="text-xs font-bold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1.5 bg-blue-50 px-3 py-2 rounded-lg border border-blue-200">
+                        <i class="fa-solid fa-eye"></i> Tampilkan / Sembunyikan Pembahasan
+                    </button>
+
+                    <div id="sol-3" class="space-y-2 text-xs sm:text-sm pt-2">
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                            <strong>a. Boleh Berulang:</strong> Ratusan(6) &times; Puluhan(6) &times; Satuan(6) = <span class="text-emerald-700 font-bold">216 bilangan</span>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                            <strong>b. Tidak Boleh Berulang:</strong> Ratusan(6) &times; Puluhan(5) &times; Satuan(4) = <span class="text-emerald-700 font-bold">120 bilangan</span>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                            <strong>c. Bilangan Ganjil:</strong> Satuan ganjil {1,3,5} = 3 cara. Lalu Ratusan(5) &times; Puluhan(4) &times; Satuan(3) = <span class="text-emerald-700 font-bold">60 bilangan</span>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                            <strong>d. Lebih dari 300:</strong> Ratusan {3,4,5,6} = 4 cara. Ratusan(4) &times; Puluhan(5) &times; Satuan(4) = <span class="text-emerald-700 font-bold">80 bilangan</span>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                            <strong>e. Kurang dari 600:</strong> Ratusan {1,2,3,4,5} = 5 cara. Ratusan(5) &times; Puluhan(5) &times; Satuan(4) = <span class="text-emerald-700 font-bold">100 bilangan</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 4 -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <span class="px-3 py-1 bg-red-100 text-red-800 font-semibold text-xs rounded-full">Contoh 4 — Kasus Spesial Angka 0</span>
+                    <span class="text-xs text-slate-500">Habis Dibagi 5</span>
+                </div>
+                <div class="p-6 space-y-4">
+                    <h3 class="font-bold text-base text-slate-800">
+                        Berapa banyak bilangan 3 angka berlainan dan habis dibagi 5 yang dapat disusun dari angka {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}?
+                    </h3>
+
+                    <button onclick="toggleSolution('sol-4')" class="text-xs font-bold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1.5 bg-blue-50 px-3 py-2 rounded-lg border border-blue-200">
+                        <i class="fa-solid fa-eye"></i> Tampilkan / Sembunyikan Pembahasan
+                    </button>
+
+                    <div id="sol-4" class="space-y-3 text-sm pt-2">
+                        <div class="p-3 bg-amber-50 text-amber-900 rounded-xl border border-amber-200 text-xs">
+                            <strong>Trik Penting:</strong> Syarat habis dibagi 5 berarti satuan harus 0 atau 5. Karena 0 tidak boleh di depan, pecah menjadi 2 kasus terpisah!
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                                <h4 class="font-bold text-slate-800 mb-1">Kasus 1: Satuan angka 0</h4>
+                                <p class="text-slate-600 mb-2">Satuan(1) &times; Ratusan(9) &times; Puluhan(8)</p>
+                                <p class="font-bold text-emerald-700">Hasil = \(9 \times 8 \times 1 = 72\)</p>
+                            </div>
+                            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                                <h4 class="font-bold text-slate-800 mb-1">Kasus 2: Satuan angka 5</h4>
+                                <p class="text-slate-600 mb-2">Satuan(1) &times; Ratusan(8, bukan 0) &times; Puluhan(8)</p>
+                                <p class="font-bold text-emerald-700">Hasil = \(8 \times 8 \times 1 = 64\)</p>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-emerald-50 text-emerald-900 border border-emerald-200 rounded-xl font-bold text-sm">
+                            Total = \(72 + 64 = 136\) bilangan
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TAB 4: LAB & VISUALISASI INTERAKTIF -->
+        <div id="content-visualisasi" class="hidden space-y-8">
+            <h2 class="text-2xl font-bold text-slate-800">Laboratorium Visual Slot Interaktif</h2>
+
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800">1. Simulator Kotak Slot & Visualisasi Perkalian</h3>
+                        <p class="text-xs text-slate-500">Atur jumlah slot dan ubah jumlah pilihan opsi pada tiap kotak secara real-time.</p>
+                    </div>
+                    <div class="flex items-center space-x-3 bg-slate-100 p-2 rounded-xl">
+                        <label class="text-xs font-semibold text-slate-700">Jumlah Slot:</label>
+                        <select id="sim-slot-count" onchange="buildInteractiveSlots()" class="px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-bold focus:ring-2 focus:ring-blue-500">
+                            <option value="2">2 Slot</option>
+                            <option value="3" selected>3 Slot</option>
+                            <option value="4">4 Slot</option>
+                            <option value="5">5 Slot</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Dynamic Slots Grid -->
+                <div id="sim-slots-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-6">
+                    <!-- Dynamic slots injected via JS -->
+                </div>
+
+                <!-- Live Result Display -->
+                <div class="bg-slate-900 text-white rounded-2xl p-6 text-center shadow-inner">
+                    <span class="text-xs text-blue-400 font-bold uppercase tracking-widest block mb-1">Persamaan Perkalian Slot</span>
+                    <div id="sim-equation-text" class="text-lg font-mono text-amber-300 mb-3">
+                        6 × 5 × 4
+                    </div>
+                    <div class="text-xs text-slate-400">Total Banyak Kemungkinan Cara:</div>
+                    <div id="sim-total-result" class="text-4xl font-extrabold text-emerald-400 mt-1">
+                        120
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Branching Tree Canvas -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-800">2. Visualisasi Pohon Keputusan (Branching Diagram)</h3>
+                    <p class="text-xs text-slate-500">Diagram cabang pilihan untuk 3 digit posisi dari pilihan {1, 2, 3}.</p>
+                </div>
+                <div class="flex justify-center bg-slate-900 rounded-2xl p-4 overflow-x-auto">
+                    <canvas id="treeCanvas" width="650" height="300" class="max-w-full h-auto"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: KALKULATOR SLOT STEP-BY-STEP -->
+        <div id="content-kalkulator" class="hidden space-y-8">
+            <h2 class="text-2xl font-bold text-slate-800">Kalkulator Pencacahan Slot Step-by-Step</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Calculator Controls -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+                    <h3 class="font-bold text-slate-800 text-lg border-b pb-3">Preset & Parameter Soal</h3>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-2">Pilih Preset Template Soal:</label>
+                        <select id="calc-preset" onchange="applyPreset()" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-blue-500">
+                            <option value="custom">Kustom (Atur Sendiri)</option>
+                            <option value="osis">Pemilihan 3 Pengurus dari 10 Orang</option>
+                            <option value="digit_ganjil">3 Digit Ganjil dari {1,2,3,4,5,6,7}</option>
+                            <option value="sandi">Kata Sandi 4 Digit Angka Berbeda</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Jumlah Objek Tersedia (n):</label>
+                            <input type="number" id="calc-n" min="1" max="20" value="8" oninput="runStepCalculator()" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl font-bold text-slate-800 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Jumlah Slot Diisi (r):</label>
+                            <input type="number" id="calc-r" min="1" max="10" value="3" oninput="runStepCalculator()" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl font-bold text-slate-800 text-sm">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-3">
+                        <input type="checkbox" id="calc-allow-repeat" onchange="runStepCalculator()" class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
+                        <label for="calc-allow-repeat" class="text-xs font-semibold text-slate-700">Elemen / Angka Boleh Berulang</label>
+                    </div>
+                </div>
+
+                <!-- Step-by-Step Explanation Card -->
+                <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-sm flex flex-col justify-between space-y-4">
+                    <div>
+                        <span class="text-xs text-blue-400 uppercase tracking-wider font-semibold">Penjelasan Langkah Demi Langkah</span>
+                        <h4 id="calc-step-title" class="text-xl font-bold mt-1 text-white">Filling Slots Calculation</h4>
+                        
+                        <div id="calc-step-body" class="mt-4 font-mono text-xs space-y-2 text-slate-300 bg-slate-800/80 p-4 rounded-xl border border-slate-700 overflow-x-auto">
+                            <!-- Populated dynamically via JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800 flex justify-between items-center">
+                        <span class="text-sm font-medium text-slate-400">Total Banyak Cara:</span>
+                        <span id="calc-step-result" class="text-3xl font-extrabold text-emerald-400">336</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 6: LATIHAN SOAL MANDIRI -->
+        <div id="content-latihan" class="hidden space-y-8">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800">Latihan Soal Mandiri Interaktif</h2>
+                    <p class="text-sm text-slate-500">Uji pemahaman Anda dan cek skor secara instan!</p>
+                </div>
+                <div class="bg-blue-100 text-blue-900 font-bold px-4 py-2 rounded-xl text-sm border border-blue-200">
+                    Skor Anda: <span id="quiz-score" class="text-blue-700">0</span> / 3
+                </div>
+            </div>
+
+            <!-- Quiz Card 1 -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                <div class="flex justify-between items-start">
+                    <span class="px-3 py-1 bg-blue-100 text-blue-800 font-bold text-xs rounded-full">Soal 1 — Pemilihan Pengurus</span>
+                </div>
+                <p class="font-semibold text-slate-800 text-sm">
+                    Dari 10 orang pengurus kelas akan dipilih Ketua, Wakil Ketua, dan Sekretaris. Berapa banyak susunan pengurus yang dapat dibentuk?
+                </p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button onclick="checkQuiz(1, 504, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-blue-50 font-semibold text-xs text-slate-700 transition">A. 504</button>
+                    <button onclick="checkQuiz(1, 720, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-blue-50 font-semibold text-xs text-slate-700 transition">B. 720</button>
+                    <button onclick="checkQuiz(1, 1000, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-blue-50 font-semibold text-xs text-slate-700 transition">C. 1.000</button>
+                    <button onclick="checkQuiz(1, 120, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-blue-50 font-semibold text-xs text-slate-700 transition">D. 120</button>
+                </div>
+
+                <div id="quiz-explain-1" class="hidden p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1">
+                    <p class="font-bold text-blue-900">Pembahasan Soal 1:</p>
+                    <p class="text-slate-700">Pilihan Ketua = 10, Wakil = 9, Sekretaris = 8.<br>Total = \(10 \times 9 \times 8 = 720\).</p>
+                </div>
+            </div>
+
+            <!-- Quiz Card 2 -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                <div class="flex justify-between items-start">
+                    <span class="px-3 py-1 bg-amber-100 text-amber-800 font-bold text-xs rounded-full">Soal 2 — Bilangan Genap</span>
+                </div>
+                <p class="font-semibold text-slate-800 text-sm">
+                    Disediakan angka {2, 3, 4, 5, 6, 7, 8}. Berapa banyak bilangan genap 3 digit berbeda yang dapat dibentuk?
+                </p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button onclick="checkQuiz(2, 100, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-blue-50 font-semibold text-xs text-slate-700 transition">A. 100</button>
+                    <button onclick="checkQuiz(2, 120, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-blue-50 font-semibold text-xs text-slate-700 transition">B. 120</button>
+                    <button onclick="checkQuiz(2, 140, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-blue-50 font-semibold text-xs text-slate-700 transition">C. 140</button>
+                    <button onclick="checkQuiz(2, 210, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-blue-50 font-semibold text-xs text-slate-700 transition">D. 210</button>
+                </div>
+
+                <div id="quiz-explain-2" class="hidden p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1">
+                    <p class="font-bold text-blue-900">Pembahasan Soal 2:</p>
+                    <p class="text-slate-700">Angka genap = {2, 4, 6, 8} (4 pilihan untuk Satuan).<br>Sisa angka untuk Ratusan = 6, Puluhan = 5.<br>Total = \(6 \times 5 \times 4 = 120\).</p>
+                </div>
+            </div>
+
+            <!-- Quiz Card 3 -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                <div class="flex justify-between items-start">
+                    <span class="px-3 py-1 bg-purple-100 text-purple-800 font-bold text-xs rounded-full">Soal 3 — Kata Sandi Kombinasi</span>
+                </div>
+                <p class="font-semibold text-slate-800 text-sm">
+                    Password akun dibuat dari kata "IDN" diikuti oleh 3 digit angka berbeda dari {0 s.d. 9}. Berapa banyak variasi password yang terbentuk?
+                </p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button onclick="checkQuiz(3, 504, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-blue-50 font-semibold text-xs text-slate-700 transition">A. 504</button>
+                    <button onclick="checkQuiz(3, 720, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-blue-50 font-semibold text-xs text-slate-700 transition">B. 720</button>
+                    <button onclick="checkQuiz(3, 1000, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-blue-50 font-semibold text-xs text-slate-700 transition">C. 1.000</button>
+                    <button onclick="checkQuiz(3, 216, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-blue-50 font-semibold text-xs text-slate-700 transition">D. 216</button>
+                </div>
+
+                <div id="quiz-explain-3" class="hidden p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1">
+                    <p class="font-bold text-blue-900">Pembahasan Soal 3:</p>
+                    <p class="text-slate-700">Kata "IDN" tetap (1 cara). Memilih 3 digit angka dari 10 angka tersedia (0-9):<br>Digit 1 = 10, Digit 2 = 9, Digit 3 = 8.<br>Total = \(10 \times 9 \times 8 = 720\).</p>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs space-y-2">
+            <p>Rangkuman & Platform Pembelajaran Interaktif Aturan Pengisian Tempat (Filling Slots)</p>
+            <p class="text-slate-500">Matematika Wajib Kelas 12 — Terintegrasi dengan Channel Youtube m4th-lab</p>
+        </div>
+    </footer>
+
+    <script>
+        // Quiz Score Tracker
+        let quizScore = 0;
+        const solvedQuiz = new Set();
+
+        // Switch Tabs Function
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-50', 'text-blue-600', 'shadow-sm');
+                btn.classList.add('text-slate-600');
+            });
+
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-blue-50', 'text-blue-600', 'shadow-sm');
+                activeBtn.classList.remove('text-slate-600');
+            }
+
+            ['video', 'materi', 'soal', 'visualisasi', 'kalkulator', 'latihan'].forEach(id => {
+                const el = document.getElementById(`content-${id}`);
+                if (el) el.classList.add('hidden');
+            });
+
+            const contentToShow = document.getElementById(`content-${tabId}`);
+            if (contentToShow) contentToShow.classList.remove('hidden');
+
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+
+            if (tabId === 'visualisasi') {
+                setTimeout(() => {
+                    buildInteractiveSlots();
+                    drawTreeCanvas();
+                }, 100);
+            }
+        }
+
+        // Toggle solution visibility
+        function toggleSolution(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle('hidden');
+            }
+        }
+
+        // --- INTERACTIVE LAB SIMULATOR ---
+        function buildInteractiveSlots() {
+            const count = parseInt(document.getElementById('sim-slot-count').value);
+            const container = document.getElementById('sim-slots-container');
+            container.innerHTML = '';
+
+            const defaultVals = [6, 5, 4, 3, 2];
+
+            for (let i = 1; i <= count; i++) {
+                const val = defaultVals[i - 1] || 2;
+                const div = document.createElement('div');
+                div.className = 'bg-slate-50 p-4 rounded-xl border border-slate-200 text-center slot-card';
+                div.innerHTML = `
+                    <label class="block text-xs font-bold text-slate-500 mb-2">Slot ${i}</label>
+                    <input type="number" min="1" max="99" value="${val}" oninput="updateSlotSimulation()" class="sim-input w-full p-2 border border-slate-300 rounded-lg text-center font-black text-slate-800 text-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                `;
+                container.appendChild(div);
+            }
+            updateSlotSimulation();
+        }
+
+        function updateSlotSimulation() {
+            const inputs = document.querySelectorAll('.sim-input');
+            let vals = [];
+            let total = 1;
+
+            inputs.forEach(inp => {
+                const v = parseInt(inp.value) || 1;
+                vals.push(v);
+                total *= v;
+            });
+
+            document.getElementById('sim-equation-text').innerText = vals.join(' × ');
+            document.getElementById('sim-total-result').innerText = total.toLocaleString('id-ID');
+        }
+
+        // Tree Diagram Canvas Drawing
+        function drawTreeCanvas() {
+            const canvas = document.getElementById('treeCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw simple 3-level tree
+            ctx.strokeStyle = '#3b82f6';
+            ctx.lineWidth = 1.5;
+
+            const root = { x: 50, y: 150 };
+            const lvl1 = [
+                { x: 220, y: 60, label: 'Angka 1' },
+                { x: 220, y: 150, label: 'Angka 2' },
+                { x: 220, y: 240, label: 'Angka 3' }
+            ];
+
+            // Draw root
+            ctx.fillStyle = '#60a5fa';
+            ctx.beginPath();
+            ctx.arc(root.x, root.y, 8, 0, Math.PI * 2);
+            ctx.fill();
+
+            lvl1.forEach(node => {
+                ctx.beginPath();
+                ctx.moveTo(root.x, root.y);
+                ctx.lineTo(node.x, node.y);
+                ctx.stroke();
+
+                ctx.fillStyle = '#f59e0b';
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, 6, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = '#e2e8f0';
+                ctx.font = '11px Inter, sans-serif';
+                ctx.fillText(node.label, node.x + 12, node.y + 4);
+
+                // Sub-branches
+                for (let j = -1; j <= 1; j += 2) {
+                    const subY = node.y + j * 20;
+                    const subX = node.x + 150;
+                    ctx.beginPath();
+                    ctx.moveTo(node.x, node.y);
+                    ctx.lineTo(subX, subY);
+                    ctx.stroke();
+
+                    ctx.fillStyle = '#10b981';
+                    ctx.beginPath();
+                    ctx.arc(subX, subY, 4, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            });
+        }
+
+        // --- STEP-BY-STEP CALCULATOR ---
+        function applyPreset() {
+            const preset = document.getElementById('calc-preset').value;
+            if (preset === 'osis') {
+                document.getElementById('calc-n').value = 10;
+                document.getElementById('calc-r').value = 3;
+                document.getElementById('calc-allow-repeat').checked = false;
+            } else if (preset === 'digit_ganjil') {
+                document.getElementById('calc-n').value = 7;
+                document.getElementById('calc-r').value = 3;
+                document.getElementById('calc-allow-repeat').checked = false;
+            } else if (preset === 'sandi') {
+                document.getElementById('calc-n').value = 10;
+                document.getElementById('calc-r').value = 4;
+                document.getElementById('calc-allow-repeat').checked = false;
+            }
+            runStepCalculator();
+        }
+
+        function runStepCalculator() {
+            const n = parseInt(document.getElementById('calc-n').value) || 1;
+            const r = parseInt(document.getElementById('calc-r').value) || 1;
+            const allowRepeat = document.getElementById('calc-allow-repeat').checked;
+
+            const titleEl = document.getElementById('calc-step-title');
+            const bodyEl = document.getElementById('calc-step-body');
+            const resultEl = document.getElementById('calc-step-result');
+
+            titleEl.textContent = `Menyusun ${r} Slot dari ${n} Objek (${allowRepeat ? 'Boleh Berulang' : 'Tanpa Pengulangan'})`;
+
+            let stepsHTML = '';
+            let total = 1;
+            let factors = [];
+
+            for (let i = 1; i <= r; i++) {
+                let options = allowRepeat ? n : (n - i + 1);
+                if (options < 1) options = 0;
+                factors.push(options);
+                total *= options;
+
+                stepsHTML += `<p>• Slot ${i}: Terdapat <strong>${options}</strong> pilihan tersedia.</p>`;
+            }
+
+            stepsHTML += `<div class="pt-2 text-amber-300 font-bold border-t border-slate-700">Perkalian: ${factors.join(' × ')} = ${total.toLocaleString('id-ID')}</div>`;
+
+            bodyEl.innerHTML = stepsHTML;
+            resultEl.textContent = total.toLocaleString('id-ID');
+        }
+
+        // --- QUIZ LOGIC ---
+        function checkQuiz(qNum, correctVal, btn) {
+            const parent = btn.parentElement;
+            const buttons = parent.querySelectorAll('button');
+
+            buttons.forEach(b => {
+                b.disabled = true;
+                b.classList.remove('hover:bg-blue-50');
+            });
+
+            if (correctVal === (qNum === 1 ? 720 : qNum === 2 ? 120 : 720)) {
+                btn.classList.add('bg-emerald-500', 'text-white', 'border-emerald-600');
+                if (!solvedQuiz.has(qNum)) {
+                    solvedQuiz.add(qNum);
+                    quizScore++;
+                    document.getElementById('quiz-score').textContent = quizScore;
+                }
+            } else {
+                btn.classList.add('bg-rose-500', 'text-white', 'border-rose-600');
+            }
+
+            document.getElementById(`quiz-explain-${qNum}`).classList.remove('hidden');
+        }
+
+        // Initial setup on load
+        window.onload = function() {
+            buildInteractiveSlots();
+            runStepCalculator();
+        };
+    </script>
+</body>
+</html>

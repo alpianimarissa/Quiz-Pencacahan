@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaidah Pencacahan: Aturan Penjumlahan & Perkalian</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f8fafc;
+        }
+        .tab-btn-active {
+            background-color: #2563eb !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Top Navigation Header -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-blue-600 to-indigo-600 p-3 rounded-2xl shadow-md text-white">
+                    <i class="fa-solid fa-square-root-variable text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">Kaidah Pencacahan 1</h1>
+                    <p class="text-xs text-blue-600 font-medium">Aturan Penjumlahan & Aturan Perkalian — Modul Matematika Wajib</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="bg-blue-50 text-blue-700 text-xs px-3 py-1.5 rounded-full font-semibold border border-blue-200">
+                    <i class="fa-solid fa-graduation-cap mr-1.5 text-blue-600"></i>Matematika SMA
+                </span>
+                <span class="bg-slate-100 text-slate-700 text-xs px-3 py-1.5 rounded-full font-semibold border border-slate-200">
+                    Kelas 12
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full space-y-8">
+
+        <!-- Navigation Tabs -->
+        <div class="bg-white p-2 rounded-2xl border border-slate-200 flex overflow-x-auto gap-2 shadow-sm">
+            <button onclick="switchTab('materi')" id="tab-materi" class="tab-btn tab-btn-active flex-1 min-w-[140px] py-3 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 text-slate-600 hover:bg-slate-100">
+                <i class="fa-solid fa-book-open"></i>Rangkuman Materi
+            </button>
+            <button onclick="switchTab('soal')" id="tab-soal" class="tab-btn flex-1 min-w-[140px] py-3 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 text-slate-600 hover:bg-slate-100">
+                <i class="fa-solid fa-list-check"></i>5 Soal & Pembahasan
+            </button>
+            <button onclick="switchTab('visualisasi')" id="tab-visualisasi" class="tab-btn flex-1 min-w-[140px] py-3 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 text-slate-600 hover:bg-slate-100">
+                <i class="fa-solid fa-diagram-project"></i>Lab & Visualisasi
+            </button>
+            <button onclick="switchTab('kalkulator')" id="tab-kalkulator" class="tab-btn flex-1 min-w-[140px] py-3 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 text-slate-600 hover:bg-slate-100">
+                <i class="fa-solid fa-calculator"></i>Kalkulator Pencacahan
+            </button>
+            <button onclick="switchTab('latihan')" id="tab-latihan" class="tab-btn flex-1 min-w-[140px] py-3 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 text-slate-600 hover:bg-slate-100">
+                <i class="fa-solid fa-circle-question"></i>Kuis Mandiri
+            </button>
+        </div>
+
+        <!-- TAB 1: RANGKUMAN MATERI -->
+        <div id="content-materi" class="space-y-8">
+            
+            <!-- Hero Banner -->
+            <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white rounded-3xl p-6 sm:p-8 shadow-lg relative overflow-hidden">
+                <div class="relative z-10 max-w-3xl space-y-3">
+                    <span class="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest border border-white/30 backdrop-blur-sm">Konsep Dasar</span>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold">Aturan Penjumlahan vs Aturan Perkalian</h2>
+                    <p class="text-blue-100 text-sm sm:text-base leading-relaxed">
+                        Kunci utama dalam memahami Kaidah Pencacahan adalah membedakan apakah suatu kejadian bersifat <strong>saling lepas</strong> (pilihan alternatif) atau <strong>terjadi berurutan / sekaligus</strong> (pasangan kombinasi).
+                    </p>
+                </div>
+            </div>
+
+            <!-- Comparison Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Aturan Penjumlahan -->
+                <div class="bg-white rounded-2xl p-6 border border-emerald-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center text-xl font-bold">
+                                +
+                            </span>
+                            <span class="text-xs font-bold px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-lg border border-emerald-200">
+                                Kata Kunci: "ATAU"
+                            </span>
+                        </div>
+                        <h3 class="text-xl font-bold text-emerald-800 mb-2">1. Aturan Penjumlahan</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                            Digunakan apabila kejadian-kejadian tersebut <strong>TIDAK DAPAT TERJADI SEKALIGUS</strong> (saling lepas). Kita hanya memilih salah satu pilihan sebagai alternatif.
+                        </p>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 font-mono text-sm text-emerald-900 space-y-2">
+                            <p class="font-bold">Total = K<sub>1</sub> + K<sub>2</sub> + K<sub>3</sub> + ... + K<sub>n</sub></p>
+                            <p class="text-xs text-slate-500 font-sans">Contoh: Memilih 1 kendaraan dari 4 mobil, 3 motor, atau 2 sepeda.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aturan Perkalian -->
+                <div class="bg-white rounded-2xl p-6 border border-blue-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="w-10 h-10 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center text-xl font-bold">
+                                ×
+                            </span>
+                            <span class="text-xs font-bold px-2.5 py-1 bg-blue-50 text-blue-700 rounded-lg border border-blue-200">
+                                Kata Kunci: "DAN"
+                            </span>
+                        </div>
+                        <h3 class="text-xl font-bold text-blue-800 mb-2">2. Aturan Perkalian</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                            Digunakan apabila kejadian-kejadian tersebut <strong>TERJADI SEKALIGUS / BERURUTAN</strong> secara berpasangan.
+                        </p>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 font-mono text-sm text-blue-900 space-y-2">
+                            <p class="font-bold">Total = K<sub>1</sub> × K<sub>2</sub> × K<sub>3</sub> × ... × K<sub>n</sub></p>
+                            <p class="text-xs text-slate-500 font-sans">Contoh: Memasangkan 3 baju dengan 2 celana secara bersamaan.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Diagram Pohon & Illustration Explanation -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+                <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-tree text-amber-500"></i> Ilustrasi Diagram Pohon (Aturan Perkalian)
+                </h3>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                    Sebagai contoh, jika Toni memiliki <strong>3 Baju</strong> (B<sub>1</sub>, B<sub>2</sub>, B<sub>3</sub>) dan <strong>2 Celana</strong> (C<sub>1</sub>, C<sub>2</sub>), maka pasangan baju dan celana yang dapat dibentuk adalah:
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
+                    <div class="bg-amber-50/60 p-3 rounded-xl border border-amber-200">
+                        <p class="font-bold text-amber-800 mb-1">Baju 1 (B<sub>1</sub>):</p>
+                        <p class="text-slate-700">➔ (B<sub>1</sub>, C<sub>1</sub>) & (B<sub>1</sub>, C<sub>2</sub>)</p>
+                    </div>
+                    <div class="bg-amber-50/60 p-3 rounded-xl border border-amber-200">
+                        <p class="font-bold text-amber-800 mb-1">Baju 2 (B<sub>2</sub>):</p>
+                        <p class="text-slate-700">➔ (B<sub>2</sub>, C<sub>1</sub>) & (B<sub>2</sub>, C<sub>2</sub>)</p>
+                    </div>
+                    <div class="bg-amber-50/60 p-3 rounded-xl border border-amber-200">
+                        <p class="font-bold text-amber-800 mb-1">Baju 3 (B<sub>3</sub>):</p>
+                        <p class="text-slate-700">➔ (B<sub>3</sub>, C<sub>1</sub>) & (B<sub>3</sub>, C<sub>2</sub>)</p>
+                    </div>
+                </div>
+                <p class="text-xs text-blue-800 bg-blue-50 p-3 rounded-xl border border-blue-200">
+                    <i class="fa-solid fa-circle-info mr-1 text-blue-600"></i> Langsung gunakan Aturan Perkalian tanpa merinci pohon: <strong>3 × 2 = 6 pasangan</strong>.
+                </p>
+            </div>
+        </div>
+
+        <!-- TAB 2: SOAL & PEMBAHASAN -->
+        <div id="content-soal" class="hidden space-y-6">
+            <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-book-bookmark text-blue-600"></i> 5 Contoh Soal & Pembahasan Lengkap
+            </h2>
+
+            <!-- Contoh 1 -->
+            <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+                <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <span class="px-3 py-1 bg-emerald-100 text-emerald-800 font-bold text-xs rounded-full border border-emerald-300">Contoh 1 — Aturan Penjumlahan</span>
+                    <span class="text-xs text-slate-500">Pilihan Kendaraan</span>
+                </div>
+                <div class="p-6 space-y-4">
+                    <p class="text-slate-800 text-sm sm:text-base font-medium">
+                        <strong>Soal:</strong> Fathia memiliki 4 mobil, 3 sepeda motor, dan 2 sepeda. Berapa banyak cara Fathia pergi ke kantor dengan kendaraan yang dimilikinya?
+                    </p>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm space-y-2">
+                        <p class="font-bold text-emerald-700">Analisis & Pembahasan:</p>
+                        <p class="text-slate-600 text-xs sm:text-sm">
+                            Fathia pergi ke kantor tidak mungkin mengendarai mobil, motor, dan sepeda sekaligus secara bersamaan. Ini merupakan <strong>pilihan saling lepas</strong> (memilih salah satu alternatif).
+                        </p>
+                        <p class="font-mono text-emerald-800 font-bold text-base">
+                            Total Cara = 4 + 3 + 2 = 9 cara.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contoh 2 -->
+            <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+                <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <span class="px-3 py-1 bg-emerald-100 text-emerald-800 font-bold text-xs rounded-full border border-emerald-300">Contoh 2 — Aturan Penjumlahan</span>
+                    <span class="text-xs text-slate-500">Memilih Lagu</span>
+                </div>
+                <div class="p-6 space-y-4">
+                    <p class="text-slate-800 text-sm sm:text-base font-medium">
+                        <strong>Soal:</strong> Budi hendak mendengarkan lagu yang terdiri dari 6 lagu dangdut, 10 lagu pop, dan 5 lagu rock. Berapa banyak cara Budi memilih 1 lagu yang akan didengar?
+                    </p>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm space-y-2">
+                        <p class="font-bold text-emerald-700">Analisis & Pembahasan:</p>
+                        <p class="text-slate-600 text-xs sm:text-sm">
+                            Budi hanya mendengarkan 1 lagu pada satu waktu (tidak dapat mendengarkan lagu pop, dangdut, dan rock sekaligus). Maka gunakan <strong>Aturan Penjumlahan</strong>.
+                        </p>
+                        <p class="font-mono text-emerald-800 font-bold text-base">
+                            Total Cara = 6 + 10 + 5 = 21 cara.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contoh 3 -->
+            <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+                <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <span class="px-3 py-1 bg-blue-100 text-blue-800 font-bold text-xs rounded-full border border-blue-300">Contoh 3 — Aturan Perkalian</span>
+                    <span class="text-xs text-slate-500">Kombinasi Pakaian</span>
+                </div>
+                <div class="p-6 space-y-4">
+                    <p class="text-slate-800 text-sm sm:text-base font-medium">
+                        <strong>Soal:</strong> Hendra memiliki 5 kemeja, 6 celana, dan 3 sepatu. Berapa banyak cara Hendra memasangkan pakaian yang dimilikinya?
+                    </p>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm space-y-2">
+                        <p class="font-bold text-blue-700">Analisis & Pembahasan:</p>
+                        <p class="text-slate-600 text-xs sm:text-sm">
+                            Kemeja, celana, dan sepatu dipakai <strong>secara bersamaan / dipasangkan</strong>. Oleh karena itu, gunakan <strong>Aturan Perkalian</strong>.
+                        </p>
+                        <p class="font-mono text-blue-800 font-bold text-base">
+                            Total Pasangan = 5 × 6 × 3 = 90 cara.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contoh 4 -->
+            <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+                <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <span class="px-3 py-1 bg-blue-100 text-blue-800 font-bold text-xs rounded-full border border-blue-300">Contoh 4 — Aturan Perkalian</span>
+                    <span class="text-xs text-slate-500">Jalur Kota A ke C</span>
+                </div>
+                <div class="p-6 space-y-4">
+                    <p class="text-slate-800 text-sm sm:text-base font-medium">
+                        <strong>Soal:</strong> Dari kota A menuju kota C harus melalui kota B. Kota A ke B dihubungkan oleh 3 jalur berbeda, dan kota B ke C dihubungkan oleh 4 jalur berbeda. Berapa banyak cara perjalanan dari kota A ke C?
+                    </p>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm space-y-2">
+                        <p class="font-bold text-blue-700">Analisis & Pembahasan:</p>
+                        <p class="text-slate-600 text-xs sm:text-sm">
+                            Perjalanan dilakukan secara berurutan: memilih jalur dari A ke B, kemudian dilanjutkan dengan jalur dari B ke C. Gunakan <strong>Aturan Perkalian</strong>.
+                        </p>
+                        <p class="font-mono text-blue-800 font-bold text-base">
+                            Total Jalur = 3 × 4 = 12 cara.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contoh 5 -->
+            <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+                <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <span class="px-3 py-1 bg-indigo-100 text-indigo-800 font-bold text-xs rounded-full border border-indigo-300">Contoh 5 — Kombinasi Perkalian & Penjumlahan</span>
+                    <span class="text-xs text-slate-500">Rute Penerbangan</span>
+                </div>
+                <div class="p-6 space-y-4">
+                    <p class="text-slate-800 text-sm sm:text-base font-medium">
+                        <strong>Soal:</strong> Penerbangan dari Singapura ke Jakarta tersedia 3 jalur, Jakarta-Bali 4 jalur, dan Singapura-Bali (langsung) 2 jalur. Berapa banyak pilihan jalur penerbangan dari Singapura ke Bali (melalui Jakarta maupun langsung)?
+                    </p>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm space-y-3">
+                        <p class="font-bold text-indigo-700">Analisis & Pembahasan Multi-Langkah:</p>
+                        <div class="space-y-2 text-xs sm:text-sm">
+                            <p class="text-slate-700">1. <strong>Opsi 1 (Transit via Jakarta):</strong> Singapura ➔ Jakarta ➔ Bali = 3 × 4 = <strong>12 cara</strong>.</p>
+                            <p class="text-slate-700">2. <strong>Opsi 2 (Penerbangan Langsung):</strong> Singapura ➔ Bali = <strong>2 cara</strong>.</p>
+                            <p class="text-slate-700">3. Karena Opsi Transit dan Opsi Langsung adalah pilihan <strong>saling lepas</strong>, jumlahkan kedua opsi:</p>
+                        </div>
+                        <p class="font-mono text-indigo-800 font-bold text-base">
+                            Total Pilihan Jalur = 12 + 2 = 14 cara.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: LAB & VISUALISASI RUTE -->
+        <div id="content-visualisasi" class="hidden space-y-8">
+            <h2 class="text-2xl font-bold text-slate-900">Laboratorium Visualisasi Interaktif</h2>
+
+            <!-- Visualizer 1: Kombinasi Outfit -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-200 pb-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">1. Simulator Kombinasi Pakaian (Outfit Matcher)</h3>
+                        <p class="text-xs text-slate-500">Aturan Perkalian: K<sub>1</sub> × K<sub>2</sub> × K<sub>3</sub></p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-4 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
+                        <div>
+                            <label class="text-slate-600 font-semibold block">Kemeja:</label>
+                            <input type="number" id="sim-shirt" min="1" max="10" value="5" onchange="renderOutfitSim()" class="w-16 bg-white border border-slate-300 rounded p-1 text-center font-bold text-amber-600">
+                        </div>
+                        <div>
+                            <label class="text-slate-600 font-semibold block">Celana:</label>
+                            <input type="number" id="sim-pants" min="1" max="10" value="6" onchange="renderOutfitSim()" class="w-16 bg-white border border-slate-300 rounded p-1 text-center font-bold text-blue-600">
+                        </div>
+                        <div>
+                            <label class="text-slate-600 font-semibold block">Sepatu:</label>
+                            <input type="number" id="sim-shoes" min="1" max="10" value="3" onchange="renderOutfitSim()" class="w-16 bg-white border border-slate-300 rounded p-1 text-center font-bold text-emerald-600">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+                    <div class="lg:col-span-2 bg-slate-50 p-6 rounded-2xl border border-slate-200 flex flex-col items-center justify-center min-h-[220px] text-center space-y-4">
+                        <div class="flex items-center justify-center gap-4 sm:gap-8 flex-wrap">
+                            <div class="text-center">
+                                <span id="outfit-shirt-badge" class="text-3xl sm:text-4xl">👔</span>
+                                <p class="text-xs text-amber-700 font-bold mt-1" id="outfit-shirt-text">5 Kemeja</p>
+                            </div>
+                            <span class="text-2xl font-bold text-slate-400">×</span>
+                            <div class="text-center">
+                                <span id="outfit-pants-badge" class="text-3xl sm:text-4xl">👖</span>
+                                <p class="text-xs text-blue-700 font-bold mt-1" id="outfit-pants-text">6 Celana</p>
+                            </div>
+                            <span class="text-2xl font-bold text-slate-400">×</span>
+                            <div class="text-center">
+                                <span id="outfit-shoes-badge" class="text-3xl sm:text-4xl">👟</span>
+                                <p class="text-xs text-emerald-700 font-bold mt-1" id="outfit-shoes-text">3 Sepatu</p>
+                            </div>
+                        </div>
+                        <div class="pt-4 border-t border-slate-200 w-full">
+                            <p class="text-xs text-slate-500 font-mono" id="outfit-formula-text">Formula: 5 × 6 × 3</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50/80 p-6 rounded-2xl border border-blue-200 space-y-3">
+                        <p class="text-xs text-blue-700 font-bold uppercase tracking-wider">Hasil Kombinasi Pakaian</p>
+                        <p class="text-4xl sm:text-5xl font-extrabold text-blue-600" id="outfit-total-result">90</p>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Banyak variasi unik yang dapat dibentuk dengan memasangkan setiap item pakaian.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visualizer 2: Visualisasi Interactive Route Canvas -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-200 pb-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">2. Visualisasi Interactive Route Canvas</h3>
+                        <p class="text-xs text-slate-500">Penggabungan Aturan Perkalian & Penjumlahan (Singapura - Jakarta - Bali)</p>
+                    </div>
+                    <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200 text-xs">
+                        <span class="text-slate-700 font-medium">Jalur Singapura ➔ Jakarta:</span>
+                        <input type="range" id="flight-range" min="1" max="6" value="3" oninput="drawFlightCanvas()" class="accent-blue-600 w-24">
+                        <span id="flight-val" class="font-bold text-blue-600 w-4">3</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+                    <div class="lg:col-span-2 bg-slate-100 p-4 rounded-2xl border border-slate-200 flex justify-center overflow-x-auto shadow-inner">
+                        <canvas id="flightCanvas" width="480" height="260" class="max-w-full h-auto"></canvas>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs space-y-2">
+                            <p class="font-bold text-amber-700">Rute Transit Via Jakarta:</p>
+                            <p class="text-slate-700" id="route-via-text">Singapura ➔ Jakarta (3) × Jakarta ➔ Bali (4) = <strong>12 jalur</strong></p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs space-y-2">
+                            <p class="font-bold text-emerald-700">Rute Langsung:</p>
+                            <p class="text-slate-700">Singapura ➔ Bali Langsung = <strong>2 jalur</strong></p>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                            <p class="text-xs text-blue-700 font-bold">Total Pilihan Rute:</p>
+                            <p class="text-3xl font-extrabold text-blue-600" id="route-total-text">14 Jalur</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TAB 4: KALKULATOR PENCACAHAN STEP-BY-STEP -->
+        <div id="content-kalkulator" class="hidden space-y-8">
+            <h2 class="text-2xl font-bold text-slate-900">Kalkulator Pencacahan Step-by-Step</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Inputs -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+                    <h3 class="font-bold text-slate-900 text-lg border-b border-slate-200 pb-3">Input Nilai & Mode</h3>
+                    
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-2">Pilih Mode Pencacahan:</label>
+                        <select id="calc-mode" onchange="runCalculator()" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl font-semibold text-blue-700 focus:ring-2 focus:ring-blue-500">
+                            <option value="penjumlahan">Aturan Penjumlahan (K₁ + K₂ + K₃ + ...)</option>
+                            <option value="perkalian" selected>Aturan Perkalian (K₁ × K₂ × K₃ × ...)</option>
+                            <option value="faktorial">Faktorial (n!)</option>
+                            <option value="permutasi">Permutasi P(n, r)</option>
+                            <option value="kombinasi">Kombinasi C(n, r)</option>
+                        </select>
+                    </div>
+
+                    <!-- Dynamic Input Fields -->
+                    <div id="calc-input-wrapper" class="space-y-3">
+                        <!-- Populated dynamically by JS -->
+                    </div>
+
+                    <button onclick="runCalculator()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition shadow-md">
+                        Hitung Langkah & Hasil
+                    </button>
+                </div>
+
+                <!-- Calculator Steps & Output -->
+                <div class="bg-slate-900 text-slate-100 p-6 rounded-2xl shadow-lg flex flex-col justify-between space-y-4">
+                    <div>
+                        <span class="text-xs text-blue-400 font-bold uppercase tracking-wider">Langkah & Penjelasan Detail</span>
+                        <h4 id="calc-step-title" class="text-xl font-bold mt-1 text-white">Aturan Perkalian</h4>
+                        
+                        <div id="calc-step-body" class="mt-4 font-mono text-xs sm:text-sm space-y-3 text-slate-300 bg-slate-950 p-4 rounded-xl border border-slate-800 overflow-x-auto min-h-[140px]">
+                            <!-- Steps generated dynamically -->
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800 flex justify-between items-center">
+                        <span class="text-sm font-medium text-slate-400">Hasil Akhir:</span>
+                        <span id="calc-output-result" class="text-3xl sm:text-4xl font-extrabold text-emerald-400">90</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: KUIS MANDIRI -->
+        <div id="content-latihan" class="hidden space-y-8">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">Kuis Latihan Mandiri</h2>
+                    <p class="text-sm text-slate-500">Uji pemahaman Anda tentang Aturan Penjumlahan dan Perkalian</p>
+                </div>
+                <div class="bg-blue-50 border border-blue-200 text-blue-800 font-bold px-4 py-2 rounded-2xl text-sm">
+                    Skor Kuis: <span id="quiz-score-val" class="text-emerald-600 font-extrabold text-lg">0</span> / 3
+                </div>
+            </div>
+
+            <!-- Quiz 1 -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                <div class="flex justify-between items-center">
+                    <span class="px-3 py-1 bg-amber-100 text-amber-800 font-bold text-xs rounded-full border border-amber-300">Soal 1 — Ujian Nasional (UN 2018)</span>
+                </div>
+                <p class="font-medium text-slate-800 text-sm sm:text-base leading-relaxed">
+                    Kota K dan kota L dihubungkan oleh beberapa jalur. Jika dari kota K ke kota P terdapat <strong>4 jalur</strong>, dan dari kota P menuju kota L dapat melalui kota Q (3 jalur ke Q dan 2 jalur dari Q ke L) ATAU melalui kota R (2 jalur ke R dan 2 jalur dari R ke L). Banyak alternatif jalan dari kota K menuju kota L yang dapat dipilih adalah...
+                </p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button onclick="checkQuizAnswer(1, 28, this)" class="p-3 border border-slate-200 bg-slate-50 hover:bg-blue-50 rounded-xl font-bold text-slate-700 transition">A. 28</button>
+                    <button onclick="checkQuizAnswer(1, 36, this)" class="p-3 border border-slate-200 bg-slate-50 hover:bg-blue-50 rounded-xl font-bold text-slate-700 transition">B. 36</button>
+                    <button onclick="checkQuizAnswer(1, 40, this)" class="p-3 border border-slate-200 bg-slate-50 hover:bg-blue-50 rounded-xl font-bold text-slate-700 transition">C. 40</button>
+                    <button onclick="checkQuizAnswer(1, 48, this)" class="p-3 border border-slate-200 bg-slate-50 hover:bg-blue-50 rounded-xl font-bold text-slate-700 transition">D. 48</button>
+                </div>
+
+                <div id="quiz-explain-1" class="hidden p-4 bg-emerald-50 rounded-xl border border-emerald-200 text-xs sm:text-sm space-y-2">
+                    <p class="font-bold text-emerald-800">Pembahasan Soal UN 2018:</p>
+                    <p class="text-slate-700">
+                        1. Jalur K ke P = 4 jalur.<br>
+                        2. Jalur P ke L via Q = 3 × 2 = <strong>6 jalur</strong>.<br>
+                        3. Jalur P ke L via R = 2 × 2 = <strong>4 jalur</strong>.<br>
+                        4. Total dari P ke L (saling lepas) = 6 + 4 = <strong>10 jalur</strong>.<br>
+                        5. Total seluruhnya dari K ke L = 4 × 10 = <strong>40 alternatif jalur</strong>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quiz 2 -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                <div class="flex justify-between items-center">
+                    <span class="px-3 py-1 bg-emerald-100 text-emerald-800 font-bold text-xs rounded-full border border-emerald-300">Soal 2 — Aturan Penjumlahan</span>
+                </div>
+                <p class="font-medium text-slate-800 text-sm sm:text-base leading-relaxed">
+                    Seorang siswa hendak membeli buku di perpustakaan. Tersedia 5 jenis buku Matematika, 4 jenis buku Fisika, dan 3 jenis buku Kimia. Jika ia hanya diperbolehkan membeli 1 buku saja, berapa banyak pilihan buku yang dapat dibeli?
+                </p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button onclick="checkQuizAnswer(2, 12, this)" class="p-3 border border-slate-200 bg-slate-50 hover:bg-blue-50 rounded-xl font-bold text-slate-700 transition">A. 12</button>
+                    <button onclick="checkQuizAnswer(2, 60, this)" class="p-3 border border-slate-200 bg-slate-50 hover:bg-blue-50 rounded-xl font-bold text-slate-700 transition">B. 60</button>
+                    <button onclick="checkQuizAnswer(2, 20, this)" class="p-3 border border-slate-200 bg-slate-50 hover:bg-blue-50 rounded-xl font-bold text-slate-700 transition">C. 20</button>
+                    <button onclick="checkQuizAnswer(2, 15, this)" class="p-3 border border-slate-200 bg-slate-50 hover:bg-blue-50 rounded-xl font-bold text-slate-700 transition">D. 15</button>
+                </div>
+
+                <div id="quiz-explain-2" class="hidden p-4 bg-emerald-50 rounded-xl border border-emerald-200 text-xs sm:text-sm space-y-2">
+                    <p class="font-bold text-emerald-800">Pembahasan Soal 2:</p>
+                    <p class="text-slate-700">
+                        Siswa hanya membeli <strong>1 buku saja</strong> (pilihan saling lepas). Gunakan Aturan Penjumlahan: 5 + 4 + 3 = <strong>12 pilihan</strong>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quiz 3 -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                <div class="flex justify-between items-center">
+                    <span class="px-3 py-1 bg-blue-100 text-blue-800 font-bold text-xs rounded-full border border-blue-300">Soal 3 — Aturan Perkalian</span>
+                </div>
+                <p class="font-medium text-slate-800 text-sm sm:text-base leading-relaxed">
+                    Seseorang hendak menyusun plat nomor kendaraan yang terdiri dari 3 angka. Jika angka yang tersedia adalah 1, 2, 3, 4, 5 dan tidak boleh ada angka yang berulang, berapa banyak kombinasi plat nomor yang dapat dibentuk?
+                </p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button onclick="checkQuizAnswer(3, 125, this)" class="p-3 border border-slate-200 bg-slate-50 hover:bg-blue-50 rounded-xl font-bold text-slate-700 transition">A. 125</button>
+                    <button onclick="checkQuizAnswer(3, 60, this)" class="p-3 border border-slate-200 bg-slate-50 hover:bg-blue-50 rounded-xl font-bold text-slate-700 transition">B. 60</button>
+                    <button onclick="checkQuizAnswer(3, 15, this)" class="p-3 border border-slate-200 bg-slate-50 hover:bg-blue-50 rounded-xl font-bold text-slate-700 transition">C. 15</button>
+                    <button onclick="checkQuizAnswer(3, 20, this)" class="p-3 border border-slate-200 bg-slate-50 hover:bg-blue-50 rounded-xl font-bold text-slate-700 transition">D. 20</button>
+                </div>
+
+                <div id="quiz-explain-3" class="hidden p-4 bg-emerald-50 rounded-xl border border-emerald-200 text-xs sm:text-sm space-y-2">
+                    <p class="font-bold text-emerald-800">Pembahasan Soal 3:</p>
+                    <p class="text-slate-700">
+                        • Posisi Ratusan: 5 pilihan angka.<br>
+                        • Posisi Puluhan: 4 pilihan angka (tidak boleh berulang).<br>
+                        • Posisi Satuan: 3 pilihan angka.<br>
+                        Total Kombinasi = 5 × 4 × 3 = <strong>60 kombinasi</strong>.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white text-slate-500 py-6 border-t border-slate-200 mt-12 text-center text-xs space-y-1">
+        <p class="font-semibold text-slate-700">Modul Pembelajaran Interaktif Kaidah Pencacahan</p>
+        <p>Aturan Penjumlahan & Aturan Perkalian — Matematika Wajib Kelas 12 SMA</p>
+    </footer>
+
+    <script>
+        // State Management
+        let userQuizScore = 0;
+        const answeredQuestions = new Set();
+
+        // Switch Tabs Function
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('tab-btn-active');
+            });
+
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            if (activeBtn) activeBtn.classList.add('tab-btn-active');
+
+            ['materi', 'soal', 'visualisasi', 'kalkulator', 'latihan'].forEach(id => {
+                const contentEl = document.getElementById(`content-${id}`);
+                if (contentEl) contentEl.classList.add('hidden');
+            });
+
+            const currentContent = document.getElementById(`content-${tabId}`);
+            if (currentContent) currentContent.classList.remove('hidden');
+
+            if (tabId === 'visualisasi') {
+                setTimeout(() => {
+                    renderOutfitSim();
+                    drawFlightCanvas();
+                }, 100);
+            }
+        }
+
+        // --- SIMULATOR 1: Outfit Matcher ---
+        function renderOutfitSim() {
+            const shirt = parseInt(document.getElementById('sim-shirt').value) || 1;
+            const pants = parseInt(document.getElementById('sim-pants').value) || 1;
+            const shoes = parseInt(document.getElementById('sim-shoes').value) || 1;
+
+            document.getElementById('outfit-shirt-text').textContent = `${shirt} Kemeja`;
+            document.getElementById('outfit-pants-text').textContent = `${pants} Celana`;
+            document.getElementById('outfit-shoes-text').textContent = `${shoes} Sepatu`;
+
+            document.getElementById('outfit-formula-text').textContent = `Formula Perkalian: ${shirt} × ${pants} × ${shoes}`;
+            const total = shirt * pants * shoes;
+            document.getElementById('outfit-total-result').textContent = total.toLocaleString();
+        }
+
+        // --- SIMULATOR 2: Flight Route Canvas ---
+        function drawFlightCanvas() {
+            const routeViaJakarta = parseInt(document.getElementById('flight-range').value) || 3;
+            document.getElementById('flight-val').textContent = routeViaJakarta;
+
+            const routeJakartaBali = 4;
+            const viaTotal = routeViaJakarta * routeJakartaBali;
+            const directTotal = 2;
+            const grandTotal = viaTotal + directTotal;
+
+            document.getElementById('route-via-text').innerHTML = `Singapura ➔ Jakarta (${routeViaJakarta}) × Jakarta ➔ Bali (4) = <strong>${viaTotal} jalur</strong>`;
+            document.getElementById('route-total-text').textContent = `${grandTotal} Jalur`;
+
+            const canvas = document.getElementById('flightCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Coordinates
+            const sg = { x: 60, y: 130 };
+            const jk = { x: 240, y: 70 };
+            const bl = { x: 420, y: 130 };
+
+            // Draw Paths SG -> JK
+            ctx.lineWidth = 2;
+            for (let i = 0; i < routeViaJakarta; i++) {
+                const offset = (i - (routeViaJakarta - 1) / 2) * 16;
+                ctx.beginPath();
+                ctx.moveTo(sg.x, sg.y);
+                ctx.quadraticCurveTo(150, 100 + offset, jk.x, jk.y);
+                ctx.strokeStyle = '#2563eb';
+                ctx.stroke();
+            }
+
+            // Draw Paths JK -> BL
+            for (let i = 0; i < routeJakartaBali; i++) {
+                const offset = (i - (routeJakartaBali - 1) / 2) * 16;
+                ctx.beginPath();
+                ctx.moveTo(jk.x, jk.y);
+                ctx.quadraticCurveTo(330, 100 + offset, bl.x, bl.y);
+                ctx.strokeStyle = '#2563eb';
+                ctx.stroke();
+            }
+
+            // Draw Direct Paths SG -> BL (Direct)
+            for (let i = 0; i < directTotal; i++) {
+                const offset = i === 0 ? 50 : 80;
+                ctx.beginPath();
+                ctx.moveTo(sg.x, sg.y);
+                ctx.quadraticCurveTo(240, 130 + offset, bl.x, bl.y);
+                ctx.strokeStyle = '#059669';
+                ctx.stroke();
+            }
+
+            // Draw Nodes
+            const drawNode = (point, label, color) => {
+                ctx.beginPath();
+                ctx.arc(point.x, point.y, 16, 0, 2 * Math.PI);
+                ctx.fillStyle = color;
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2.5;
+                ctx.stroke();
+
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 10px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(label, point.x, point.y);
+            };
+
+            drawNode(sg, 'SG', '#d97706');
+            drawNode(jk, 'JKT', '#2563eb');
+            drawNode(bl, 'BALI', '#059669');
+        }
+
+        // --- CALCULATOR ENGINE ---
+        function updateCalcInputs() {
+            const mode = document.getElementById('calc-mode').value;
+            const wrapper = document.getElementById('calc-input-wrapper');
+
+            if (mode === 'penjumlahan' || mode === 'perkalian') {
+                wrapper.innerHTML = `
+                    <label class="block text-xs text-slate-700 font-semibold">Masukkan Nilai Setiap Kegiatan (Pisahkan dengan Koma):</label>
+                    <input type="text" id="calc-series" value="5, 6, 3" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl font-mono text-slate-800">
+                    <p class="text-[11px] text-slate-500">Contoh: 5, 6, 3 (berarti 5 kemeja, 6 celana, 3 sepatu)</p>
+                `;
+            } else if (mode === 'faktorial') {
+                wrapper.innerHTML = `
+                    <label class="block text-xs text-slate-700 font-semibold">Nilai n:</label>
+                    <input type="number" id="calc-n" min="0" max="20" value="5" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl font-mono text-slate-800">
+                `;
+            } else {
+                wrapper.innerHTML = `
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs text-slate-700 font-semibold">Nilai n:</label>
+                            <input type="number" id="calc-n" min="0" max="20" value="7" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl font-mono text-slate-800">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-700 font-semibold">Nilai r:</label>
+                            <input type="number" id="calc-r" min="0" max="20" value="3" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl font-mono text-slate-800">
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function runCalculator() {
+            const mode = document.getElementById('calc-mode').value;
+            const titleEl = document.getElementById('calc-step-title');
+            const stepBody = document.getElementById('calc-step-body');
+            const outputEl = document.getElementById('calc-output-result');
+
+            if (mode === 'penjumlahan') {
+                titleEl.textContent = "Aturan Penjumlahan";
+                const raw = document.getElementById('calc-series').value;
+                const nums = raw.split(',').map(n => parseInt(n.trim())).filter(n => !isNaN(n));
+                
+                if (nums.length === 0) return;
+                const sum = nums.reduce((a, b) => a + b, 0);
+
+                stepBody.innerHTML = `
+                    <p class="text-blue-400">Prinsip: Kejadian Saling Lepas (Pilihan "ATAU")</p>
+                    <p>Rumus: K₁ + K₂ + ... + Kₙ</p>
+                    <p class="text-emerald-400 font-bold">${nums.join(' + ')} = ${sum}</p>
+                `;
+                outputEl.textContent = sum.toLocaleString();
+            } else if (mode === 'perkalian') {
+                titleEl.textContent = "Aturan Perkalian";
+                const raw = document.getElementById('calc-series').value;
+                const nums = raw.split(',').map(n => parseInt(n.trim())).filter(n => !isNaN(n));
+
+                if (nums.length === 0) return;
+                const mult = nums.reduce((a, b) => a * b, 1);
+
+                stepBody.innerHTML = `
+                    <p class="text-blue-400">Prinsip: Kejadian Berpasangan/Sekaligus (Hubungan "DAN")</p>
+                    <p>Rumus: K₁ × K₂ × ... × Kₙ</p>
+                    <p class="text-emerald-400 font-bold">${nums.join(' × ')} = ${mult}</p>
+                `;
+                outputEl.textContent = mult.toLocaleString();
+            } else if (mode === 'faktorial') {
+                titleEl.textContent = "Faktorial (n!)";
+                const n = parseInt(document.getElementById('calc-n').value) || 0;
+                let fact = 1;
+                let terms = [];
+                for (let i = n; i >= 1; i--) {
+                    fact *= i;
+                    terms.push(i);
+                }
+                stepBody.innerHTML = `
+                    <p class="text-blue-400">n! = n × (n-1) × ... × 1</p>
+                    <p>${n}! = ${terms.join(' × ') || 1}</p>
+                `;
+                outputEl.textContent = fact.toLocaleString();
+            } else if (mode === 'permutasi') {
+                titleEl.textContent = "Permutasi P(n, r)";
+                const n = parseInt(document.getElementById('calc-n').value) || 0;
+                const r = parseInt(document.getElementById('calc-r').value) || 0;
+                
+                if (r > n) {
+                    stepBody.innerHTML = `<p class="text-red-400">Error: Nilai r tidak boleh lebih besar dari n (r ≤ n).</p>`;
+                    outputEl.textContent = '-';
+                    return;
+                }
+
+                let numer = 1;
+                let terms = [];
+                for (let i = n; i > n - r; i--) {
+                    numer *= i;
+                    terms.push(i);
+                }
+
+                stepBody.innerHTML = `
+                    <p class="text-blue-400">P(n, r) = n! / (n - r)!</p>
+                    <p>P(${n}, ${r}) = ${n}! / ${n-r}!</p>
+                    <p class="text-emerald-400 font-bold">= ${terms.join(' × ') || 1} = ${numer}</p>
+                `;
+                outputEl.textContent = numer.toLocaleString();
+            } else if (mode === 'kombinasi') {
+                titleEl.textContent = "Kombinasi C(n, r)";
+                const n = parseInt(document.getElementById('calc-n').value) || 0;
+                const r = parseInt(document.getElementById('calc-r').value) || 0;
+
+                if (r > n) {
+                    stepBody.innerHTML = `<p class="text-red-400">Error: Nilai r tidak boleh lebih besar dari n (r ≤ n).</p>`;
+                    outputEl.textContent = '-';
+                    return;
+                }
+
+                const fact = num => (num <= 1 ? 1 : num * fact(num - 1));
+                const comb = fact(n) / (fact(n - r) * fact(r));
+
+                stepBody.innerHTML = `
+                    <p class="text-blue-400">C(n, r) = n! / ((n - r)! × r!)</p>
+                    <p>C(${n}, ${r}) = ${n}! / (${n-r}! × ${r}!)</p>
+                    <p class="text-emerald-400 font-bold">= ${comb}</p>
+                `;
+                outputEl.textContent = comb.toLocaleString();
+            }
+        }
+
+        // --- QUIZ SYSTEM ---
+        function checkQuizAnswer(qNum, correctVal, btnEl) {
+            const parent = btnEl.parentElement;
+            const buttons = parent.querySelectorAll('button');
+
+            const answerKeys = { 1: 40, 2: 12, 3: 60 };
+            const isCorrect = correctVal === answerKeys[qNum];
+
+            buttons.forEach(b => {
+                b.disabled = true;
+                b.classList.remove('hover:bg-blue-50');
+            });
+
+            if (isCorrect) {
+                btnEl.classList.add('bg-emerald-600', 'text-white', 'border-emerald-600');
+                if (!answeredQuestions.has(qNum)) {
+                    answeredQuestions.add(qNum);
+                    userQuizScore++;
+                    document.getElementById('quiz-score-val').textContent = userQuizScore;
+                }
+            } else {
+                btnEl.classList.add('bg-red-600', 'text-white', 'border-red-600');
+            }
+
+            document.getElementById(`quiz-explain-${qNum}`).classList.remove('hidden');
+        }
+
+        // Window Onload Initialization
+        window.onload = function() {
+            document.getElementById('calc-mode').addEventListener('change', updateCalcInputs);
+            updateCalcInputs();
+            runCalculator();
+            renderOutfitSim();
+            drawFlightCanvas();
+        };
+    </script>
+</body>
+</html>

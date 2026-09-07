@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaidah Pencacahan: Permutasi & Kombinasi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MathJax for rendering rich math equations -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .tab-active { border-bottom: 3px solid #2563eb; color: #2563eb; font-weight: 600; }
+        .transition-all-200 { transition: all 0.2s ease-in-out; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 p-2.5 rounded-xl shadow-inner">
+                    <i class="fa-solid font-bold fa-calculator text-2xl text-yellow-300"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold tracking-tight">Kaidah Pencacahan Interaktif</h1>
+                    <p class="text-xs text-indigo-200">Permutasi & Kombinasi — Modul Pembelajaran Interaktif</p>
+                </div>
+            </div>
+            <span class="bg-indigo-800 text-indigo-200 text-xs px-3 py-1.5 rounded-full font-medium border border-indigo-700">
+                Matematika Wajib Kelas 12
+            </span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- Navigation Tabs -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-1.5 mb-8 flex overflow-x-auto gap-1">
+            <button onclick="switchTab('materi')" id="tab-materi" class="tab-btn flex-1 min-w-[120px] py-3 px-4 rounded-xl text-sm font-medium transition-all text-indigo-600 bg-indigo-50 shadow-sm">
+                <i class="fa-solid fa-book-open mr-2"></i>Rangkuman Materi
+            </button>
+            <button onclick="switchTab('soal')" id="tab-soal" class="tab-btn flex-1 min-w-[120px] py-3 px-4 rounded-xl text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-slate-50 transition-all">
+                <i class="fa-solid fa-pen-to-square mr-2"></i>Contoh & Pembahasan
+            </button>
+            <button onclick="switchTab('visualisasi')" id="tab-visualisasi" class="tab-btn flex-1 min-w-[120px] py-3 px-4 rounded-xl text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-slate-50 transition-all">
+                <i class="fa-solid fa-chart-pie mr-2"></i>Lab & Visualisasi
+            </button>
+            <button onclick="switchTab('kalkulator')" id="tab-kalkulator" class="tab-btn flex-1 min-w-[120px] py-3 px-4 rounded-xl text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-slate-50 transition-all">
+                <i class="fa-solid fa-calculator mr-2"></i>Kalkulator Step-by-Step
+            </button>
+            <button onclick="switchTab('latihan')" id="tab-latihan" class="tab-btn flex-1 min-w-[120px] py-3 px-4 rounded-xl text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-slate-50 transition-all">
+                <i class="fa-solid fa-square-check mr-2"></i>Latihan Mandiri
+            </button>
+        </div>
+
+        <!-- TAB CONTENT: RANGKUMAN MATERI -->
+        <div id="content-materi" class="space-y-8">
+            
+            <!-- Hero Banner -->
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-6 sm:p-8 text-white shadow-md relative overflow-hidden">
+                <div class="relative z-10 max-w-3xl">
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-3">Memahami Permutasi & Kombinasi</h2>
+                    <p class="text-indigo-100 text-sm sm:text-base leading-relaxed">
+                        Kunci utama dalam Kaidah Pencacahan adalah mengetahui kapan **Urutan Diperhatikan** (Permutasi) dan kapan **Urutan Tidak Diperhatikan** (Kombinasi).
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Faktorial Card -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center text-xl font-bold mb-4">
+                        n!
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">1. Faktorial</h3>
+                    <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+                        Perkalian dari semua bilangan bulat positif yang kurang dari atau sama dengan \(n\).
+                    </p>
+                    <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 text-amber-900 text-sm font-mono space-y-1">
+                        <p class="font-bold">n! = n × (n-1) × ... × 1</p>
+                        <p class="text-xs text-amber-700 mt-2">Ketetapan Khusus: <strong>0! = 1</strong></p>
+                    </div>
+                </div>
+
+                <!-- Permutasi Card -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl font-bold mb-4">
+                        P
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">2. Permutasi</h3>
+                    <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+                        Menyusun objek <strong>DENGAN memperhatikan urutan</strong>. Susunan AB dianggap tidak sama dengan BA (\(AB \neq BA\)).
+                    </p>
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 text-blue-900 text-sm">
+                        $$\mathbf{P(n, r) = \frac{n!}{(n - r)!}}$$
+                        <p class="text-xs text-blue-700 mt-2">Contoh: Pemilihan Ketua, Sekretaris, Bendahara (Jabatan).</p>
+                    </div>
+                </div>
+
+                <!-- Kombinasi Card -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-xl font-bold mb-4">
+                        C
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">3. Kombinasi</h3>
+                    <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+                        Menyusun objek <strong>TANPA memperhatikan urutan</strong>. Susunan AB sama dengan BA (\(AB = BA\)).
+                    </p>
+                    <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200 text-emerald-900 text-sm">
+                        $$\mathbf{C(n, r) = \frac{n!}{(n - r)! \cdot r!}}$$
+                        <p class="text-xs text-emerald-700 mt-2">Contoh: Jabat tangan, memilih kelompok, memilih soal.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-6 border-b border-slate-200 bg-slate-50">
+                    <h3 class="text-lg font-bold text-slate-800">Tabel Perbandingan Utama</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-slate-100/70 border-b border-slate-200">
+                                <th class="p-4 font-semibold text-slate-700">Kategori</th>
+                                <th class="p-4 font-semibold text-blue-700 bg-blue-50/50">Permutasi</th>
+                                <th class="p-4 font-semibold text-emerald-700 bg-emerald-50/50">Kombinasi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            <tr>
+                                <td class="p-4 font-medium text-slate-800">Prinsip Urutan</td>
+                                <td class="p-4 text-blue-900 bg-blue-50/20 font-semibold">Memperhatikan Urutan (\(AB \neq BA\))</td>
+                                <td class="p-4 text-emerald-900 bg-emerald-50/20 font-semibold">Abaikan Urutan (\(AB = BA\))</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-medium text-slate-800">Rumus Umum</td>
+                                <td class="p-4 bg-blue-50/20">\(P(n,r) = \frac{n!}{(n-r)!}\)</td>
+                                <td class="p-4 bg-emerald-50/20">\(C(n,r) = \frac{n!}{(n-r)!r!}\)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-medium text-slate-800">Ciri Kunci Soal</td>
+                                <td class="p-4 bg-blue-50/20">Ada jabatan, urutan posisi, peringkat, susunan angka.</td>
+                                <td class="p-4 bg-emerald-50/20">Jabat tangan, pengambilan acak sekaligus, tim/kelompok.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB CONTENT: CONTOH SOAL & PEMBAHASAN -->
+        <div id="content-soal" class="hidden space-y-6">
+            <h2 class="text-2xl font-bold text-slate-800">Contoh Soal & Pembahasan</h2>
+
+            <!-- Example 1: Operasi Faktorial -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <span class="px-3 py-1 bg-amber-100 text-amber-800 font-semibold text-xs rounded-full">Faktorial</span>
+                    <span class="text-xs text-slate-500">Topik: Operasi Faktorial</span>
+                </div>
+                <div class="p-6 space-y-4">
+                    <h3 class="font-bold text-lg text-slate-800">Contoh 1: Menyederhanakan Pembagian Faktorial</h3>
+                    <p class="text-slate-600 text-sm">Hitung nilai dari: <strong>a)</strong> \(\frac{10!}{8!}\) &nbsp;&nbsp;&nbsp;&nbsp; <strong>b)</strong> \(\frac{11!}{10! + 9!}\)</p>
+                    
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3 text-sm">
+                        <p class="font-semibold text-indigo-900">Pembahasan a:</p>
+                        <p class="font-mono text-slate-700">$$\frac{10!}{8!} = \frac{10 \times 9 \times 8!}{8!} = 10 \times 9 = 90$$</p>
+                        <p class="text-xs text-slate-500"><em>Trik: Cukup jabarkan 10! sampai 8! agar bisa disederhanakan dengan penyebut.</em></p>
+                        <hr class="border-slate-200 my-2">
+                        <p class="font-semibold text-indigo-900">Pembahasan b:</p>
+                        <p class="font-mono text-slate-700">$$\frac{11!}{10! + 9!} = \frac{11 \times 10 \times 9!}{(10 \times 9!) + (1 \times 9!)} = \frac{11 \times 10 \times 9!}{(10 + 1) \cdot 9!} = \frac{11 \times 10 \times 9!}{11 \times 9!} = 10$$</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 2: Permutasi Kepengurusan -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <span class="px-3 py-1 bg-blue-100 text-blue-800 font-semibold text-xs rounded-full">Permutasi</span>
+                    <span class="text-xs text-slate-500">Topik: Pemilihan Kepengurusan</span>
+                </div>
+                <div class="p-6 space-y-4">
+                    <h3 class="font-bold text-lg text-slate-800">Contoh 2: Pemilihan Pengurus Organisasi</h3>
+                    <p class="text-slate-600 text-sm">
+                        Dalam suatu organisasi akan dipilih seorang ketua, seorang sekretaris, dan seorang bendahara dari 7 orang calon. Berapakah banyak susunan kepengurusan yang mungkin?
+                    </p>
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 space-y-2 text-sm text-blue-950">
+                        <p><strong>Identifikasi:</strong> Karena jabatan membedakan posisi (Urutan Diperhatikan), ini adalah masalah <strong>Permutasi</strong> dengan \(n = 7\) dan \(r = 3\).</p>
+                        $$\mathbf{P(7, 3) = \frac{7!}{(7-3)!} = \frac{7!}{4!} = \frac{7 \times 6 \times 5 \times 4!}{4!} = 7 \times 6 \times 5 = 210}$$
+                        <p class="text-xs text-blue-700"><strong>Hasil:</strong> Terdapat <strong>210 susunan kepengurusan</strong> yang mungkin.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 3: Kombinasi Jabat Tangan -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <span class="px-3 py-1 bg-emerald-100 text-emerald-800 font-semibold text-xs rounded-full">Kombinasi</span>
+                    <span class="text-xs text-slate-500">Topik: Jabat Tangan</span>
+                </div>
+                <div class="p-6 space-y-4">
+                    <h3 class="font-bold text-lg text-slate-800">Contoh 3: Masalah Jabat Tangan</h3>
+                    <p class="text-slate-600 text-sm">
+                        Sebuah pertemuan dihadiri oleh 10 orang. Jika setiap orang saling berjabat tangan satu sama lain, berapa banyak jabat tangan yang terjadi?
+                    </p>
+                    <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200 space-y-2 text-sm text-emerald-950">
+                        <p><strong>Identifikasi:</strong> Jabat tangan A-B sama dengan B-A (Tanpa Memperhatikan Urutan). 1 kali jabat tangan melibatkan 2 orang (\(r = 2\)) dari total 10 orang (\(n = 10\)). Gunakan <strong>Kombinasi</strong>.</p>
+                        $$\mathbf{C(10, 2) = \frac{10!}{(10-2)! \cdot 2!} = \frac{10 \times 9 \times 8!}{8! \cdot 2} = \frac{90}{2} = 45}$$
+                        <p class="text-xs text-emerald-700"><strong>Hasil:</strong> Terjadi <strong>45 jabat tangan</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 4: Kombinasi Soal Ujian -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <span class="px-3 py-1 bg-emerald-100 text-emerald-800 font-semibold text-xs rounded-full">Kombinasi Syarat</span>
+                    <span class="text-xs text-slate-500">Topik: Pemilihan Soal Ujian</span>
+                </div>
+                <div class="p-6 space-y-4">
+                    <h3 class="font-bold text-lg text-slate-800">Contoh 4: Pemilihan Soal Ujian bersyarat</h3>
+                    <p class="text-slate-600 text-sm">
+                        Seorang siswa diminta mengerjakan 8 soal dari 10 soal yang tersedia. Namun soal nomor 1 dan 5 wajib dikerjakan. Berapa banyak pilihan soal yang dapat diambil siswa tersebut?
+                    </p>
+                    <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200 space-y-2 text-sm text-emerald-950">
+                        <p><strong>Analisis Syarat:</strong></p>
+                        <ul class="list-disc pl-5 space-y-1 text-xs">
+                            <li>Total soal tersedia = 10. Soal wajib (No 1 & 5) = 2. Sisa soal pilihan (\(n\)) = \(10 - 2 = 8\) soal.</li>
+                            <li>Total soal harus dikerjakan = 8. Karena 2 wajib dikerjakan, sisa soal yang harus dipilih (\(r\)) = \(8 - 2 = 6\) soal.</li>
+                        </ul>
+                        $$\mathbf{C(8, 6) = \frac{8!}{(8-6)! \cdot 6!} = \frac{8 \times 7 \times 6!}{2 \cdot 1 \cdot 6!} = \frac{56}{2} = 28}$$
+                        <p class="text-xs text-emerald-700 font-bold"><strong>Hasil:</strong> Terdapat <strong>28 pilihan kombinasi soal</strong>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB CONTENT: LAB & VISUALISASI INTERAKTIF -->
+        <div id="content-visualisasi" class="hidden space-y-8">
+            <h2 class="text-2xl font-bold text-slate-800">Laboratorium Visualisasi Interaktif</h2>
+
+            <!-- Visualizer 1: Jabat Tangan Graph -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800">1. Visualisasi Jabat Tangan \(C(n, 2)\)</h3>
+                        <p class="text-xs text-slate-500">Ubah jumlah orang untuk melihat bagaimana garis jabat tangan terbentuk antar setiap pasang orang.</p>
+                    </div>
+                    <div class="flex items-center space-x-3 bg-slate-100 p-2 rounded-xl">
+                        <label class="text-xs font-semibold text-slate-700">Jumlah Orang (n):</label>
+                        <input type="range" id="handshake-slider" min="2" max="15" value="6" class="w-28 accent-indigo-600" oninput="updateHandshakeGraph()">
+                        <span id="handshake-val" class="font-bold text-indigo-600 w-6 text-center">6</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                    <div class="md:col-span-2 flex justify-center bg-slate-900 rounded-2xl p-4">
+                        <canvas id="handshakeCanvas" width="360" height="360" class="max-w-full h-auto"></canvas>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-200">
+                            <p class="text-xs text-indigo-700 font-medium">Banyak Orang (\(n\)):</p>
+                            <p id="hs-n-text" class="text-2xl font-bold text-indigo-900">6 Orang</p>
+                        </div>
+                        <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
+                            <p class="text-xs text-emerald-700 font-medium">Total Garis / Jabat Tangan (\(C(n,2)\)):</p>
+                            <p id="hs-result-text" class="text-3xl font-extrabold text-emerald-700">15</p>
+                        </div>
+                        <p class="text-xs text-slate-500 italic">Setiap titik merepresentasikan 1 orang. Setiap garis merepresentasikan 1 kali jabat tangan.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visualizer 2: Segi-N Diagonal (Soal 3) -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800">2. Visualisasi Diagonal Bangun Datar Segi-N</h3>
+                        <p class="text-xs text-slate-500">Visualisasi soal latihan #3: Jumlah diagonal = \(C(n, 2) - n\)</p>
+                    </div>
+                    <div class="flex items-center space-x-3 bg-slate-100 p-2 rounded-xl">
+                        <label class="text-xs font-semibold text-slate-700">Banyak Sisi (n):</label>
+                        <input type="range" id="polygon-slider" min="3" max="20" value="8" class="w-28 accent-indigo-600" oninput="updatePolygonGraph()">
+                        <span id="polygon-val" class="font-bold text-indigo-600 w-6 text-center">8</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                    <div class="md:col-span-2 flex justify-center bg-slate-900 rounded-2xl p-4">
+                        <canvas id="polygonCanvas" width="360" height="360" class="max-w-full h-auto"></canvas>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-100 rounded-xl">
+                            <p class="text-xs text-slate-600">Total Garis Penghubung Titik (\(C(n,2)\)):</p>
+                            <p id="poly-conn-text" class="text-xl font-bold text-slate-800">28</p>
+                        </div>
+                        <div class="p-4 bg-red-50 rounded-xl border border-red-200">
+                            <p class="text-xs text-red-600">Banyak Sisi Segi-N (\(n\)):</p>
+                            <p id="poly-sides-text" class="text-xl font-bold text-red-800">8</p>
+                        </div>
+                        <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-200">
+                            <p class="text-xs text-indigo-700 font-medium">Banyak Garis Diagonal (\(C(n,2) - n\)):</p>
+                            <p id="poly-diag-text" class="text-3xl font-extrabold text-indigo-900">20</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB CONTENT: KALKULATOR STEP-BY-STEP -->
+        <div id="content-kalkulator" class="hidden space-y-8">
+            <h2 class="text-2xl font-bold text-slate-800">Kalkulator Pencacahan Step-by-Step</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Calculator Inputs -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+                    <h3 class="font-bold text-slate-800 text-lg border-b pb-3">Input Nilai</h3>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Pilih Mode Perhitungan:</label>
+                        <select id="calc-mode" onchange="calculateStepByStep()" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 font-medium">
+                            <option value="faktorial">Faktorial (n!)</option>
+                            <option value="permutasi" selected>Permutasi P(n, r)</option>
+                            <option value="kombinasi">Kombinasi C(n, r)</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nilai n (Semua Objek):</label>
+                            <input type="number" id="calc-n" min="0" max="30" value="7" oninput="calculateStepByStep()" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl font-bold text-slate-800">
+                        </div>
+                        <div id="wrapper-calc-r">
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nilai r (Objek Dipilih):</label>
+                            <input type="number" id="calc-r" min="0" max="30" value="3" oninput="calculateStepByStep()" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl font-bold text-slate-800">
+                        </div>
+                    </div>
+
+                    <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 text-xs text-indigo-800">
+                        <i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i>
+                        Pastikan nilai \(n \ge r\).
+                    </div>
+                </div>
+
+                <!-- Calculator Output -->
+                <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-sm flex flex-col justify-between space-y-4">
+                    <div>
+                        <span class="text-xs text-indigo-400 uppercase tracking-wider font-semibold">Langkah Penjumlahan / Perkalian</span>
+                        <h4 id="calc-title" class="text-xl font-bold mt-1 text-white">Permutasi P(7, 3)</h4>
+                        
+                        <div id="calc-steps" class="mt-4 font-mono text-sm space-y-3 text-slate-300 bg-slate-800/80 p-4 rounded-xl border border-slate-700 overflow-x-auto">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800 flex justify-between items-center">
+                        <span class="text-sm font-medium text-slate-400">Hasil Akhir:</span>
+                        <span id="calc-result" class="text-3xl font-extrabold text-emerald-400">210</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB CONTENT: LATIHAN SOAL MANDIRI -->
+        <div id="content-latihan" class="hidden space-y-8">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800">Latihan Soal Mandiri</h2>
+                    <p class="text-sm text-slate-500">Selesaikan 3 soal latihan berikut dan cek jawabanmu secara langsung.</p>
+                </div>
+                <div class="bg-indigo-100 text-indigo-800 font-bold px-4 py-2 rounded-xl text-sm">
+                    Skor Kamu: <span id="quiz-score">0</span> / 3
+                </div>
+            </div>
+
+            <!-- Quiz Card 1 -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                <div class="flex justify-between items-start">
+                    <span class="px-3 py-1 bg-amber-100 text-amber-800 font-bold text-xs rounded-full">Soal 1 (Faktorial)</span>
+                </div>
+                <p class="font-medium text-slate-800">
+                    Jika \(p\) adalah bilangan asli dan \(\frac{p!}{(p-2)!} = 20\), berapakah nilai \(p\)?
+                </p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button onclick="checkAnswer(1, 3, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-indigo-50 hover:border-indigo-300 font-semibold text-slate-700 transition">A. 3</button>
+                    <button onclick="checkAnswer(1, 4, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-indigo-50 hover:border-indigo-300 font-semibold text-slate-700 transition">B. 4</button>
+                    <button onclick="checkAnswer(1, 5, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-indigo-50 hover:border-indigo-300 font-semibold text-slate-700 transition">C. 5</button>
+                    <button onclick="checkAnswer(1, 6, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-indigo-50 hover:border-indigo-300 font-semibold text-slate-700 transition">D. 6</button>
+                </div>
+
+                <div id="explain-1" class="hidden p-4 bg-slate-50 rounded-xl border border-slate-200 text-sm space-y-2">
+                    <p class="font-bold text-indigo-900">Pembahasan Soal 1:</p>
+                    <p class="font-mono text-xs">
+                        \(\frac{p!}{(p-2)!} = 20 \implies \frac{p \times (p-1) \times (p-2)!}{(p-2)!} = 20\)<br>
+                        \(p(p-1) = 20 \implies p^2 - p - 20 = 0\)<br>
+                        \((p - 5)(p + 4) = 0 \implies p = 5\) (karena \(p\) bilangan asli).
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quiz Card 2 -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                <div class="flex justify-between items-start">
+                    <span class="px-3 py-1 bg-blue-100 text-blue-800 font-bold text-xs rounded-full">Soal 2 (Permutasi / Antrian)</span>
+                </div>
+                <p class="font-medium text-slate-800">
+                    Jika suatu nomor antrian terdiri dari 3 digit tanpa memuat angka yang sama dibentuk dari angka 0, 1, 2, dan 3, berapakah banyak pilihan nomor antrian yang dapat dibuat?
+                </p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button onclick="checkAnswer(2, 12, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-indigo-50 hover:border-indigo-300 font-semibold text-slate-700 transition">A. 12</button>
+                    <button onclick="checkAnswer(2, 18, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-indigo-50 hover:border-indigo-300 font-semibold text-slate-700 transition">B. 18</button>
+                    <button onclick="checkAnswer(2, 24, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-indigo-50 hover:border-indigo-300 font-semibold text-slate-700 transition">C. 24</button>
+                    <button onclick="checkAnswer(2, 36, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-indigo-50 hover:border-indigo-300 font-semibold text-slate-700 transition">D. 36</button>
+                </div>
+
+                <div id="explain-2" class="hidden p-4 bg-slate-50 rounded-xl border border-slate-200 text-sm space-y-2">
+                    <p class="font-bold text-indigo-900">Pembahasan Soal 2:</p>
+                    <p class="text-xs text-slate-700">
+                        Karena ini nomor antrian (kode digit), angka 0 <strong>boleh berada di depan</strong> (misal: 012, 023). Oleh karena itu, kita memilih dan menyusun 3 digit dari 4 digit tersedia (\(n = 4, r = 3\)):
+                    </p>
+                    <p class="font-mono text-xs">\(P(4, 3) = \frac{4!}{(4-3)!} = \frac{24}{1} = 24\) pilihan.</p>
+                </div>
+            </div>
+
+            <!-- Quiz Card 3 -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                <div class="flex justify-between items-start">
+                    <span class="px-3 py-1 bg-emerald-100 text-emerald-800 font-bold text-xs rounded-full">Soal 3 (Kombinasi Geometri)</span>
+                </div>
+                <p class="font-medium text-slate-800">
+                    Pada sebuah bangun segi-20 beraturan, berapakah garis diagonal yang bisa dibuat?
+                </p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button onclick="checkAnswer(3, 170, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-indigo-50 hover:border-indigo-300 font-semibold text-slate-700 transition">A. 170</button>
+                    <button onclick="checkAnswer(3, 180, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-indigo-50 hover:border-indigo-300 font-semibold text-slate-700 transition">B. 180</button>
+                    <button onclick="checkAnswer(3, 190, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-indigo-50 hover:border-indigo-300 font-semibold text-slate-700 transition">C. 190</button>
+                    <button onclick="checkAnswer(3, 200, this)" class="p-3 border border-slate-200 rounded-xl hover:bg-indigo-50 hover:border-indigo-300 font-semibold text-slate-700 transition">D. 200</button>
+                </div>
+
+                <div id="explain-3" class="hidden p-4 bg-slate-50 rounded-xl border border-slate-200 text-sm space-y-2">
+                    <p class="font-bold text-indigo-900">Pembahasan Soal 3:</p>
+                    <p class="text-xs text-slate-700">
+                        Banyak garis penghubung dari 20 titik sudut adalah \(C(20, 2) = \frac{20 \times 19}{2} = 190\).<br>
+                        Namun, 20 garis diantaranya adalah sisi luar segi-20, bukan diagonal.<br>
+                        Maka banyak diagonal = \(C(20, 2) - 20 = 190 - 20 = \mathbf{170}\).
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs space-y-2">
+            <p>Rangkuman & Platform Pembelajaran Interaktif Kaidah Pencacahan</p>
+            <p class="text-slate-500">Modul Pembelajaran Matematika Wajib Kelas 12</p>
+        </div>
+    </footer>
+
+    <script>
+        // State management
+        let userScore = 0;
+        const solvedQuestions = new Set();
+
+        // Switch Tabs
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-50', 'text-indigo-600', 'shadow-sm');
+                btn.classList.add('text-slate-600');
+            });
+
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-indigo-50', 'text-indigo-600', 'shadow-sm');
+                activeBtn.classList.remove('text-slate-600');
+            }
+
+            ['materi', 'soal', 'visualisasi', 'kalkulator', 'latihan'].forEach(id => {
+                const el = document.getElementById(`content-${id}`);
+                if (el) el.classList.add('hidden');
+            });
+
+            const contentToShow = document.getElementById(`content-${tabId}`);
+            if (contentToShow) contentToShow.classList.remove('hidden');
+
+            if (tabId === 'visualisasi') {
+                setTimeout(() => {
+                    updateHandshakeGraph();
+                    updatePolygonGraph();
+                }, 100);
+            }
+        }
+
+        // --- MATH HELPERS ---
+        function factorial(num) {
+            if (num < 0) return 0;
+            if (num === 0 || num === 1) return 1;
+            let res = 1;
+            for (let i = 2; i <= num; i++) res *= i;
+            return res;
+        }
+
+        // --- CALCULATOR LOGIC ---
+        function calculateStepByStep() {
+            const mode = document.getElementById('calc-mode').value;
+            const n = parseInt(document.getElementById('calc-n').value) || 0;
+            const rInput = document.getElementById('calc-r');
+            const wrapperR = document.getElementById('wrapper-calc-r');
+            const stepsDiv = document.getElementById('calc-steps');
+            const resultSpan = document.getElementById('calc-result');
+            const titleEl = document.getElementById('calc-title');
+
+            if (mode === 'faktorial') {
+                wrapperR.classList.add('opacity-40', 'pointer-events-none');
+                titleEl.textContent = `Faktorial (${n}!)`;
+                
+                let terms = [];
+                for (let i = n; i >= 1; i--) terms.push(i);
+                
+                const val = factorial(n);
+                stepsDiv.innerHTML = `
+                    <p>Formula: n! = n × (n-1) × ... × 1</p>
+                    <p class="text-indigo-300 font-bold">${n}! = ${terms.join(' × ') || 1}</p>
+                `;
+                resultSpan.textContent = val.toLocaleString();
+            } else if (mode === 'permutasi') {
+                wrapperR.classList.remove('opacity-40', 'pointer-events-none');
+                const r = parseInt(rInput.value) || 0;
+                titleEl.textContent = `Permutasi P(${n}, ${r})`;
+
+                if (r > n) {
+                    stepsDiv.innerHTML = `<p class="text-red-400">Error: Syarat r tidak boleh lebih besar dari n (r ≤ n).</p>`;
+                    resultSpan.textContent = '-';
+                    return;
+                }
+
+                const denominator = n - r;
+                let numerTerms = [];
+                for (let i = n; i > denominator; i--) numerTerms.push(i);
+
+                const val = factorial(n) / factorial(denominator);
+                stepsDiv.innerHTML = `
+                    <p>Formula: P(n, r) = n! / (n - r)!</p>
+                    <p>P(${n}, ${r}) = ${n}! / ${denominator}!</p>
+                    <p class="text-indigo-300 font-bold">= ${numerTerms.join(' × ') || 1}</p>
+                `;
+                resultSpan.textContent = val.toLocaleString();
+            } else if (mode === 'kombinasi') {
+                wrapperR.classList.remove('opacity-40', 'pointer-events-none');
+                const r = parseInt(rInput.value) || 0;
+                titleEl.textContent = `Kombinasi C(${n}, ${r})`;
+
+                if (r > n) {
+                    stepsDiv.innerHTML = `<p class="text-red-400">Error: Syarat r tidak boleh lebih besar dari n (r ≤ n).</p>`;
+                    resultSpan.textContent = '-';
+                    return;
+                }
+
+                const nMinusR = n - r;
+                const val = factorial(n) / (factorial(nMinusR) * factorial(r));
+
+                stepsDiv.innerHTML = `
+                    <p>Formula: C(n, r) = n! / ((n - r)! × r!)</p>
+                    <p>C(${n}, ${r}) = ${n}! / (${nMinusR}! × ${r}!)</p>
+                    <p class="text-indigo-300 font-bold">= ${factorial(n)} / (${factorial(nMinusR)} × ${factorial(r)})</p>
+                `;
+                resultSpan.textContent = val.toLocaleString();
+            }
+        }
+
+        // --- GRAPH VISUALIZER 1: Handshake Canvas ---
+        function updateHandshakeGraph() {
+            const n = parseInt(document.getElementById('handshake-slider').value);
+            document.getElementById('handshake-val').textContent = n;
+            document.getElementById('hs-n-text').textContent = `${n} Orang`;
+            
+            const totalHandshakes = (n * (n - 1)) / 2;
+            document.getElementById('hs-result-text').textContent = totalHandshakes;
+
+            const canvas = document.getElementById('handshakeCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 130;
+
+            const nodes = [];
+            for (let i = 0; i < n; i++) {
+                const angle = (i * 2 * Math.PI) / n - Math.PI / 2;
+                nodes.push({
+                    x: centerX + radius * Math.cos(angle),
+                    y: centerY + radius * Math.sin(angle)
+                });
+            }
+
+            // Draw connections (handshakes)
+            ctx.strokeStyle = 'rgba(99, 102, 241, 0.4)';
+            ctx.lineWidth = 1.5;
+            for (let i = 0; i < n; i++) {
+                for (let j = i + 1; j < n; j++) {
+                    ctx.beginPath();
+                    ctx.moveTo(nodes[i].x, nodes[i].y);
+                    ctx.lineTo(nodes[j].x, nodes[j].y);
+                    ctx.stroke();
+                }
+            }
+
+            // Draw nodes (people)
+            nodes.forEach((node, idx) => {
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, 12, 0, 2 * Math.PI);
+                ctx.fillStyle = '#10B981';
+                ctx.fill();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#FFFFFF';
+                ctx.stroke();
+
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = 'bold 11px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(String.fromCharCode(65 + idx), node.x, node.y);
+            });
+        }
+
+        // --- GRAPH VISUALIZER 2: Polygon Diagonals Canvas ---
+        function updatePolygonGraph() {
+            const n = parseInt(document.getElementById('polygon-slider').value);
+            document.getElementById('polygon-val').textContent = n;
+
+            const totalLines = (n * (n - 1)) / 2;
+            const diagonals = totalLines - n;
+
+            document.getElementById('poly-conn-text').textContent = totalLines;
+            document.getElementById('poly-sides-text').textContent = n;
+            document.getElementById('poly-diag-text').textContent = diagonals;
+
+            const canvas = document.getElementById('polygonCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 130;
+
+            const nodes = [];
+            for (let i = 0; i < n; i++) {
+                const angle = (i * 2 * Math.PI) / n - Math.PI / 2;
+                nodes.push({
+                    x: centerX + radius * Math.cos(angle),
+                    y: centerY + radius * Math.sin(angle)
+                });
+            }
+
+            // Draw diagonals (internal lines)
+            ctx.strokeStyle = 'rgba(239, 68, 68, 0.4)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < n; i++) {
+                for (let j = i + 2; j < n; j++) {
+                    if (i === 0 && j === n - 1) continue; // skip outer edge
+                    ctx.beginPath();
+                    ctx.moveTo(nodes[i].x, nodes[i].y);
+                    ctx.lineTo(nodes[j].x, nodes[j].y);
+                    ctx.stroke();
+                }
+            }
+
+            // Draw outer polygon sides
+            ctx.strokeStyle = '#6366F1';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            for (let i = 0; i < n; i++) {
+                if (i === 0) ctx.moveTo(nodes[i].x, nodes[i].y);
+                else ctx.lineTo(nodes[i].x, nodes[i].y);
+            }
+            ctx.closePath();
+            ctx.stroke();
+
+            // Draw vertex nodes
+            nodes.forEach((node) => {
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, 6, 0, 2 * Math.PI);
+                ctx.fillStyle = '#6366F1';
+                ctx.fill();
+            });
+        }
+
+        // --- QUIZ LOGIC ---
+        function checkAnswer(questionNum, correctVal, btnElement) {
+            const parent = btnElement.parentElement;
+            const buttons = parent.querySelectorAll('button');
+
+            const answerMap = { 1: 5, 2: 24, 3: 170 };
+            const isCorrect = correctVal === answerMap[questionNum];
+
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.classList.remove('hover:bg-indigo-50', 'border-slate-200');
+            });
+
+            if (isCorrect) {
+                btnElement.classList.add('bg-emerald-500', 'text-white', 'border-emerald-600');
+                if (!solvedQuestions.has(questionNum)) {
+                    solvedQuestions.add(questionNum);
+                    userScore++;
+                    document.getElementById('quiz-score').textContent = userScore;
+                }
+            } else {
+                btnElement.classList.add('bg-red-500', 'text-white', 'border-red-600');
+            }
+
+            document.getElementById(`explain-${questionNum}`).classList.remove('hidden');
+        }
+
+        // On Page Load
+        window.onload = function() {
+            calculateStepByStep();
+            updateHandshakeGraph();
+            updatePolygonGraph();
+        };
+    </script>
+</body>
+</html>
